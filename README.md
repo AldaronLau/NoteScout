@@ -1,0 +1,2 @@
+# NoteScout
+HCI project.
