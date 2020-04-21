@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'signup.dart';
+import 'package:note_scout/signuppage.dart';
+import 'package:note_scout/homepage.dart';
 
-import 'package:project/mainpage.dart';
-
-void main() => runApp(new MyApp());
-
-class MyApp extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(

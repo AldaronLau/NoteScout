@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'signup.dart';
-
-import 'package:flutter/material.dart';
-
+import 'package:note_scout/signuppage.dart';
 
 class GridDashboard extends StatelessWidget {
   Items item1 = new Items(
