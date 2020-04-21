@@ -2,13 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/icon_data.dart';
 
+import 'package:note_scout/edit.dart';
+
 class ViewNote extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("View Note"),
-        centerTitle: true,
         backgroundColor: Colors.blue,
       ),
       body: Container(
@@ -21,6 +22,10 @@ class ViewNote extends StatelessWidget {
         color: Colors.blue,
         onPressed: () {
           // Switch to edit screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EditNote()),
+          );
         },
       ),
     );

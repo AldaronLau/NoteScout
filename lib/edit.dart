@@ -47,7 +47,7 @@ class EditNotePageState extends State<EditNotePage> {
       body: TextField(
         controller: text_controller,
         maxLines: null,
-        minLines: 12,
+        minLines: 256,
       ),
     );
   }
