@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class EditNotePage extends StatefulWidget {
-  EditNotePage({Key key}): super(key: key);
+    EditNotePage({Key key}): super(key: key);
 
-  @override
-  EditNotePageState createState() => EditNotePageState();
+    @override
+    EditNotePageState createState() => EditNotePageState();
 }
 
 class EditNotePageState extends State<EditNotePage> {
-  var text_controller;
+    var text_controller;
 
-  @override
-  void initState() {
-    super.initState();
-  }
+    @override
+    void initState() {
+        super.initState();
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +25,15 @@ class EditNotePageState extends State<EditNotePage> {
       appBar: AppBar(
         title: Text("Edit Note"),
         actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.select_all),
-              onPressed: () {
-                text_controller.selection = TextSelection(
-                    baseOffset: 0,
-                    extentOffset: text_controller.text.length,
-                );
-              }),
+            IconButton(
+                icon: Icon(Icons.select_all),
+                onPressed: () {
+                    text_controller.selection = TextSelection(
+                        baseOffset: 0,
+                        extentOffset: text_controller.text.length,
+                    );
+                }
+            ),
           IconButton(
               icon: Icon(Icons.content_cut),
               onPressed: () {
@@ -64,16 +65,6 @@ class EditNotePageState extends State<EditNotePage> {
                     text_controller.selection = TextSelection.collapsed(offset: new_end);
                 });
               }),
-          PopupMenuButton<String>(onSelected: (String choice) {
-            // Shared.choiceAction(choice, context);
-          }, itemBuilder: (BuildContext context) {
-            return ["Merge..."].map((String choice) {
-              return PopupMenuItem<String>(
-                value: choice,
-                child: Text(choice),
-              );
-            }).toList();
-          })
         ],
       ),
       body: TextField(

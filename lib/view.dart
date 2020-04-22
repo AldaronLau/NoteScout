@@ -4,14 +4,25 @@ import 'package:flutter/src/widgets/icon_data.dart';
 
 import 'package:note_scout/edit.dart';
 
+enum ViewNoteMode {
+    // For notes not owned by the user
+    Browsing,
+    // For notes owned by the user.
+    Owned,
+}
+
 class ViewNotePage extends StatefulWidget {
-    ViewNotePage({Key key}): super(key: key);
+    ViewNoteMode mode;
+
+    ViewNotePage({Key key, this.mode}): super(key: key);
 
     @override
     ViewNotePageState createState() => new ViewNotePageState();
 }
 
 class ViewNotePageState extends State<ViewNotePage> {
+
+    bool bookmarked = false;
     int rating = 0;
     double community_rating = 3.5;
     String notification = null;
@@ -19,34 +30,21 @@ class ViewNotePageState extends State<ViewNotePage> {
     @override
     void initState() {
         super.initState();
+        assert(widget.mode != null);
         notification = null;
     }
 
     @override
     Widget build(BuildContext context) {
         List<Widget> bottom = [];
+        List<Widget> left = [];
+        List<Widget> right = [];
         if (notification != null) {
             bottom.add(Text(notification));
         }
-        bottom.add(Container(color: Theme.of(context).primaryColor, child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [FlatButton(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                    "Rate This Note",
-                    style: TextStyle(fontSize: 18.0),
-                ),
-                onPressed: () {
-                    setState(() { notification = null; });
-                    showDialog(
-                        context: context,
-                        builder: (_) {
-                            return MyDialog(state: this);
-                        },
-                    );
-                },
-            ),
-            IconButton(
+        if (widget.mode == ViewNoteMode.Owned) {
+            // Edit your notes
+            right.add(IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
                     notification = null;
@@ -58,12 +56,77 @@ class ViewNotePageState extends State<ViewNotePage> {
                         }),
                     );
                 },
-            ),
-        ])));
+            ));
+        } else {
+            // Rate other people's notes
+            left.add(FlatButton(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                    "Rate This Note",
+                    style: TextStyle(fontSize: 18.0),
+                ),
+                onPressed: () async {
+                    setState(() {
+                        notification = null;
+                    });
+                    await showDialog(
+                        context: context,
+                        builder: (_) {
+                            return MyDialog(state: this);
+                        },
+                    );
+                    setState(() {
+                        if(notification == null) {
+                            notification = "Did Not Modify Rating";
+                        }
+                    });
+                },
+            ));
+            IconData bookmark_icon;
+            if (bookmarked) {
+                bookmark_icon = Icons.bookmark;
+            } else {
+                bookmark_icon = Icons.bookmark_border;
+            }
+            // Bookmark other people's notes
+            right.add(IconButton(
+                icon: Icon(bookmark_icon),
+                onPressed: () {
+                    setState(() {
+                        bookmarked = !bookmarked;
+                        if(bookmarked) {
+                            notification = "Bookmarked this note";
+                        } else {
+                            notification = "Removed bookmark";
+                        }
+                    });
+                }
+            ));
+        }
+
+        bottom.add(Container(color: Theme.of(context).primaryColor, child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [Row(children: left), Row(children: right)]
+        )));
 
         return Scaffold(
             appBar: AppBar(
                 title: Text("View Note"),
+                actions: <Widget>[
+                    PopupMenuButton<String>(
+                        onSelected: (String choice) {
+                            // Shared.choiceAction(choice, context);
+                        },
+                        itemBuilder: (BuildContext context) {
+                            return ["Note Info", "Copy Note...", "Delete Note"].map((String choice) {
+                                return PopupMenuItem<String>(
+                                    value: choice,
+                                    child: Text(choice),
+                                );
+                            }).toList();
+                        }
+                    ),
+                ],
             ),
             body: Container(
                 child: Image.network("http://images.freeimages.com/images/previews/bf6/note-paper-1155539.jpg"),
@@ -192,7 +255,7 @@ class MyDialogState extends State<MyDialog> {
                                 setState(() { rate(context, 0); });
                                 widget.state.notify("Removed Rating");
                                 widget.state.rating = new_rating;
-                                Navigator.of(context).pop();
+                                Navigator.of(context).pop(false);
                             },
                             child: Text("Remove Rating"),
                         ),
@@ -208,7 +271,7 @@ class MyDialogState extends State<MyDialog> {
                                     widget.state.notify("Updated Rating");
                                 }
                                 widget.state.rating = new_rating;
-                                Navigator.of(context).pop();
+                                Navigator.of(context).pop(false);
                             },
                             child: Text("Update Rating"),
                         ),
