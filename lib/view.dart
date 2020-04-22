@@ -109,6 +109,14 @@ class ViewNotePageState extends State<ViewNotePage> {
             children: [Row(children: left), Row(children: right)]
         )));
 
+        List<String> menu_options = [];
+
+        menu_options.add("Note Info");
+        menu_options.add("Copy Note...");
+        if (widget.mode == ViewNoteMode.Owned) {
+            menu_options.add("Delete Note");
+        }
+
         return Scaffold(
             appBar: AppBar(
                 title: Text("View Note"),
@@ -118,7 +126,7 @@ class ViewNotePageState extends State<ViewNotePage> {
                             // Shared.choiceAction(choice, context);
                         },
                         itemBuilder: (BuildContext context) {
-                            return ["Note Info", "Copy Note...", "Delete Note"].map((String choice) {
+                            return menu_options.map((String choice) {
                                 return PopupMenuItem<String>(
                                     value: choice,
                                     child: Text(choice),
