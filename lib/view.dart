@@ -30,11 +30,9 @@ class ViewNotePageState extends State<ViewNotePage> {
         child: Image.network("http://images.freeimages.com/images/previews/bf6/note-paper-1155539.jpg"),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
         child: Row(
 mainAxisAlignment: MainAxisAlignment.spaceBetween,
 children: [RaisedButton(
-          textColor: Colors.white,
           color: Theme.of(context).primaryColor,
           padding: EdgeInsets.all(8.0),
           child: Text(
@@ -50,7 +48,6 @@ children: [RaisedButton(
           },
         ),
         RaisedButton(
-            textColor: Colors.white,
             color: Theme.of(context).primaryColor,
             child: Icon(Icons.edit),
             onPressed: () {
@@ -173,7 +170,6 @@ class MyDialogState extends State<MyDialog> {
                     onPressed: () {
                         setState(() { rate(context, 0); });
                     },
-                    textColor: Theme.of(context).primaryColor,
                     child: Text("Remove My Rating"),
                 ), new FlatButton(
                     onPressed: () {
@@ -188,7 +184,6 @@ class MyDialogState extends State<MyDialog> {
                             //    background: Colors.black);
                         }
                     },
-                    textColor: Theme.of(context).primaryColor,
                     child: Text("Save Changes"),
                 ),
                 ]),

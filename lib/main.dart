@@ -9,7 +9,7 @@ void main() => runApp(MaterialApp(
     title: "Note Scout",
     theme: ThemeData(
         brightness: Brightness.light,
-        primaryColor: Color.fromARGB(0xFF, 0x00, 0x6b, 0xa1),
+        primaryColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
     ),
     home: ViewNotePage() // LoginScreen()
 ));
