@@ -19,6 +19,7 @@ class ViewNotePageState extends State<ViewNotePage> {
     @override
     void initState() {
         super.initState();
+        notification = null;
     }
 
     @override
@@ -27,10 +28,9 @@ class ViewNotePageState extends State<ViewNotePage> {
         if (notification != null) {
             bottom.add(Text(notification));
         }
-        bottom.add(Row(
+        bottom.add(Container(color: Theme.of(context).primaryColor, child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [RaisedButton(
-                color: Theme.of(context).primaryColor,
+            children: [FlatButton(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
                     "Rate This Note",
@@ -46,9 +46,8 @@ class ViewNotePageState extends State<ViewNotePage> {
                     );
                 },
             ),
-            RaisedButton(
-                color: Theme.of(context).primaryColor,
-                child: Icon(Icons.edit),
+            IconButton(
+                icon: Icon(Icons.edit),
                 onPressed: () {
                     notification = null;
                     // Switch to edit screen
@@ -60,20 +59,21 @@ class ViewNotePageState extends State<ViewNotePage> {
                     );
                 },
             ),
-        ]));
+        ])));
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("View Note"),
-      ),
-      body: Container(
-        child: Image.network("http://images.freeimages.com/images/previews/bf6/note-paper-1155539.jpg"),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Column(mainAxisSize: MainAxisSize.min, children: bottom),
-      ),
-    );
-  }
+        return Scaffold(
+            appBar: AppBar(
+                title: Text("View Note"),
+            ),
+            body: Container(
+                child: Image.network("http://images.freeimages.com/images/previews/bf6/note-paper-1155539.jpg"),
+            ),
+            bottomNavigationBar: BottomAppBar(
+                color: Color.fromARGB(0xFF, 0xDE, 0xE9, 0xA9),
+                child: Column(mainAxisSize: MainAxisSize.min, children: bottom),
+            ),
+        );
+    }
 
     void notify(String text) {
         setState(() { notification = text; });
@@ -210,7 +210,7 @@ class MyDialogState extends State<MyDialog> {
                                 widget.state.rating = new_rating;
                                 Navigator.of(context).pop();
                             },
-                            child: Text("Submit Rating"),
+                            child: Text("Update Rating"),
                         ),
                     ]
                 ),
