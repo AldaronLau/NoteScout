@@ -5,23 +5,63 @@ import 'package:flutter/src/widgets/icon_data.dart';
 import 'package:note_scout/edit.dart';
 
 class ViewNotePage extends StatefulWidget {
-  ViewNotePage({Key key}): super(key: key);
+    ViewNotePage({Key key}): super(key: key);
 
-  @override
-  ViewNotePageState createState() => new ViewNotePageState();
+    @override
+    ViewNotePageState createState() => new ViewNotePageState();
 }
 
 class ViewNotePageState extends State<ViewNotePage> {
     int rating = 0;
     double community_rating = 3.5;
+    String notification = null;
 
-  @override
-  void initState() {
-    super.initState();
-  }
+    @override
+    void initState() {
+        super.initState();
+    }
 
-  @override
-  Widget build(BuildContext context) {
+    @override
+    Widget build(BuildContext context) {
+        List<Widget> bottom = [];
+        if (notification != null) {
+            bottom.add(Text(notification));
+        }
+        bottom.add(Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [RaisedButton(
+                color: Theme.of(context).primaryColor,
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                    "Rate This Note",
+                    style: TextStyle(fontSize: 18.0),
+                ),
+                onPressed: () {
+                    setState(() { notification = null; });
+                    showDialog(
+                        context: context,
+                        builder: (_) {
+                            return MyDialog(state: this);
+                        },
+                    );
+                },
+            ),
+            RaisedButton(
+                color: Theme.of(context).primaryColor,
+                child: Icon(Icons.edit),
+                onPressed: () {
+                    notification = null;
+                    // Switch to edit screen
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                            return EditNotePage();
+                        }),
+                    );
+                },
+            ),
+        ]));
+
     return Scaffold(
       appBar: AppBar(
         title: Text("View Note"),
@@ -30,58 +70,36 @@ class ViewNotePageState extends State<ViewNotePage> {
         child: Image.network("http://images.freeimages.com/images/previews/bf6/note-paper-1155539.jpg"),
       ),
       bottomNavigationBar: BottomAppBar(
-        child: Row(
-mainAxisAlignment: MainAxisAlignment.spaceBetween,
-children: [RaisedButton(
-          color: Theme.of(context).primaryColor,
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            "Rate This Note",
-            style: TextStyle(fontSize: 18.0),
-          ),
-          onPressed: () {
-            /*...*/
-              showDialog(
-                context: context,
-                builder: (_) { print(this); return MyDialog(state: this); },
-              );
-          },
-        ),
-        RaisedButton(
-            color: Theme.of(context).primaryColor,
-            child: Icon(Icons.edit),
-            onPressed: () {
-              // Switch to edit screen
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => EditNotePage()),
-              );
-            },
-          )
-        ]),
+        child: Column(mainAxisSize: MainAxisSize.min, children: bottom),
       ),
     );
   }
+
+    void notify(String text) {
+        setState(() { notification = text; });
+    }
 }
 
 class MyDialog extends StatefulWidget {
-  ViewNotePageState state;
+    ViewNotePageState state;
 
-  MyDialog({Key key, this.state}): super(key: key);
+    MyDialog({Key key, this.state}): super(key: key);
 
-  @override
-  MyDialogState createState() { return new MyDialogState(); }
+    @override
+    MyDialogState createState() { return new MyDialogState(); }
 }
 
 class MyDialogState extends State<MyDialog> {
+    int new_rating;
+
     @override
     void initState(){
         super.initState();
-        print(this.widget.state);
+        new_rating = widget.state.rating;
     }
 
     IconData icon_for_rating(int star_num) {
-        if(widget.state.rating == 0) {
+        if(new_rating == 0) {
             double f = star_num - widget.state.community_rating;
             if (f >= 0.75) {
                 return Icons.star_border;
@@ -90,7 +108,7 @@ class MyDialogState extends State<MyDialog> {
             } else {
                 return Icons.star;
             }
-        } else if(widget.state.rating < star_num) {
+        } else if(new_rating < star_num) {
             return Icons.star_border;
         } else {
             return Icons.star;
@@ -98,7 +116,7 @@ class MyDialogState extends State<MyDialog> {
     }
 
     Color rating_color() {
-        if(widget.state.rating == 0) {
+        if(new_rating == 0) {
             return Color.fromARGB(0xFF, 0xCC, 0xCC, 0xCC);
         } else {
             return Color.fromARGB(0xFF, 0xBB, 0xBB, 0);
@@ -106,7 +124,7 @@ class MyDialogState extends State<MyDialog> {
     }
 
     void rate(BuildContext context, int new_rating) {
-        widget.state.rating = new_rating;
+        this.new_rating = new_rating;
     }
 
     @override
@@ -166,27 +184,36 @@ class MyDialogState extends State<MyDialog> {
                         ),
                     ]
                 ),
-                new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [FlatButton(
-                    onPressed: () {
-                        setState(() { rate(context, 0); });
-                    },
-                    child: Text("Remove My Rating"),
-                ), new FlatButton(
-                    onPressed: () {
-                        Navigator.of(context).pop();
-                        if(widget.state.rating == 0) {
-                            // showSimpleNotification(
-                            //    Text("Removed Your Rating"),
-                            //    background: Colors.black);
-                        } else {
-                            // showSimpleNotification(
-                            //    Text("Rating Submitted"),
-                            //    background: Colors.black);
-                        }
-                    },
-                    child: Text("Save Changes"),
+                new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                        FlatButton(
+                            onPressed: () {
+                                setState(() { rate(context, 0); });
+                                widget.state.notify("Removed Rating");
+                                widget.state.rating = new_rating;
+                                Navigator.of(context).pop();
+                            },
+                            child: Text("Remove Rating"),
+                        ),
+                        FlatButton(
+                            onPressed: () {
+                                if(new_rating == 0) {
+                                    widget.state.notify("Did Not Rate Note");
+                                } else if(new_rating == widget.state.rating) {
+                                    widget.state.notify("Kept Same Rating");
+                                } else if (widget.state.rating == 0) {
+                                    widget.state.notify("Added Rating");
+                                } else {
+                                    widget.state.notify("Updated Rating");
+                                }
+                                widget.state.rating = new_rating;
+                                Navigator.of(context).pop();
+                            },
+                            child: Text("Submit Rating"),
+                        ),
+                    ]
                 ),
-                ]),
             ],
         );
     }
