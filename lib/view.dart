@@ -13,8 +13,9 @@ enum ViewNoteMode {
 
 class ViewNotePage extends StatefulWidget {
     ViewNoteMode mode;
+    bool bookmarked;
 
-    ViewNotePage({Key key, this.mode}): super(key: key);
+    ViewNotePage({Key key, this.mode, this.bookmarked = false}): super(key: key);
 
     @override
     ViewNotePageState createState() => new ViewNotePageState();
@@ -32,6 +33,9 @@ class ViewNotePageState extends State<ViewNotePage> {
         super.initState();
         assert(widget.mode != null);
         notification = null;
+        if (widget.bookmarked) {
+            bookmarked = true;
+        }
     }
 
     @override

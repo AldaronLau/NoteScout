@@ -179,16 +179,19 @@ class FolderPageState extends State<FolderPage> {
         return GestureDetector(
             onTap: () {
                 ViewNoteMode mode;
+                bool bookmarked;
                 if (widget.mode == MyNotesMode.Owned) {
                     mode = ViewNoteMode.Owned;
+                    bookmarked = false;
                 } else {
                     mode = ViewNoteMode.Browsing;
+                    bookmarked = true;
                 }
 
                 Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
-                        return ViewNotePage(mode: mode);
+                        return ViewNotePage(mode: mode, bookmarked: bookmarked);
                     }),
                 );
             },

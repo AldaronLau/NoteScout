@@ -9,5 +9,5 @@ void main() => runApp(MaterialApp(
         brightness: Brightness.light,
         primaryColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
     ),
-    home: MyNotesPage(mode: MyNotesMode.Owned) // LoginScreen()
+    home: MyNotesPage(mode: MyNotesMode.Browsing) // LoginScreen()
 ));
