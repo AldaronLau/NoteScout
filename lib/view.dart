@@ -112,8 +112,10 @@ class ViewNotePageState extends State<ViewNotePage> {
         List<String> menu_options = [];
 
         menu_options.add("Note Info");
+        menu_options.add("Move Note...");
         menu_options.add("Copy Note...");
         if (widget.mode == ViewNoteMode.Owned) {
+            menu_options.add("Rename Note");
             menu_options.add("Delete Note");
         }
 
