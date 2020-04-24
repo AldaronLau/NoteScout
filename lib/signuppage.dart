@@ -72,7 +72,7 @@ class _SignupPageState extends State<SignupPage> {
                                 child: Text(
                                   'Create Account',
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Montserrat'),
                                 ),
@@ -86,14 +86,13 @@ class _SignupPageState extends State<SignupPage> {
                           borderRadius: BorderRadius.circular(20.0),
                           shadowColor: Colors.blueAccent,
                           color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
-                          elevation: 3.0,
                           child: GestureDetector(
                             onTap: () {},
                             child: Center(
                               child: Text(
                                 'Sign Up with Google',
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Montserrat'),
                               ),

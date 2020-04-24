@@ -28,7 +28,7 @@ class _searchNotes extends State<searchNotes> {
                       style: TextStyle(
                           fontSize: 45.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.lightBlue),
+                          color: Colors.black),
                     ),
                   ),
                 ],
@@ -40,7 +40,7 @@ class _searchNotes extends State<searchNotes> {
               child: Text(
                 'Filter By: ',
                 style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.grey,
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold),
               ),

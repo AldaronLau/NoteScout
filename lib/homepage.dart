@@ -131,9 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             height: 40.0,
                             child: Material(
                                 borderRadius: BorderRadius.circular(20.0),
-                                shadowColor: Colors.blueAccent,
                                 color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
-                                elevation: 7.0,
                                 child: Center(
                                     child: Text('Log In',
                                       style: TextStyle(
