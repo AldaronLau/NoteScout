@@ -129,7 +129,24 @@ class ViewNotePageState extends State<ViewNotePage> {
                 actions: <Widget>[
                     PopupMenuButton<String>(
                         onSelected: (String choice) {
-                            // Shared.choiceAction(choice, context);
+                            switch (choice) {
+                                case "Delete Note":
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) => DeleteNote(),
+                                    );
+                                    break;
+                                case "Rename Note":
+                                    break;
+                                case "Move Note...":
+                                    break;
+                                case "Copy Note...":
+                                    break;
+                                case "Note Info":
+                                    break;
+                                default:
+                                    break;
+                            }
                         },
                         itemBuilder: (BuildContext context) {
                             return menu_options.map((String choice) {
@@ -288,6 +305,42 @@ class MyDialogState extends State<MyDialog> {
                                 Navigator.of(context).pop(false);
                             },
                             child: Text("Update Rating"),
+                        ),
+                    ]
+                ),
+            ],
+        );
+    }
+}
+
+class DeleteNote extends StatefulWidget {
+    DeleteNote({Key key}): super(key: key);
+
+    @override
+    DeleteNoteState createState() { return new DeleteNoteState(); }
+}
+
+class DeleteNoteState extends State<DeleteNote> {
+    @override
+    Widget build(BuildContext context) {
+        return new AlertDialog(
+            title: const Text('Delete This Note?'),
+            actions: <Widget>[
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                        FlatButton(
+                            onPressed: () {
+                                Navigator.of(context).pop();
+                            },
+                            child: Text("Cancel"),
+                        ),
+                        FlatButton(
+                            onPressed: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                            },
+                            child: Text("Delete"),
                         ),
                     ]
                 ),
