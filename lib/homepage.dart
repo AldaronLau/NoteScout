@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: "Note Scout",
+      title: "NoteScout",
       theme: ThemeData(
           brightness: Brightness.light,
           primaryColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
@@ -53,24 +53,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Text('Welcome to',
                         style: TextStyle(
                             fontSize: 45.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue)),
+                            fontWeight: FontWeight.bold)),
                   ),
                   Container(
                     padding: EdgeInsets.fromLTRB(20.0, 175.0, 0.0, 0.0),
                     child: Text('NoteScout',
                         style: TextStyle(
                             fontSize: 45.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue)),
+                            fontWeight: FontWeight.bold)),
                   ),
                   Container(
                     padding: EdgeInsets.fromLTRB(240.0, 175.0, 0.0, 0.0),
                     child: Text('!',
                         style: TextStyle(
                             fontSize: 45.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue)),
+                            fontWeight: FontWeight.bold)),
                   )
                 ],
               ),
@@ -135,12 +132,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Material(
                                 borderRadius: BorderRadius.circular(20.0),
                                 shadowColor: Colors.blueAccent,
-                                color: Colors.blueAccent,
+                                color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
                                 elevation: 7.0,
                                 child: Center(
-                                    child: Text('LOGIN',
+                                    child: Text('Log In',
                                       style: TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Montserrat'),
                             ),
@@ -188,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'New to NoteScout ?',
+                  'New to NoteScout?',
                   style: TextStyle(fontFamily: 'Montserrat'),
                 ),
                 SizedBox(width: 5.0),
@@ -231,7 +228,7 @@ class GridLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     // creating empty app with background
     return Scaffold(
-        appBar: AppBar(title: Text("Note Scout"),),
+        appBar: AppBar(title: Text("NoteScout")),
         drawer: Drawer(child: SideMenu()),
         body: Container(
           decoration: BoxDecoration(

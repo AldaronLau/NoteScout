@@ -86,7 +86,7 @@ class sideMenu extends State<SideMenu> {
       child: DrawerHeader(child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-              Text("Note Scout", style: TextStyle(fontSize: 36.0, color: Colors.blue)),
+              Text("NoteScout", style: TextStyle(fontSize: 36.0, color: Colors.blue)),
               Icon(Icons.settings, color: Colors.blue),
           ],
       )),

@@ -1,4 +1,4 @@
-# note_scout
+# NoteScout
 
 A new Flutter project.
 

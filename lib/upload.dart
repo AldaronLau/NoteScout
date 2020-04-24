@@ -13,7 +13,7 @@ class upload extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Notescout"),
+          title: Text("NoteScout"),
           centerTitle: true,
           backgroundColor: Colors.red,
         ),

@@ -22,8 +22,7 @@ class _forgotPassword extends State<forgotPassword> {
                         'Forgot Password',
                         style: TextStyle(
                             fontSize: 45.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                     Container(
@@ -54,13 +53,13 @@ class _forgotPassword extends State<forgotPassword> {
                                 borderSide:
                                     BorderSide(color: Colors.lightBlue))),
                       ),
-                      SizedBox(height: 60.0),
+                      SizedBox(height: 120.0),
                       Container(
                           height: 40.0,
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
                             shadowColor: Colors.blueAccent,
-                            color: Colors.blueAccent,
+                            color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
                             elevation: 1.0,
                             child: GestureDetector(
                               onTap: () {},
@@ -68,14 +67,14 @@ class _forgotPassword extends State<forgotPassword> {
                                 child: Text(
                                   'Send Email',
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Montserrat'),
                                 ),
                               ),
                             ),
                           )),
-                      SizedBox(height: 59.0),
+                      SizedBox(height: 20.0),
                       Container(
                         height: 40.0,
                         color: Colors.transparent,

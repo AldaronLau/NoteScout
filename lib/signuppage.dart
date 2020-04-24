@@ -22,8 +22,7 @@ class _SignupPageState extends State<SignupPage> {
                         'Create Your Account',
                         style: TextStyle(
                             fontSize: 45.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -65,13 +64,13 @@ class _SignupPageState extends State<SignupPage> {
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
                             shadowColor: Colors.blueAccent,
-                            color: Colors.blueAccent,
+                            color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
                             elevation: 1.0,
                             child: GestureDetector(
                               onTap: () {},
                               child: Center(
                                 child: Text(
-                                  'Create the Account',
+                                  'Create Account',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -86,7 +85,7 @@ class _SignupPageState extends State<SignupPage> {
                         child: Material(
                           borderRadius: BorderRadius.circular(20.0),
                           shadowColor: Colors.blueAccent,
-                          color: Colors.blueAccent,
+                          color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
                           elevation: 3.0,
                           child: GestureDetector(
                             onTap: () {},
