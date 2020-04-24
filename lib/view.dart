@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/icon_data.dart';
 
 import 'package:note_scout/edit.dart';
+import 'package:note_scout/info.dart';
 import 'package:note_scout/selectfolder.dart';
 
 enum ViewNoteMode {
@@ -169,6 +170,12 @@ class ViewNotePageState extends State<ViewNotePage> {
                                     );
                                     break;
                                 case "Note Info":
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) {
+                                            return InfoPage();
+                                        }),
+                                    );
                                     break;
                                 default:
                                     break;
