@@ -137,6 +137,10 @@ class ViewNotePageState extends State<ViewNotePage> {
                                     );
                                     break;
                                 case "Rename Note":
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) => RenameNote(),
+                                    );
                                     break;
                                 case "Move Note...":
                                     break;
@@ -341,6 +345,56 @@ class DeleteNoteState extends State<DeleteNote> {
                                 Navigator.of(context).pop();
                             },
                             child: Text("Delete"),
+                        ),
+                    ]
+                ),
+            ],
+        );
+    }
+}
+
+class RenameNote extends StatefulWidget {
+    RenameNote({Key key}): super(key: key);
+
+    @override
+    RenameNoteState createState() { return new RenameNoteState(); }
+}
+
+class RenameNoteState extends State<RenameNote> {
+    TextEditingController text_controller;
+
+    @override
+    void initState() {
+        super.initState();
+        text_controller = TextEditingController(
+            text: "Untitled Note",
+        );
+    }
+
+    @override
+    Widget build(BuildContext context) {
+        return new AlertDialog(
+            title: const Text('Rename Note'),
+            content: TextField(controller: text_controller,
+                toolbarOptions: ToolbarOptions(
+                    copy: false, cut: false, paste: false, selectAll: false
+                ),
+                autofocus: true),
+            actions: <Widget>[
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                        FlatButton(
+                            onPressed: () {
+                                Navigator.of(context).pop();
+                            },
+                            child: Text("Cancel"),
+                        ),
+                        FlatButton(
+                            onPressed: () {
+                                Navigator.of(context).pop();
+                            },
+                            child: Text("Rename"),
                         ),
                     ]
                 ),
