@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/icon_data.dart';
 
 import 'package:note_scout/edit.dart';
+import 'package:note_scout/selectfolder.dart';
 
 enum ViewNoteMode {
     // For notes not owned by the user
@@ -118,6 +119,7 @@ class ViewNotePageState extends State<ViewNotePage> {
         menu_options.add("Note Info");
         menu_options.add("Move Note...");
         menu_options.add("Copy Note...");
+        menu_options.add("Tags...");
         if (widget.mode == ViewNoteMode.Owned) {
             menu_options.add("Rename Note");
             menu_options.add("Delete Note");
@@ -143,8 +145,28 @@ class ViewNotePageState extends State<ViewNotePage> {
                                     );
                                     break;
                                 case "Move Note...":
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) {
+                                            return SelectFolder(mode: FolderMode.Move);
+                                        }),
+                                    );
                                     break;
                                 case "Copy Note...":
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) {
+                                            return SelectFolder(mode: FolderMode.Copy);
+                                        }),
+                                    );
+                                    break;
+                                case "Tags...":
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) {
+                                            return SelectFolder(mode: FolderMode.Labels);
+                                        }),
+                                    );
                                     break;
                                 case "Note Info":
                                     break;
