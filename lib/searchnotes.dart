@@ -13,9 +13,7 @@ class _searchNotes extends State<searchNotes> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-        ),
+        appBar: AppBar(),
         resizeToAvoidBottomPadding: false,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

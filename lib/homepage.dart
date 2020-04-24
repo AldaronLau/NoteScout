@@ -5,13 +5,21 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:note_scout/forgotpassword.dart';
 import 'package:note_scout/sidemenu.dart';
 import 'package:note_scout/searchnotes.dart';
-
-import 'signuppage.dart';
+import 'package:note_scout/view.dart';
+import 'package:note_scout/edit.dart';
+import 'package:note_scout/upload.dart';
+import 'package:note_scout/mynotes.dart';
+import 'package:note_scout/signuppage.dart';
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      title: "Note Scout",
+      theme: ThemeData(
+          brightness: Brightness.light,
+          primaryColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+      ),
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
         '/signup': (BuildContext context) => new SignupPage()
@@ -115,34 +123,40 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     SizedBox(height: 40.0),
-                    Container(
-                      height: 40.0,
-                      child: Material(
-                        borderRadius: BorderRadius.circular(20.0),
-                        shadowColor: Colors.blueAccent,
-                        color: Colors.blueAccent,
-                        elevation: 7.0,
-                        child: GestureDetector(
+                    GestureDetector(
                           onTap: () {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute<void>(
                                     builder: (context) => GridLayout()));
                           },
-                          child: Center(
-                            child: Text(
-                              'LOGIN',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Montserrat'),
+                          child: Container(
+                            height: 40.0,
+                            child: Material(
+                                borderRadius: BorderRadius.circular(20.0),
+                                shadowColor: Colors.blueAccent,
+                                color: Colors.blueAccent,
+                                elevation: 7.0,
+                                child: Center(
+                                    child: Text('LOGIN',
+                                      style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Montserrat'),
                             ),
                           ),
                         ),
                       ),
                     ),
                     SizedBox(height: 20.0),
-                    Container(
+                    GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute<void>(
+                                    builder: (context) => GridLayout()));
+                          },
+                          child: Container(
                       height: 40.0,
                       color: Colors.transparent,
                       child: Container(
@@ -153,14 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 width: 1.0),
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(20.0)),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute<void>(
-                                    builder: (context) => GridLayout()));
-                          },
-                          child: Row(
+                        child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 SizedBox(width: 10.0),
@@ -224,7 +231,7 @@ class GridLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     // creating empty app with background
     return Scaffold(
-        appBar: AppBar(backgroundColor: Colors.blue,),
+        appBar: AppBar(title: Text("Note Scout"),),
         drawer: Drawer(child: SideMenu()),
         body: Container(
           decoration: BoxDecoration(
@@ -232,7 +239,7 @@ class GridLayout extends StatelessWidget {
                 image: AssetImage("assets/bg.png"), fit: BoxFit.cover),
           ),
           child: Container(
-            margin: const EdgeInsets.only(top: 79.0), //SHIFTING THE GRID UPWARDS!!!!!!
+            margin: const EdgeInsets.only(top: 16.0), //SHIFTING THE GRID UPWARDS!!!!!!
             child: GridView(
               physics: BouncingScrollPhysics(), // only for iOS
               gridDelegate:
@@ -250,11 +257,64 @@ class GridLayout extends StatelessWidget {
                         msg: title + " click",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
-                        backgroundColor: Colors.blue,
-                        textColor: Colors.white,
+                        backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                        textColor: Colors.black,
                         fontSize: 16.0);
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => searchNotes()));
+
+                    // Change page
+                    switch(title) {
+                        case "Search Notes":
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                    return searchNotes();
+                                }),
+                            );
+                            break;
+                        case "Create New Notes":
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                    return ViewNotePage(mode: ViewNoteMode.Owned);
+                                }),
+                            );
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                    return EditNotePage();
+                                }),
+                            );
+                            break;
+                        case "Upload":
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                    return upload();
+                                }),
+                            );
+                            break;
+                        case "My Notes":
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                    return MyNotesPage(mode: MyNotesMode.Owned);
+                                }),
+                            );
+                            break;
+                        case "Bookmarks":
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                    return MyNotesPage(mode: MyNotesMode.Browsing);
+                                }),
+                            );
+                            break;
+                        case "Get Help":
+                            print("TODO");
+                            break;
+                        default:
+                            break;
+                    }
                   },
                 );
               }).toList(),
@@ -317,13 +377,7 @@ class GridLayout extends StatelessWidget {
 class myApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: SideMenu(),
-    );
+    return SideMenu();
   }
 }
 

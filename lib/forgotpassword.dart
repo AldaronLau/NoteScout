@@ -75,28 +75,6 @@ class _forgotPassword extends State<forgotPassword> {
                               ),
                             ),
                           )),
-                      SizedBox(height: 20.0),
-                      Container(
-                        height: 40.0,
-                        child: Material(
-                          borderRadius: BorderRadius.circular(20.0),
-                          shadowColor: Colors.blueAccent,
-                          color: Colors.blueAccent,
-                          elevation: 3.0,
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Center(
-                              child: Text(
-                                'Sign In with Google',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Montserrat'),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                       SizedBox(height: 59.0),
                       Container(
                         height: 40.0,
