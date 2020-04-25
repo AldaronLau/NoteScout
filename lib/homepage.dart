@@ -305,7 +305,9 @@ class GridLayout extends StatelessWidget {
                             );
                             break;
                         case "Get Help":
-                            print("TODO");
+                            Navigator.push(context,
+                                new MaterialPageRoute(builder: (context) => new stopitGetHelp()
+                            ));
                             break;
                         default:
                             break;
