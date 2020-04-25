@@ -52,7 +52,9 @@ class sideMenu extends State<SideMenu> {
             ListTile(
                 title: const Text("Get Help", style: TextStyle(color: Colors.black, fontSize: 22.0)),
                 onTap: () {
-                    print("TODO");
+                    Navigator.push(context,
+                        new MaterialPageRoute(builder: (context) => new stopitGetHelp()
+                        ));
                 }
             ),
             ListTile(
