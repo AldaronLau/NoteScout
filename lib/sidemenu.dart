@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:note_scout/upload.dart';
+import 'package:note_scout/trash.dart';
 
 final Color backgroundColor = Color(0xFFFFFF);
 
@@ -66,7 +67,12 @@ class sideMenu extends State<SideMenu> {
             ListTile(
                 title: const Text("Trash", style: TextStyle(color: Colors.black, fontSize: 22.0)),
                 onTap: () {
-                    print("TODO");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return trash();
+                    }),
+                  );
                 }
             ),
             ListTile(
