@@ -70,7 +70,7 @@ class sideMenu extends State<SideMenu> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
-                      return trash();
+                      return TrashPage();
                     }),
                   );
                 }
