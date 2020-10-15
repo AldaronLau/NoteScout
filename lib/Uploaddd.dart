@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_scout/camera.dart';
-
+import 'package:note_scout/gallery.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
 //import 'package:phoneapp/Selector.dart';
@@ -88,10 +88,16 @@ class  UplUD extends StatelessWidget {
                   color: Colors.blue,
                   onPressed: () {
                     print('Camera');
-
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Homepage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return MyHomePage();
+                        }
+                        )
+                    );
+                    //Nav
                   }
-              )
+                  ),
           ),
 
           Align(
