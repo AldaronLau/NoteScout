@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:note_scout/view.dart';
 import 'package:note_scout/edit.dart';
-import 'package:note_scout/upload.dart';
+import 'package:note_scout/uploaddd.dart';
 
 enum MyNotesMode {
     // For notes not owned by the user

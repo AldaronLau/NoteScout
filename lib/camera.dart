@@ -1,56 +1,61 @@
-import 'dart:async';
-
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-// import 'package:camera/camera.dart';
+import 'package:image_picker/image_picker.dart';
 
 
-// List<CameraDescription> camera;
 
-Future<void> main() async{
-  // camera = await availableCameras();
-      runApp(CameraButton());
+void main() => runApp(CameraPart());
 
-}
-
-class CameraButton extends StatefulWidget{
+class CameraPart extends StatelessWidget {
   @override
-  _cameraState createState() => _cameraState();
-
-}
-
-class _cameraState extends State <CameraButton> {
-  // CameraController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    // controller = CameraController(camera[0], ResolutionPreset.medium);
-    /* controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    }); */
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Page(),
+    );
   }
+}
 
-  void dispose (){
-    // controller?.dispose();
-    super.dispose();
+
+class Page extends StatefulWidget{
+  @override
+  Ccamera createState() => Ccamera();
+}
+
+
+class Ccamera extends State<Page>{
+
+  File Iimage;
+  final selector = ImagePicker();
+
+  Future GetSome() async {
+    final PickedFile = await selector.getImage(source: ImageSource.camera);
+
+    setState(() {
+      if (PickedFile != null){
+        Iimage = File(PickedFile.path);
+      }else{
+        print("Nothing is there");
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    /*if (!controller.value.isInitialized) {
-      return
-        Container();
-    }*/
-    return Container(); /* AspectRatio(
-        aspectRatio:
-        // controller.value.aspectRatio,
-        child: Container()); // CameraPreview(controller))*/;
-
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("NoteScout Official Camera"),
+      ),
+      body: Center(
+        child: Iimage == null
+            ? Text("No image has been selected")
+            : Image.file(Iimage),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: GetSome,
+        tooltip: 'get an image already',
+        child: Icon(Icons.add_a_photo),
+      ),
+    );
   }
 }
-
-
