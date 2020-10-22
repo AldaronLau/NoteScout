@@ -99,13 +99,15 @@ class  UplUD extends StatelessWidget {
   }
 }
 
-
+/**
+ * Code for the Get Help page
+ */
 class stopitGetHelp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Help"),
+        title: Text(" Frequently Asked Questions"),
         centerTitle: true,
       ),
       body: Stack(
@@ -113,12 +115,16 @@ class stopitGetHelp extends StatelessWidget {
 
             Align(
               alignment: Alignment.center,
-              child: Text("Upload a note: Open the camera button and take a picture of the note, to upoad it to the screen. If you have the note aready in your canera roll sellect gallery \n\n"
-                  "View notes by going to the view menu and click view, to see all the notes you have \n\n"
-                  "Use the search bar to look at all notes that have been uploaded\n\n"
-                  "Press the bookmark to see any notes that you found interesting and have saved\n\n"
-                  "If you have any more questions contact us at\n\n"
-                  " Olderrm@augsburg.edu, Mengl@augsburg.edu, or at Lauj@augsburg.edu\n\n "
+              child: Text("Question: How do I create a note? \n\n"
+                  "Answer: At the Homepage, top right corner has an icon. Click on the icon to create your note \n\n"
+                  "Question: How do I view my notes?\n\n"
+                  "Answer: View notes by going to the view menu and click view, to see all the notes you have \n\n"
+                  "Question: How do I find my notes? \n\n"
+                  "Answer: Use the search bar to look at all notes that have been uploaded\n\n"
+                  "Question: How do I check my bookmarked notes? \n\n"
+                  "Answer: Press the bookmark to see any notes that you found interesting and have saved\n\n"
+                  "If you have any more questions, please contact our support team!\n\n"
+                  "Olderrm@augsburg.edu, Mengl@augsburg.edu, Leekk7@augsburg.edu or at Lauj@augsburg.edu\n\n "
               )
               ),
 
