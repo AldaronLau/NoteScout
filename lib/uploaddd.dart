@@ -144,7 +144,7 @@ class stopitGetHelp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Help"),
+        title: Text("Frequently Asked Questions"),
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
@@ -153,12 +153,16 @@ class stopitGetHelp extends StatelessWidget {
 
             Align(
                 alignment: Alignment.center,
-                child: Text("Upload a note: Open the camera button and take a picture of the note, to upoad it to the screen. If you have the note aready in your canera roll sellect gallery \n\n"
-                    "View notes by going to the view menu and click view, to see all the notes you have \n\n"
-                    "Use the search bar to look at all notes that have been uploaded\n\n"
-                    "Press the bookmark to see any notes that you found interesting and have saved\n\n"
+                child: Text("Questions: How do I upload a note? \n\n"
+                    "Answers: Upload a note: Open the camera button and take a picture of the note, to upoad it to the screen. If you have the note aready in your canera roll sellect gallery \n\n"
+                    "Question: How do I view my notes? \n\n"
+                    "Answer: view notes by going to the view menu and click view, to see all the notes you have \n\n"
+                    "Questions: How do I search my notes? \n\n"
+                    "Answer: Use the search bar to look at all notes that have been uploaded\n\n"
+                    "Question: How do I find my bookmarked notes? \n\n"
+                    "Answer: Press the bookmark to see any notes that you found interesting and have saved\n\n"
                     "If you have any more questions contact us at\n\n"
-                    " Olderrm@augsburg.edu, Mengl@augsburg.edu, or at Lauj@augsburg.edu\n\n "
+                    " Olderrm@augsburg.edu, Mengl@augsburg.edu, leek7@augsburg.edu or at Lauj@augsburg.edu\n\n "
                 )
             ),
 
