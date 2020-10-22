@@ -8,9 +8,9 @@ import 'package:note_scout/view.dart';
 
 class EditNotePage extends StatefulWidget {
     EditNotePage({Key key}): super(key: key);
-    //final Function(String) callback;
+   // final Function(String) callback;
 
-    //EditNotePage(this.callback);
+   // EditNotePage(this.callback);
 
     @override
     EditNotePageState createState() => EditNotePageState();
@@ -19,7 +19,7 @@ class EditNotePage extends StatefulWidget {
 
 
 class EditNotePageState extends State<EditNotePage> {
-    final controller = TextEditingController();
+    //final controller = TextEditingController();
     TextEditingController text_controller;
     bool selected;
     //TextEditingController text_controller = new TextEditingController();
@@ -33,6 +33,11 @@ class EditNotePageState extends State<EditNotePage> {
         selected = false;
     }
 
+    //void click(){
+     //   widget.callback(controller.text);
+      //  FocusScope.of(context).unfocus();
+      //  controller.clear();
+   // }
 
     @override
     Widget build(BuildContext context) {
@@ -115,7 +120,7 @@ class EditNotePageState extends State<EditNotePage> {
             ),
 
             body: TextField(
-                controller: this.controller,
+                controller: text_controller,
                 //This is to make sure the Area to type is the whole page
                 autofocus: true,
                 maxLines: null,
@@ -132,19 +137,28 @@ class EditNotePageState extends State<EditNotePage> {
             ),
             floatingActionButton: FloatingActionButton(
                 child: Text("Done"),
-                //color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+
                 onPressed: () {
-                    print(controller.text);
+
+                  var route = new MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          new ViewNotePage(mode: ViewNoteMode.Owned, value: text_controller.text),
+                  );
+                  Navigator.of(context).push(route);
+
+
+                  // click();
+                 //   return showDialog(context: context,
+                  //  builder: (context)
+                 //   {
+                //        return AlertDialog(
+                 //           content: Text(controller.text),
+                 //       );
+                //    },
+               // );
 
 
 
-
-
-                    Navigator.push(context,
-                        new MaterialPageRoute(builder: (context){
-                            return ViewNotePage(mode: ViewNoteMode.Owned);
-                        }
-                        ));
                 }
             ),
         );
