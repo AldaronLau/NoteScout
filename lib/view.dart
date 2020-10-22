@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/icon_data.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/src/widgets/icon_data.dart';
 import 'package:note_scout/edit.dart';
 import 'package:note_scout/info.dart';
 import 'package:note_scout/selectfolder.dart';
+
 
 enum ViewNoteMode {
     // For notes not owned by the user
@@ -16,8 +19,8 @@ enum ViewNoteMode {
 class ViewNotePage extends StatefulWidget {
     ViewNoteMode mode;
     bool bookmarked;
-
-    ViewNotePage({Key key, this.mode, this.bookmarked = false}): super(key: key);
+    final String value;
+    ViewNotePage({Key key, this.mode, this.bookmarked = false, this.value}): super(key: key);
 
     @override
     ViewNotePageState createState() => new ViewNotePageState();
@@ -192,9 +195,12 @@ class ViewNotePageState extends State<ViewNotePage> {
                     ),
                 ],
             ),
-            body: Container(
-                child: Image.network("http://images.freeimages.com/images/previews/bf6/note-paper-1155539.jpg"),
-            ),
+            body: //Container(
+                new Text("${widget.value}"),
+                //child: Image.network("http://images.freeimages.com/images/previews/bf6/note-paper-1155539.jpg"),
+                //Text(controller.text)
+
+            //),
             bottomNavigationBar: BottomAppBar(
                 color: Color.fromARGB(0xFF, 0xDE, 0xE9, 0xA9),
                 child: Column(mainAxisSize: MainAxisSize.min, children: bottom),

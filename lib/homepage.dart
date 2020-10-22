@@ -3,11 +3,12 @@ import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:note_scout/forgotpassword.dart';
+import 'package:note_scout/newNotes.dart';
 import 'package:note_scout/sidemenu.dart';
 import 'package:note_scout/searchnotes.dart';
 import 'package:note_scout/view.dart';
-import 'package:note_scout/edit.dart';
-import 'package:note_scout/upload.dart';
+import 'package:note_scout/newNotes.dart';
+import 'package:note_scout/uploaddd.dart';
 import 'package:note_scout/mynotes.dart';
 import 'package:note_scout/signuppage.dart';
 
@@ -276,7 +277,7 @@ class GridLayout extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) {
-                                    return EditNotePage();
+                                    return newnote();
                                 }),
                             );
                             break;
