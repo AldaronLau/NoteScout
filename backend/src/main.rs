@@ -28,13 +28,29 @@ async fn signup(mut request: tide::Request<State>) -> Result<String> {
     Ok(out)
 }
 
+/// Check if a user exists in the database.
+fn user_exists(state: &State, username: &str) -> Result<bool> {
+    let mut connection = state.pool.get()?;
+    let mut trans = connection.transaction()?;
+    let stmt = trans.prepare(&format!("SELECT USERNAME FROM USERS WHERE USERNAME='{}';", username))?;
+    let portal = trans.bind(&stmt, &[])?;
+    let mut rows = trans.query_portal_raw(&portal, 50)?;
+    Ok(rows.count()? == 1) // FIXME
+}
+
 /// Called when the user posts to /log_in
 ///
-/// - MALFORM: Post Request Is Malformed
-/// - SUCCESS: Log In Succeeded
-/// - INVALID: Invalid Username Password Combination
-/// - MISSING: User is Missing From Database
-/// - FAILURE: Failed to connect to databsse
+/// # Recv
+/// ```
+/// "USERNAME\nPASSWORD"
+/// ```
+///
+/// # Send
+/// - `"MALFORM"`: Post Request Is Malformed
+/// - `"SUCCESS"`: Log In Succeeded
+/// - `"INVALID"`: Invalid Username Password Combination
+/// - `"MISSING"`: User is Missing From Database
+/// - `"FAILURE"`: Failed to connect to databsse
 async fn log_in(mut request: tide::Request<State>) -> Result<String> {
     let post = request
         .body_string()
@@ -44,32 +60,12 @@ async fn log_in(mut request: tide::Request<State>) -> Result<String> {
     let mut lines = post.lines();
 
     // Test if username is in the database
-    // FIXME: Separate into it's own function
     let username = if let Some(username) = lines.next() {
-        if let Ok(mut connection) = request.state().pool.get() {
-            if let Ok(mut trans) = connection.transaction() {
-                if let Ok(stmt) = trans.prepare(&format!("SELECT ")) {
-                    if let Ok(portal) = trans.bind(&stmt, &[]) {
-                        if let Ok(mut rows) = trans.query_portal_raw(&portal, 50) {
-                            while let Some(row) = if let Ok(row) = rows.next() {
-                                row
-                            } else {
-                                return Ok("FAILURE".to_string());
-                            } {
-                                dbg!(row);
-                            }
-                            username
-                        } else {
-                            return Ok("FAILURE".to_string());
-                        }
-                    } else {
-                        return Ok("FAILURE".to_string());
-                    }
-                } else {
-                    return Ok("FAILURE".to_string());
-                }
+        if let Ok(exists) = user_exists(request.state(), username) {
+            if exists {
+                username
             } else {
-                return Ok("FAILURE".to_string());
+                return Ok("MISSING".to_string());
             }
         } else {
             return Ok("FAILURE".to_string());
