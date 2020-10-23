@@ -1,3 +1,11 @@
+use hmac_sha256::Hash;
+
+/// Calculate the sha256 to encrypt the password.
+pub(crate) fn sha<T: AsRef<[u8]>>(input: T) -> [u8; 32] {
+    Hash::hash(input.as_ref())
+}
+
+/*
 pub(crate) fn sha() {
     // First 32 bits of the fractional parts of the square roots of the first 8
     // primes 2..19):
@@ -85,4 +93,4 @@ Produce the final hash value (big-endian):
 digest := hash := h0 append h1 append h2 append h3 append h4 append h5 append h6 append h7
 
     */
-}
+}*/

@@ -9,6 +9,8 @@ use postgres::{
 use r2d2::{Pool};
 use r2d2_postgres::PostgresConnectionManager;
 
+mod sha256;
+
 /// State of the server backend.
 #[derive(Clone)]
 pub struct State {

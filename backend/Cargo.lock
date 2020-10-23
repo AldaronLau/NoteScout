@@ -262,9 +262,11 @@ name = "backend"
 version = "0.1.0"
 dependencies = [
  "async-std",
+ "hmac-sha256",
  "postgres",
  "r2d2",
  "r2d2_postgres",
+ "rand",
  "tide",
  "whoami",
 ]
@@ -780,6 +782,12 @@ dependencies = [
  "crypto-mac 0.9.1",
  "digest",
 ]
+
+[[package]]
+name = "hmac-sha256"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "219d368c625166098039429766941449ebf303da35d642eb339503a2bdad3423"
 
 [[package]]
 name = "http-client"
