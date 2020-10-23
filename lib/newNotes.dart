@@ -9,7 +9,7 @@ class newnote extends StatelessWidget {
         appBar: AppBar(
           title: Text("New Note"),
           centerTitle: true,
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.lightBlueAccent,
         ),
         body: Container(
           child: Image.network("http://images.freeimages.com/images/previews/bf6/note-paper-1155539.jpg"),
