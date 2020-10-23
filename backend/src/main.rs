@@ -1,6 +1,8 @@
 #![forbid(unsafe_code)]
 
-use postgres::{config::Config, fallible_iterator::FallibleIterator, Client, NoTls};
+use postgres::{
+    config::Config, fallible_iterator::FallibleIterator, Client, NoTls,
+};
 use r2d2::Pool;
 use r2d2_postgres::PostgresConnectionManager;
 use tide::Result;
@@ -15,27 +17,82 @@ pub struct State {
 
 /// Called when the user posts to /signup
 async fn signup(mut request: tide::Request<State>) -> Result<String> {
-    let post = request
+    let _post = request
         .body_string()
         .await
         .unwrap_or_else(|_| "".to_string());
-    let mut out = String::new();
+    let mut _out = String::new();
 
-    match post {
+    /*match _post {
         _ => {}
-    }
+    }*/
 
-    Ok(out)
+    Ok(_out)
 }
 
 /// Check if a user exists in the database.
-fn user_exists(state: &State, username: &str) -> Result<bool> {
-    let mut connection = state.pool.get()?;
-    let mut trans = connection.transaction()?;
-    let stmt = trans.prepare(&format!("SELECT USERNAME FROM USERS WHERE USERNAME='{}';", username))?;
-    let portal = trans.bind(&stmt, &[])?;
+fn user_exists(client: &mut Client, username: &str) -> Result<bool> {
+    // Build SQL Prepared Statement
+    let mut trans = client.transaction()?;
+    let stmt =
+        format!("SELECT USERNAME FROM USERS WHERE USERNAME='{}';", username);
+    let prep = trans.prepare(&stmt)?;
+
+    // Execute SQL Prepared Statement
+    let portal = trans.bind(&prep, &[])?;
+    let rows = trans.query_portal_raw(&portal, 50)?;
+
+    // Interpret results
+    Ok(rows.count()? == 1)
+}
+
+/// Retreive the user's salt from the database.
+fn user_salt(client: &mut Client, username: &str) -> Result<Option<i64>> {
+    // Build SQL Prepared Statement
+    let mut trans = client.transaction()?;
+    let stmt =
+        format!("SELECT PSWDSALT FROM USERS WHERE USERNAME='{}';", username);
+    let prep = trans.prepare(&stmt)?;
+
+    // Execute SQL Prepared Statement
+    let portal = trans.bind(&prep, &[])?;
     let mut rows = trans.query_portal_raw(&portal, 50)?;
-    Ok(rows.count()? == 1) // FIXME
+
+    // Interpret results
+    if let Some(salt) = rows.next()? {
+        if rows.next()?.is_some() {
+            return Ok(None);
+        }
+        Ok(Some(salt.get(0)))
+    } else {
+        Ok(None)
+    }
+}
+
+/// Retreive the user's salted password from the database.
+fn user_password(
+    client: &mut Client,
+    username: &str,
+) -> Result<Option<String>> {
+    // Build SQL Prepared Statement
+    let mut trans = client.transaction()?;
+    let stmt =
+        format!("SELECT PASSWORD FROM USERS WHERE USERNAME='{}';", username);
+    let prep = trans.prepare(&stmt)?;
+
+    // Execute SQL Prepared Statement
+    let portal = trans.bind(&prep, &[])?;
+    let mut rows = trans.query_portal_raw(&portal, 50)?;
+
+    // Interpret results
+    if let Some(salt) = rows.next()? {
+        if rows.next()?.is_some() {
+            return Ok(None);
+        }
+        Ok(Some(salt.get(0)))
+    } else {
+        Ok(None)
+    }
 }
 
 /// Called when the user posts to /log_in
@@ -52,16 +109,19 @@ fn user_exists(state: &State, username: &str) -> Result<bool> {
 /// - `"MISSING"`: User is Missing From Database
 /// - `"FAILURE"`: Failed to connect to databsse
 async fn log_in(mut request: tide::Request<State>) -> Result<String> {
+    // Get the POST request data
     let post = request
         .body_string()
         .await
         .unwrap_or_else(|_| "".to_string());
-    let mut out = String::new();
+    // Split the POST request data at newline characters.
     let mut lines = post.lines();
+    // Connect to the database
+    let mut connection = request.state().pool.get()?;
 
     // Test if username is in the database
     let username = if let Some(username) = lines.next() {
-        if let Ok(exists) = user_exists(request.state(), username) {
+        if let Ok(exists) = user_exists(&mut connection, username) {
             if exists {
                 username
             } else {
@@ -74,11 +134,34 @@ async fn log_in(mut request: tide::Request<State>) -> Result<String> {
         return Ok("MALFORM".to_string());
     };
 
-    match post {
-        _ => {}
+    // Test if password matches
+    let matches = if let Some(password) = lines.next() {
+        if let Ok(Some(salt)) = user_salt(&mut connection, username) {
+            let tobe_hashed = format!("{}{:X}", password, salt);
+            let hashed = sha256::sha(tobe_hashed);
+            if let Ok(Some(pswd)) = user_password(&mut connection, username) {
+                hashed == pswd.as_bytes()
+            } else {
+                return Ok("FAILURE".to_string());
+            }
+        } else {
+            return Ok("FAILURE".to_string());
+        }
+    } else {
+        return Ok("MALFORM".to_string());
+    };
+    // Fail to log in if passwords don't match
+    if !matches {
+        return Ok("INVALID".to_string());
     }
 
-    Ok(out)
+    // Make sure there's no extra lines
+    if lines.next().is_some() {
+        return Ok("MALFORM".to_string());
+    }
+
+    // Succeeded to log in.
+    Ok("SUCCESS".to_string())
 }
 
 // Called after intialization, runs the HTTP server.
