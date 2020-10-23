@@ -30,9 +30,7 @@ jobs:
       with:
         java-version: '12.x'
     - name: Flutter action
-      uses: subosito/flutter-action@v1
-      with:
-        flutter-version: '1.9.1+hotfix.6'
+      uses: subosito/flutter-action@v1.4.0
     - name: Install dependencies
       run: flutter pub get
 #    - name: Run tests
