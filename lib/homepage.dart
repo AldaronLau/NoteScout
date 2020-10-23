@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:note_scout/forgotpassword.dart';
 import 'package:note_scout/newNotes.dart';
@@ -136,10 +137,85 @@ class _MyHomePageState extends State<MyHomePage> {
                         var pswd = password_controller.text;
                         print(
                             "LOGIN Username: " + user + ", Password: " + pswd);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute<void>(
-                                builder: (context) => GridLayout()));
+                        
+                        /*try {
+                        http.post('http://10.0.0.90:8000/log_in', body: user + "\n" + pswd)
+                            .then((resp) {
+                                print("Body: \"" + resp.body + "\"");
+                                switch(resp.body) {
+                                    case "MALFORM": // Post Request Is Malformed
+                                        Fluttertoast.showToast(
+                                            msg: "This app has a bug!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                                        break;
+                                    case "SUCCESS": // Log In Succeeded
+                                        Fluttertoast.showToast(
+                                            msg: "Logged in successfully!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                                        break;
+                                    case "INVALID": // Invalid Username Password Combination
+                                        Fluttertoast.showToast(
+                                            msg: "Your password is wrong!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                                        break;
+                                    case "MISSING": // User is Missing From Database
+                                        Fluttertoast.showToast(
+                                            msg: "User " + user + " doesn't exist!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                                        break;
+                                    case "FAILURE": // Failed to connect to database":
+                                        Fluttertoast.showToast(
+                                            msg: "The server has a bug!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                                        break;
+                                    default:
+                                        Fluttertoast.showToast(
+                                            msg: "Whoops!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                                        break;
+                                }
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                        builder: (context) => GridLayout()));
+                            });
+                          } catch(e) {*/
+                            Fluttertoast.showToast(
+                                            msg: "Offline!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                            Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                        builder: (context) => GridLayout()));
+                          /*}*/
                       },
                       child: Container(
                         height: 40.0,

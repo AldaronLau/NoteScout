@@ -107,7 +107,7 @@ fn user_password(
 /// - `"SUCCESS"`: Log In Succeeded
 /// - `"INVALID"`: Invalid Username Password Combination
 /// - `"MISSING"`: User is Missing From Database
-/// - `"FAILURE"`: Failed to connect to databsse
+/// - `"FAILURE"`: Failed to connect to database
 async fn log_in(mut request: tide::Request<State>) -> Result<String> {
     // Get the POST request data
     let post = request
@@ -175,7 +175,7 @@ async fn start(state: State) -> Result<()> {
     app.at("/log_in").post(log_in);
 
     // Start serving HTTP server
-    app.listen("192.168.0.112:8088" /*"10.0.0.90:8088"*/)
+    app.listen(/*"192.168.0.112:8088"*/ "10.0.0.90:8000")
         .await?;
     Ok(())
 }
