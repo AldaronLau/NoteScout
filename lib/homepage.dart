@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:note_scout/forgotpassword.dart';
 import 'package:note_scout/newNotes.dart';
@@ -18,8 +19,8 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: "NoteScout",
       theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+        brightness: Brightness.light,
+        primaryColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
       ),
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
@@ -39,6 +40,16 @@ class MyHomePage extends StatefulWidget {
  * log in/welcome page here
  */
 class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController username_controller;
+  TextEditingController password_controller;
+
+  @override
+  void initState() {
+    super.initState();
+    username_controller = TextEditingController();
+    password_controller = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -53,22 +64,19 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
                     child: Text('Welcome to',
                         style: TextStyle(
-                            fontSize: 45.0,
-                            fontWeight: FontWeight.bold)),
+                            fontSize: 45.0, fontWeight: FontWeight.bold)),
                   ),
                   Container(
                     padding: EdgeInsets.fromLTRB(20.0, 175.0, 0.0, 0.0),
                     child: Text('NoteScout',
                         style: TextStyle(
-                            fontSize: 45.0,
-                            fontWeight: FontWeight.bold)),
+                            fontSize: 45.0, fontWeight: FontWeight.bold)),
                   ),
                   Container(
                     padding: EdgeInsets.fromLTRB(240.0, 175.0, 0.0, 0.0),
                     child: Text('!',
                         style: TextStyle(
-                            fontSize: 45.0,
-                            fontWeight: FontWeight.bold)),
+                            fontSize: 45.0, fontWeight: FontWeight.bold)),
                   )
                 ],
               ),
@@ -78,8 +86,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   children: <Widget>[
                     TextField(
+                      controller: username_controller,
                       decoration: InputDecoration(
-                          labelText: 'EMAIL',
+                          labelText: 'USERNAME',
                           labelStyle: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,
@@ -89,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     SizedBox(height: 20.0),
                     TextField(
+                      controller: password_controller,
                       decoration: InputDecoration(
                           labelText: 'PASSWORD',
                           labelStyle: TextStyle(
@@ -122,23 +132,103 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     SizedBox(height: 40.0),
                     GestureDetector(
-                          onTap: () {
+                      onTap: () {
+                        var user = username_controller.text;
+                        var pswd = password_controller.text;
+                        print(
+                            "LOGIN Username: " + user + ", Password: " + pswd);
+                        
+                        /*try {
+                        http.post('http://10.0.0.90:8000/log_in', body: user + "\n" + pswd)
+                            .then((resp) {
+                                print("Body: \"" + resp.body + "\"");
+                                switch(resp.body) {
+                                    case "MALFORM": // Post Request Is Malformed
+                                        Fluttertoast.showToast(
+                                            msg: "This app has a bug!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                                        break;
+                                    case "SUCCESS": // Log In Succeeded
+                                        Fluttertoast.showToast(
+                                            msg: "Logged in successfully!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                                        break;
+                                    case "INVALID": // Invalid Username Password Combination
+                                        Fluttertoast.showToast(
+                                            msg: "Your password is wrong!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                                        break;
+                                    case "MISSING": // User is Missing From Database
+                                        Fluttertoast.showToast(
+                                            msg: "User " + user + " doesn't exist!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                                        break;
+                                    case "FAILURE": // Failed to connect to database":
+                                        Fluttertoast.showToast(
+                                            msg: "The server has a bug!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                                        break;
+                                    default:
+                                        Fluttertoast.showToast(
+                                            msg: "Whoops!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
+                                        break;
+                                }
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                        builder: (context) => GridLayout()));
+                            });
+                          } catch(e) {*/
+                            Fluttertoast.showToast(
+                                            msg: "Offline!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                            textColor: Colors.black,
+                                            fontSize: 16.0);
                             Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute<void>(
-                                    builder: (context) => GridLayout()));
-                          },
-                          child: Container(
-                            height: 40.0,
-                            child: Material(
-                                borderRadius: BorderRadius.circular(20.0),
-                                color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
-                                child: Center(
-                                    child: Text('Log In',
-                                      style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Montserrat'),
+                                    context,
+                                    MaterialPageRoute<void>(
+                                        builder: (context) => GridLayout()));
+                          /*}*/
+                      },
+                      child: Container(
+                        height: 40.0,
+                        child: Material(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                          child: Center(
+                            child: Text(
+                              'Log In',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Montserrat'),
                             ),
                           ),
                         ),
@@ -146,24 +236,24 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     SizedBox(height: 20.0),
                     GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute<void>(
-                                    builder: (context) => GridLayout()));
-                          },
-                          child: Container(
-                      height: 40.0,
-                      color: Colors.transparent,
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute<void>(
+                                builder: (context) => GridLayout()));
+                      },
                       child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Colors.black,
-                                style: BorderStyle.solid,
-                                width: 1.0),
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(20.0)),
-                        child: Row(
+                        height: 40.0,
+                        color: Colors.transparent,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.black,
+                                  style: BorderStyle.solid,
+                                  width: 1.0),
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(20.0)),
+                          child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 SizedBox(width: 10.0),
@@ -235,11 +325,12 @@ class GridLayout extends StatelessWidget {
                 image: AssetImage("assets/bg.png"), fit: BoxFit.cover),
           ),
           child: Container(
-            margin: const EdgeInsets.only(top: 16.0), //SHIFTING THE GRID UPWARDS!!!!!!
+            margin: const EdgeInsets.only(
+                top: 16.0), //SHIFTING THE GRID UPWARDS!!!!!!
             child: GridView(
               physics: BouncingScrollPhysics(), // only for iOS
               gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
               children: events.map((title) {
                 //loop all item in events list
                 return GestureDetector(
@@ -258,60 +349,61 @@ class GridLayout extends StatelessWidget {
                         fontSize: 16.0);
 
                     // Change page
-                    switch(title) {
-                        case "Search Notes":
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                    return searchNotes();
-                                }),
-                            );
-                            break;
-                        case "Create New Notes":
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                    return ViewNotePage(mode: ViewNoteMode.Owned);
-                                }),
-                            );
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                    return newnote();
-                                }),
-                            );
-                            break;
-                        case "Upload":
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                    return upload();
-                                }),
-                            );
-                            break;
-                        case "My Notes":
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                    return MyNotesPage(mode: MyNotesMode.Owned);
-                                }),
-                            );
-                            break;
-                        case "Bookmarks":
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                    return MyNotesPage(mode: MyNotesMode.Browsing);
-                                }),
-                            );
-                            break;
-                        case "Get Help":
-                            Navigator.push(context,
-                                new MaterialPageRoute(builder: (context) => new stopitGetHelp()
-                            ));
-                            break;
-                        default:
-                            break;
+                    switch (title) {
+                      case "Search Notes":
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return searchNotes();
+                          }),
+                        );
+                        break;
+                      case "Create New Notes":
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return ViewNotePage(mode: ViewNoteMode.Owned);
+                          }),
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return newnote();
+                          }),
+                        );
+                        break;
+                      case "Upload":
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return upload();
+                          }),
+                        );
+                        break;
+                      case "My Notes":
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return MyNotesPage(mode: MyNotesMode.Owned);
+                          }),
+                        );
+                        break;
+                      case "Bookmarks":
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return MyNotesPage(mode: MyNotesMode.Browsing);
+                          }),
+                        );
+                        break;
+                      case "Get Help":
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => new stopitGetHelp()));
+                        break;
+                      default:
+                        break;
                     }
                   },
                 );
@@ -386,14 +478,14 @@ Container myChips(String chipName) {
   return Container(
     child: RaisedButton(
         color: Colors.transparent,
-        child: Text(chipName,
-          style:TextStyle(
-            //color: new Color(0xff6200ee),
-          ),),
+        child: Text(
+          chipName,
+          style: TextStyle(
+              //color: new Color(0xff6200ee),
+              ),
+        ),
         onPressed: () {},
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-                30.0))
-    ),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
   );
 }
