@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'dart:async';
 
 import 'package:note_scout/forgotpassword.dart';
 import 'package:note_scout/newNotes.dart';
@@ -145,6 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           await http
                               .post(SERVER + "/log_in",
                                   body: user + "\n" + pswd)
+                              .timeout(const Duration(seconds: 3))
                               .then((resp) {
                             print("Body: \"" + resp.body + "\"");
                             switch (resp.body) {
@@ -214,6 +216,19 @@ class _MyHomePageState extends State<MyHomePage> {
                                 MaterialPageRoute<void>(
                                     builder: (context) => GridLayout()));
                           });
+                        } on TimeoutException catch (_) {
+                          Fluttertoast.showToast(
+                              msg: "Timed Out!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              backgroundColor:
+                                  Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                              textColor: Colors.black,
+                              fontSize: 16.0);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute<void>(
+                                  builder: (context) => GridLayout()));
                         } catch (e) {
                           print(e);
                           Fluttertoast.showToast(
