@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'dart:async';
+
 import 'package:note_scout/permission.dart';
 import 'package:note_scout/forgotpassword.dart';
 import 'package:note_scout/newNotes.dart';
@@ -23,12 +25,10 @@ class MyApp extends StatelessWidget {
         primaryColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
       ),
       debugShowCheckedModeBanner: false,
-
       routes: <String, WidgetBuilder>{
         '/signup': (BuildContext context) => new SignupPage()
       },
       home: new MyHomePage(),
-
     );
   }
 }

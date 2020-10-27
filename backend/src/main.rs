@@ -1,5 +1,7 @@
 #![forbid(unsafe_code)]
 
+use std::fmt::Write;
+
 use postgres::{
     config::Config, fallible_iterator::FallibleIterator, Client, NoTls,
 };
@@ -139,8 +141,15 @@ async fn log_in(mut request: tide::Request<State>) -> Result<String> {
         if let Ok(Some(salt)) = user_salt(&mut connection, username) {
             let tobe_hashed = format!("{}{:X}", password, salt);
             let hashed = sha256::sha(tobe_hashed);
+            let hashed = {
+                let mut out = String::new();
+                for byte in hashed.iter() {
+                    write!(&mut out, "{:X}", byte).unwrap();
+                }
+                out
+            };
             if let Ok(Some(pswd)) = user_password(&mut connection, username) {
-                hashed == pswd.as_bytes()
+                hashed == pswd
             } else {
                 return Ok("FAILURE".to_string());
             }

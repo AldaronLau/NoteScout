@@ -1,0 +1,15 @@
+[Unit]
+Description=NoteScout
+
+[Service]
+Description=NoteScout
+After=network.target
+StartLimitIntervalSec=0[Service]
+Restart=always
+RestartSec=1
+User=notescout
+Group=notescout
+ExecStart=/bin/sh /home/notescout/start.sh
+
+[Install]
+WantedBy=multi-user.target
