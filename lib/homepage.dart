@@ -13,6 +13,9 @@ import 'package:note_scout/uploaddd.dart';
 import 'package:note_scout/mynotes.dart';
 import 'package:note_scout/signuppage.dart';
 
+const SERVER = "http://73.94.232.74:8000";
+// const SERVER = "http://10.0.0.90:8000";
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -140,14 +143,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
                         try {
                           await http
-                              .post('http://10.0.0.90:8000/log_in',
+                              .post(SERVER + "/log_in",
                                   body: user + "\n" + pswd)
                               .then((resp) {
                             print("Body: \"" + resp.body + "\"");
                             switch (resp.body) {
                               case "MALFORM": // Post Request Is Malformed
                                 Fluttertoast.showToast(
-                                    msg: "This app has a bug!",
+                                    msg: "You must provide a password!",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.CENTER,
                                     backgroundColor:
