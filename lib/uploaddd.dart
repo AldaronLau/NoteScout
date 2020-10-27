@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_scout/camera.dart';
+import 'package:note_scout/converter.dart';
 import 'package:note_scout/gallery.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -99,6 +100,29 @@ class  UplUD extends StatelessWidget {
                   }
                   ),
           ),
+
+
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: IconButton(
+                padding: EdgeInsets.symmetric(horizontal: 65, vertical: 100),
+                icon: Icon(Icons.insert_drive_file),
+                iconSize: 85,
+                color: Colors.blue,
+                onPressed: () {
+                  print('Camera');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return Turner();
+                      }
+                      )
+                  );
+                  //Nav
+                }
+            ),
+          ),
+
 
           Align(
               alignment: Alignment.topRight,
