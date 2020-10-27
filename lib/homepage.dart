@@ -6,11 +6,10 @@ import 'dart:async';
 
 import 'package:note_scout/permission.dart';
 import 'package:note_scout/forgotpassword.dart';
-import 'package:note_scout/newNotes.dart';
 import 'package:note_scout/sidemenu.dart';
 import 'package:note_scout/searchnotes.dart';
 import 'package:note_scout/view.dart';
-import 'package:note_scout/newNotes.dart';
+import 'package:note_scout/edit.dart';
 import 'package:note_scout/uploaddd.dart';
 import 'package:note_scout/mynotes.dart';
 import 'package:note_scout/signuppage.dart';
@@ -371,16 +370,16 @@ class GridLayout extends StatelessWidget {
                         );
                         break;
                       case "Create New Notes":
+                        //Navigator.push(
+                        //  context,
+                        //  MaterialPageRoute(builder: (context) {
+                         //   return ViewNotePage(mode: ViewNoteMode.Owned);
+                         // }),
+                        //);
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) {
-                            return ViewNotePage(mode: ViewNoteMode.Owned);
-                          }),
-                        );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) {
-                            return newnote();
+                            return EditNotePage();
                           }),
                         );
                         break;

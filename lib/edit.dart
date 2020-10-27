@@ -8,9 +8,6 @@ import 'package:note_scout/view.dart';
 
 class EditNotePage extends StatefulWidget {
     EditNotePage({Key key}): super(key: key);
-   // final Function(String) callback;
-
-   // EditNotePage(this.callback);
 
     @override
     EditNotePageState createState() => EditNotePageState();
@@ -19,25 +16,20 @@ class EditNotePage extends StatefulWidget {
 
 
 class EditNotePageState extends State<EditNotePage> {
-    //final controller = TextEditingController();
+
     TextEditingController text_controller;
     bool selected;
-    //TextEditingController text_controller = new TextEditingController();
+
 
     @override
     void initState() {
         super.initState();
         text_controller = TextEditingController(
-            //text: "Placeholder note text",
+
         );
         selected = false;
     }
 
-    //void click(){
-     //   widget.callback(controller.text);
-      //  FocusScope.of(context).unfocus();
-      //  controller.clear();
-   // }
 
     @override
     Widget build(BuildContext context) {
@@ -145,19 +137,6 @@ class EditNotePageState extends State<EditNotePage> {
                           new ViewNotePage(mode: ViewNoteMode.Owned, value: text_controller.text),
                   );
                   Navigator.of(context).push(route);
-
-
-                  // click();
-                 //   return showDialog(context: context,
-                  //  builder: (context)
-                 //   {
-                //        return AlertDialog(
-                 //           content: Text(controller.text),
-                 //       );
-                //    },
-               // );
-
-
 
                 }
             ),
