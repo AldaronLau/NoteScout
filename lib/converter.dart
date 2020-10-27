@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:note_scout/homepage.dart';
 import 'dart:async';
-import 'package:note_scout/pdf_text.dart';
+///import 'package:note_scout/pdf_text.dart';
 
 
 void Main() => runApp(Turner());
@@ -17,7 +17,7 @@ class Turner extends StatefulWidget {
 
 class TurnerSS extends State <Turner> {
 
-  PDFDoc _pdfDoc;
+  String _pdfDoc;
   String _words = "";
 
   bool _enable = true;
@@ -30,7 +30,7 @@ class TurnerSS extends State <Turner> {
 
   Future _PickaText() async {
     File file = await FilePicker.getFile();
-    _pdfDoc = await PDFDoc.fromFile(file);
+    //_pdfDoc = await PDFDoc.fromFile(file);
     setState(() {
 
     });
@@ -44,14 +44,14 @@ class TurnerSS extends State <Turner> {
     setState(() {
       _enable = false;
     });
-    String text = await _pdfDoc.text;
+    ///String text = await _pdfDoc.text;
 
     setState(() {
-      _words = text;
+  ///    _words = text;
       _enable = true;
     });
   }
-
+///Construct the app window which the
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(

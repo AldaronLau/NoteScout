@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
 //import 'package:phoneapp/Selector.dart';
 //import 'Camera.dart';
+import 'package:note_scout/permission.dart';
 
 
 
@@ -33,6 +34,9 @@ class upload extends StatelessWidget {
         ),
 
 
+
+
+
         floatingActionButton: RaisedButton(
             child: Text("Upload"),
             color: Colors.blue,
@@ -47,6 +51,8 @@ class upload extends StatelessWidget {
     );
   }
 }
+
+
 
 class  UplUD extends StatelessWidget {
   @override
