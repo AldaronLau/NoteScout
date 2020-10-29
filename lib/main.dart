@@ -4,7 +4,7 @@ import 'package:note_scout/permission.dart';
 
 void main() => runApp(MyApp());
 
-
+///Pops up an acess button. Supposedly it should bring a popup asking for permission
 class Help extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

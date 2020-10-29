@@ -85,7 +85,7 @@ class  UplUD extends StatelessWidget {
                   }
               )
           ),
-
+///Opens Converter
           Align(
               alignment: Alignment.centerRight,
               child: IconButton(
@@ -107,7 +107,7 @@ class  UplUD extends StatelessWidget {
                   ),
           ),
 
-
+///OPens Gallery
           Align(
             alignment: Alignment.bottomCenter,
             child: IconButton(
@@ -129,7 +129,7 @@ class  UplUD extends StatelessWidget {
             ),
           ),
 
-
+          ///opens tips page
           Align(
               alignment: Alignment.topRight,
               child: RaisedButton(
@@ -144,7 +144,7 @@ class  UplUD extends StatelessWidget {
               )
 
           ),
-
+///opens temp settings page
           Align( //Creates a new widget in the left part of the screen
               alignment: Alignment.topLeft,
               child: RaisedButton( //Its a button that says back
@@ -168,7 +168,7 @@ class  UplUD extends StatelessWidget {
   }
 }
 
-
+///FQA answers page
 class stopitGetHelp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -202,7 +202,7 @@ class stopitGetHelp extends StatelessWidget {
     );
   }
 }
-
+///Temporary setting page
 class Settinf extends StatelessWidget {// Creates an page
   @override
   Widget build(BuildContext context) {

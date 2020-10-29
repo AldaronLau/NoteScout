@@ -24,10 +24,11 @@ class Page extends StatefulWidget{
 
 
 class Ccamera extends State<Page>{
-
+///Defines an image and how its selected
   File Iimage;
   final selector = ImagePicker();
 
+  ///Chooses image from phone capture
   Future GetSome() async {
     final PickedFile = await selector.getImage(source: ImageSource.camera);
 
@@ -40,6 +41,7 @@ class Ccamera extends State<Page>{
     });
   }
 
+  ///Builds widget that opens the camera
   @override
   Widget build(BuildContext context) {
     return Scaffold(

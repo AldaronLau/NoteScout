@@ -13,7 +13,7 @@ class _permissionstate extends State<permission> {
     super.initState();
     getPermission();
   }
-
+///Groups together what should be acessed
   void getPermission() async {
     permissions = await PermissionHandler().requestPermissions([
       PermissionGroup.photos,
@@ -23,6 +23,7 @@ class _permissionstate extends State<permission> {
 
 
   }
+  ///Builds a widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
