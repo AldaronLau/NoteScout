@@ -12,7 +12,7 @@ import 'package:note_scout/view.dart';
 import 'package:note_scout/edit.dart';
 import 'package:note_scout/uploaddd.dart';
 import 'package:note_scout/mynotes.dart';
-import 'package:note_scout/signuppage.dart';
+import 'package:note_scout/signup.dart';
 
 class MyApp extends StatelessWidget {
   @override
