@@ -1,6 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:note_scout/main.dart';
 
 void main() => runApp(Gallery());
 
@@ -34,7 +35,8 @@ class _GalleryState extends State<Gallery> {
       floatingActionButton: new FloatingActionButton(
         onPressed: getImage,
         tooltip: 'Pick Image',
-        child: new Icon(Icons.add_a_photo),
+        child: new Icon(Icons.add_a_photo, color: Colors.black),
+        backgroundColor: APPCOLOR,
       ),
     );
   }

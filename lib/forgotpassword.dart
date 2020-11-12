@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:note_scout/main.dart';
+
 class forgotPassword extends StatefulWidget {
   @override
   _forgotPassword createState() => _forgotPassword();
@@ -45,8 +47,8 @@ class _forgotPassword extends State<forgotPassword> {
                       height: 40.0,
                       child: Material(
                         borderRadius: BorderRadius.circular(20.0),
-                        shadowColor: Colors.blueAccent,
-                        color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                        shadowColor: APPCOLOR,
+                        color: APPCOLOR,
                         elevation: 1.0,
                         child: GestureDetector(
                           onTap: () {},

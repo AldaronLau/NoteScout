@@ -8,6 +8,7 @@ import 'package:note_scout/faq.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:note_scout/permission.dart';
 import 'package:note_scout/settings.dart';
+import 'package:note_scout/main.dart';
 
 void main() => runApp(MaterialApp(home: upload()));
 
@@ -18,7 +19,7 @@ class upload extends StatelessWidget {
         appBar: AppBar(
           title: Text("Notescout"),
           centerTitle: true,
-          backgroundColor: Colors.lightBlueAccent, //blue color header
+          backgroundColor: APPCOLOR,
         ),
         body: Container(
           padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
@@ -27,7 +28,7 @@ class upload extends StatelessWidget {
         ),
         floatingActionButton: RaisedButton(
             child: Text("Upload"),
-            color: Colors.blue,
+            color: APPCOLOR,
             onPressed: () {
               print('Uploading');
 
@@ -44,17 +45,16 @@ class UplUD extends StatelessWidget {
       appBar: AppBar(
         title: Text("Choose and Upload option"),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: APPCOLOR,
       ),
       body: Stack(
         children: <Widget>[
           Align(
               alignment: Alignment.centerLeft,
               child: IconButton(
-                  padding: EdgeInsets.symmetric(horizontal: 65, vertical: 100),
                   icon: Icon(Icons.camera),
                   iconSize: 85,
-                  color: Colors.blue,
+                  color: APPCOLOR,
                   onPressed: () {
                     print('Camera');
                     Navigator.push(
@@ -70,10 +70,9 @@ class UplUD extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: IconButton(
-                padding: EdgeInsets.symmetric(horizontal: 65, vertical: 100),
                 icon: Icon(Icons.insert_drive_file),
                 iconSize: 85,
-                color: Colors.blue,
+                color: APPCOLOR,
                 onPressed: () {
                   print('Camera');
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -87,10 +86,9 @@ class UplUD extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: IconButton(
-                padding: EdgeInsets.symmetric(horizontal: 65, vertical: 100),
                 icon: Icon(Icons.insert_drive_file),
                 iconSize: 85,
-                color: Colors.blue,
+                color: APPCOLOR,
                 onPressed: () {
                   print('Camera');
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -105,7 +103,7 @@ class UplUD extends StatelessWidget {
               alignment: Alignment.topRight,
               child: RaisedButton(
                   child: Text("help"),
-                  color: Colors.blue,
+                  color: APPCOLOR,
                   onPressed: () {
                     print('going back');
                     Navigator.push(context,
@@ -119,7 +117,7 @@ class UplUD extends StatelessWidget {
               child: RaisedButton(
                   //Its a button that says back
                   child: Text("Settings"),
-                  color: Colors.blue,
+                  color: APPCOLOR,
                   onPressed: () {
                     print('going back');
                     Navigator.push(

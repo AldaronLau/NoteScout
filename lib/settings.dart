@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
+import 'package:note_scout/main.dart';
+
 /// Settings page
 class Settings extends StatelessWidget {
   // Creates an page
@@ -10,7 +12,7 @@ class Settings extends StatelessWidget {
       appBar: AppBar(
         title: Text("Setting"), // Button that its called
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: APPCOLOR,
       ),
       body: Stack(children: <Widget>[
         Align(

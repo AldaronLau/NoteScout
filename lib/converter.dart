@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+
 import 'package:note_scout/home.dart';
-import 'dart:async';
+import 'package:note_scout/main.dart';
 
 ///import 'package:note_scout/pdf_text.dart';
 
@@ -53,7 +56,10 @@ class TurnerSS extends State<Turner> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(title: const Text("Digital Note Converter")),
+          appBar: AppBar(
+              title: const Text("Digital Note Converter",
+                  style: TextStyle(color: Colors.black)),
+              backgroundColor: APPCOLOR),
           body: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.all(12),
@@ -62,18 +68,18 @@ class TurnerSS extends State<Turner> {
                   FlatButton(
                     child: Text(
                       "Pick a file",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                     ),
-                    color: Colors.blueAccent,
+                    color: APPCOLOR,
                     onPressed: _PickaText,
                     padding: EdgeInsets.all(6),
                   ),
                   FlatButton(
                     child: Text(
                       "Analyse the document",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                     ),
-                    color: Colors.blueAccent,
+                    color: APPCOLOR,
                     onPressed: _enable ? _readAlltheDocs : () {},
                     padding: EdgeInsets.all(6),
                   ),

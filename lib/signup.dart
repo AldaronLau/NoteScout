@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:note_scout/home.dart';
+import 'package:note_scout/main.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -90,8 +91,8 @@ class _SignupPageState extends State<SignupPage> {
                       height: 40.0,
                       child: Material(
                         borderRadius: BorderRadius.circular(20.0),
-                        shadowColor: Colors.blueAccent,
-                        color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                        shadowColor: APPCOLOR,
+                        color: APPCOLOR,
                         elevation: 1.0,
                         child: GestureDetector(
                           onTap: () async {
@@ -107,8 +108,9 @@ class _SignupPageState extends State<SignupPage> {
 
                             try {
                               await http
-                                  .post('http://10.0.0.90:8000/signup',
+                                  .post(SERVER + "/signup",
                                       body: user + "\n" + mail + "\n" + pswd)
+                                  .timeout(const Duration(milliseconds: 2500))
                                   .then((resp) {
                                 print("Body: \"" + resp.body + "\"");
                                 switch (resp.body) {
@@ -117,8 +119,7 @@ class _SignupPageState extends State<SignupPage> {
                                         msg: "App couldn't sign up - outdated?",
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.CENTER,
-                                        backgroundColor: Color.fromARGB(
-                                            0xFF, 0x00, 0xc8, 0xff),
+                                        backgroundColor: APPCOLOR,
                                         textColor: Colors.black,
                                         fontSize: 16.0);
                                     break;
@@ -127,8 +128,7 @@ class _SignupPageState extends State<SignupPage> {
                                         msg: "Account successfully created!",
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.CENTER,
-                                        backgroundColor: Color.fromARGB(
-                                            0xFF, 0x00, 0xc8, 0xff),
+                                        backgroundColor: APPCOLOR,
                                         textColor: Colors.black,
                                         fontSize: 16.0);
                                     Navigator.pushReplacement(
@@ -141,8 +141,7 @@ class _SignupPageState extends State<SignupPage> {
                                         msg: "Username Unavailable!",
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.CENTER,
-                                        backgroundColor: Color.fromARGB(
-                                            0xFF, 0x00, 0xc8, 0xff),
+                                        backgroundColor: APPCOLOR,
                                         textColor: Colors.black,
                                         fontSize: 16.0);
                                     break;
@@ -151,8 +150,7 @@ class _SignupPageState extends State<SignupPage> {
                                         msg: "The server has a bug!",
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.CENTER,
-                                        backgroundColor: Color.fromARGB(
-                                            0xFF, 0x00, 0xc8, 0xff),
+                                        backgroundColor: APPCOLOR,
                                         textColor: Colors.black,
                                         fontSize: 16.0);
                                     break;
@@ -161,8 +159,7 @@ class _SignupPageState extends State<SignupPage> {
                                         msg: "Whoops!",
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.CENTER,
-                                        backgroundColor: Color.fromARGB(
-                                            0xFF, 0x00, 0xc8, 0xff),
+                                        backgroundColor: APPCOLOR,
                                         textColor: Colors.black,
                                         fontSize: 16.0);
                                     break;
@@ -174,8 +171,7 @@ class _SignupPageState extends State<SignupPage> {
                                   msg: "Offline!",
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.CENTER,
-                                  backgroundColor:
-                                      Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                  backgroundColor: APPCOLOR,
                                   textColor: Colors.black,
                                   fontSize: 16.0);
                               Navigator.pushReplacement(
@@ -200,8 +196,8 @@ class _SignupPageState extends State<SignupPage> {
                     height: 40.0,
                     child: Material(
                       borderRadius: BorderRadius.circular(20.0),
-                      shadowColor: Colors.blueAccent,
-                      color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                      shadowColor: APPCOLOR,
+                      color: APPCOLOR,
                       child: GestureDetector(
                         onTap: () {},
                         child: Center(

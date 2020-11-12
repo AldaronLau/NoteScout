@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:note_scout/main.dart';
+
 class permission extends StatefulWidget {
   @override
   _permissionstate createState() => _permissionstate();
@@ -29,7 +31,7 @@ class _permissionstate extends State<permission> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Ask for permisions please'),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: APPCOLOR,
       ),
       body: Center(
           child: Column(
@@ -48,7 +50,7 @@ class RequestAccess extends StatelessWidget {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Permission needed',
-      theme: new ThemeData(primaryColor: Colors.blueAccent),
+      theme: new ThemeData(primaryColor: APPCOLOR),
       home: new permission(),
     );
   }

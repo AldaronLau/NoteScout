@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
+import 'package:note_scout/main.dart';
+
 // FAQ answers page
 class Faq extends StatelessWidget {
   @override
@@ -9,7 +11,7 @@ class Faq extends StatelessWidget {
       appBar: AppBar(
         title: Text("Frequently Asked Questions"),
         centerTitle: true,
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: APPCOLOR,
       ),
       body: Stack(children: <Widget>[
         Align(

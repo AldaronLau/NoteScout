@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:note_scout/main.dart';
+
 class MergeNotes extends StatefulWidget {
   MergeNotes({Key key}) : super(key: key);
 
@@ -31,7 +33,7 @@ class MergeNotesState extends State<MergeNotes> {
                   msg: "Notes Merged!",
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.CENTER,
-                  backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                  backgroundColor: APPCOLOR,
                   textColor: Colors.black,
                   fontSize: 16.0);
             },

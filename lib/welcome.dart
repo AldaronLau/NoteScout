@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:note_scout/home.dart';
 import 'package:note_scout/forgotpassword.dart';
+import 'package:note_scout/main.dart';
 
 class Welcome extends StatefulWidget {
   @override
@@ -85,7 +86,7 @@ class WelcomeState extends State<Welcome> {
                         child: Text(
                           'Forgot Password', //forgot password
                           style: TextStyle(
-                              color: Colors.lightBlueAccent,
+                              color: APPCOLOR,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Montserrat',
                               decoration: TextDecoration.underline),
@@ -102,18 +103,18 @@ class WelcomeState extends State<Welcome> {
 
                         try {
                           await http
-                              .post('http://10.0.0.90:8000/log_in',
+                              .post(SERVER + "/log_in",
                                   body: user + "\n" + pswd)
+                              .timeout(const Duration(milliseconds: 2500))
                               .then((resp) {
                             print("Body: \"" + resp.body + "\"");
                             switch (resp.body) {
                               case "MALFORM": // Post Request Is Malformed
                                 Fluttertoast.showToast(
-                                    msg: "App couldn't log in - outdated?",
+                                    msg: "You must provide a password!",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.CENTER,
-                                    backgroundColor:
-                                        Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                    backgroundColor: APPCOLOR,
                                     textColor: Colors.black,
                                     fontSize: 16.0);
                                 break;
@@ -122,8 +123,7 @@ class WelcomeState extends State<Welcome> {
                                     msg: "Logged in successfully!",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.CENTER,
-                                    backgroundColor:
-                                        Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                    backgroundColor: APPCOLOR,
                                     textColor: Colors.black,
                                     fontSize: 16.0);
                                 // Use App Online
@@ -137,8 +137,7 @@ class WelcomeState extends State<Welcome> {
                                     msg: "Your password is wrong!",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.CENTER,
-                                    backgroundColor:
-                                        Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                    backgroundColor: APPCOLOR,
                                     textColor: Colors.black,
                                     fontSize: 16.0);
                                 break;
@@ -147,8 +146,7 @@ class WelcomeState extends State<Welcome> {
                                     msg: "User " + user + " doesn't exist!",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.CENTER,
-                                    backgroundColor:
-                                        Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                    backgroundColor: APPCOLOR,
                                     textColor: Colors.black,
                                     fontSize: 16.0);
                                 break;
@@ -157,8 +155,7 @@ class WelcomeState extends State<Welcome> {
                                     msg: "The server has a bug!",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.CENTER,
-                                    backgroundColor:
-                                        Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                    backgroundColor: APPCOLOR,
                                     textColor: Colors.black,
                                     fontSize: 16.0);
                                 break;
@@ -167,8 +164,7 @@ class WelcomeState extends State<Welcome> {
                                     msg: "Whoops!",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.CENTER,
-                                    backgroundColor:
-                                        Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                                    backgroundColor: APPCOLOR,
                                     textColor: Colors.black,
                                     fontSize: 16.0);
                                 break;
@@ -180,8 +176,7 @@ class WelcomeState extends State<Welcome> {
                               msg: "Offline!",
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.CENTER,
-                              backgroundColor:
-                                  Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                              backgroundColor: APPCOLOR,
                               textColor: Colors.black,
                               fontSize: 16.0);
                           // Launch app in offline mode.
@@ -195,7 +190,7 @@ class WelcomeState extends State<Welcome> {
                         height: 40.0,
                         child: Material(
                           borderRadius: BorderRadius.circular(20.0),
-                          color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                          color: APPCOLOR,
                           child: Center(
                             child: Text(
                               'Log In',
@@ -261,7 +256,7 @@ class WelcomeState extends State<Welcome> {
                       child: Text(
                         'Sign Up',
                         style: TextStyle(
-                            color: Colors.lightBlueAccent,
+                            color: APPCOLOR,
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline),

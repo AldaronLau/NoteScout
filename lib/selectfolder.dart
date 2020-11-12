@@ -2,6 +2,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:note_scout/main.dart';
+
 // Move Note / Copy Note / Label Note
 
 enum FolderMode {
@@ -62,7 +64,7 @@ class SelectFolderState extends State<SelectFolder> {
               msg: msg,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
-              backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+              backgroundColor: APPCOLOR,
               textColor: Colors.black,
               fontSize: 16.0);
         } else {

@@ -15,6 +15,7 @@ import 'package:note_scout/faq.dart';
 import 'package:note_scout/mynotes.dart';
 import 'package:note_scout/signup.dart';
 import 'package:note_scout/welcome.dart';
+import 'package:note_scout/main.dart';
 
 void main() => runApp(MaterialApp(home: Home()));
 
@@ -62,7 +63,7 @@ class Home extends StatelessWidget {
                         msg: title + " click",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
-                        backgroundColor: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
+                        backgroundColor: APPCOLOR,
                         textColor: Colors.black,
                         fontSize: 16.0);
 
