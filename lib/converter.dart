@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:note_scout/homepage.dart';
+import 'package:note_scout/home.dart';
 import 'dart:async';
 ///import 'package:note_scout/pdf_text.dart';
 

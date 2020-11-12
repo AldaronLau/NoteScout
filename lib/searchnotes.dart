@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:note_scout/homepage.dart';
 
 class searchNotes extends StatefulWidget {
   @override
@@ -73,4 +72,19 @@ class _searchNotes extends State<searchNotes> {
           ],
         ));
   }
+}
+
+// Filter chip widgets
+Container myChips(String chipName) {
+  return Container(
+    child: RaisedButton(
+        color: Colors.transparent,
+        child: Text(
+          chipName,
+          style: TextStyle(/*color: new Color(0xff6200ee)*/),
+        ),
+        onPressed: () {},
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+  );
 }

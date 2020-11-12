@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:note_scout/uploaddd.dart';
+import 'package:note_scout/upload.dart';
 import 'package:note_scout/trash.dart';
 
 final Color backgroundColor = Color(0xFFFFFF);
@@ -28,7 +28,7 @@ class sideMenu extends State<SideMenu> {
   }
 
   /**
-   * grid view homepage layout
+   * Sidebar menu layout.
    */
   Widget menu(context) {
     return Column(

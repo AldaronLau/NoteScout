@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:note_scout/homepage.dart';
+import 'package:note_scout/home.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -135,7 +135,7 @@ class _SignupPageState extends State<SignupPage> {
                                         context,
                                         MaterialPageRoute<void>(
                                             builder: (context) =>
-                                                GridLayout()));
+                                                Home()));
                                     break;
                                   case "INVALID": // Username Taken
                                     Fluttertoast.showToast(
@@ -182,7 +182,7 @@ class _SignupPageState extends State<SignupPage> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute<void>(
-                                      builder: (context) => GridLayout()));
+                                      builder: (context) => Home()));
                             }
                           },
                           child: Center(
