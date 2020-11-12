@@ -9,15 +9,14 @@ class _forgotPassword extends State<forgotPassword> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        resizeToAvoidBottomPadding: true,
+        body: ListView(
             children: <Widget>[
               Container(
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
+                      padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 0.0),
                       child: Text(
                         'Forgot Password',
                         style: TextStyle(
@@ -25,21 +24,11 @@ class _forgotPassword extends State<forgotPassword> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Container(
-                        /*   padding: EdgeInsets.fromLTRB(260.0, 125.0, 0.0, 0.0),
-                      child: Text(
-                        '',
-                        style: TextStyle(
-                            fontSize: 80.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green),*/
-                        //),
-                        )
                   ],
                 ),
               ),
               Container(
-                  padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                  padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
                   child: Column(
                     children: <Widget>[
                       TextField(
@@ -53,7 +42,7 @@ class _forgotPassword extends State<forgotPassword> {
                                 borderSide:
                                     BorderSide(color: Colors.lightBlue))),
                       ),
-                      SizedBox(height: 120.0),
+                      SizedBox(height: 40.0),
                       Container(
                           height: 40.0,
                           child: Material(

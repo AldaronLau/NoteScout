@@ -54,36 +54,23 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        resizeToAvoidBottomPadding: true,
+        body: ListView(
           children: <Widget>[
             Container(
               child: Stack(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
-                    child: Text('Welcome to',
+                    padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 0.0),
+                    child: Text('Welcome to NoteScout!',
                         style: TextStyle(
                             fontSize: 45.0, fontWeight: FontWeight.bold)),
                   ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(20.0, 175.0, 0.0, 0.0),
-                    child: Text('NoteScout',
-                        style: TextStyle(
-                            fontSize: 45.0, fontWeight: FontWeight.bold)),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(240.0, 175.0, 0.0, 0.0),
-                    child: Text('!',
-                        style: TextStyle(
-                            fontSize: 45.0, fontWeight: FontWeight.bold)),
-                  )
                 ],
               ),
             ),
             Container(
-                padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
                 child: Column(
                   children: <Widget>[
                     TextField(
@@ -97,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.lightBlue))),
                     ),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 10.0),
                     TextField(
                       controller: password_controller,
                       decoration: InputDecoration(
@@ -148,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             switch (resp.body) {
                               case "MALFORM": // Post Request Is Malformed
                                 Fluttertoast.showToast(
-                                    msg: "This app has a bug!",
+                                    msg: "App couldn't log in - outdated?",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.CENTER,
                                     backgroundColor:
@@ -165,6 +152,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
                                     textColor: Colors.black,
                                     fontSize: 16.0);
+                                // Use App Online
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                        builder: (context) => GridLayout()));
                                 break;
                               case "INVALID": // Invalid Username Password Combination
                                 Fluttertoast.showToast(
@@ -207,10 +199,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                     fontSize: 16.0);
                                 break;
                             }
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute<void>(
-                                    builder: (context) => GridLayout()));
                           });
                         } catch (e) {
                           print(e);
@@ -222,6 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
                               textColor: Colors.black,
                               fontSize: 16.0);
+                          // Launch app in offline mode.
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute<void>(
@@ -280,8 +269,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     )
                   ],
                 )),
-            SizedBox(height: 15.0),
-            Row(
+            SizedBox(height: 20.0),
+            Container(
+              padding: EdgeInsets.only(bottom: 20.0),
+              child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
@@ -303,7 +294,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 )
               ],
-            )
+            ))
           ],
         ));
   }
