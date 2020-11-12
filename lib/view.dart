@@ -196,9 +196,13 @@ class ViewNotePageState extends State<ViewNotePage> {
                 ],
             ),
             body: //Container(
-                new Text("${widget.value}"),
+                //new Text("${widget.value}"),
+            Text("${widget.value}",
+            style: Theme.of(context).textTheme.headline6,),
+                //TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
+
                 //child: Image.network("http://images.freeimages.com/images/previews/bf6/note-paper-1155539.jpg"),
-                //Text(controller.text)
+
 
             //),
             bottomNavigationBar: BottomAppBar(
