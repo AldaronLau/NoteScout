@@ -10,7 +10,7 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Setting"), // Button that its called
+        title: Text("Settings"), // Button that its called
         centerTitle: true,
         backgroundColor: APPCOLOR,
       ),
