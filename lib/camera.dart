@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-
-
 void main() => runApp(CameraPart());
 
 class CameraPart extends StatelessWidget {
@@ -16,15 +14,13 @@ class CameraPart extends StatelessWidget {
   }
 }
 
-
-class Page extends StatefulWidget{
+class Page extends StatefulWidget {
   @override
   Ccamera createState() => Ccamera();
 }
 
-
-class Ccamera extends State<Page>{
-///Defines an image and how its selected
+class Ccamera extends State<Page> {
+  ///Defines an image and how its selected
   File Iimage;
   final selector = ImagePicker();
 
@@ -33,9 +29,9 @@ class Ccamera extends State<Page>{
     final PickedFile = await selector.getImage(source: ImageSource.camera);
 
     setState(() {
-      if (PickedFile != null){
+      if (PickedFile != null) {
         Iimage = File(PickedFile.path);
-      }else{
+      } else {
         print("Nothing is there");
       }
     });

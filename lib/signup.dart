@@ -134,8 +134,7 @@ class _SignupPageState extends State<SignupPage> {
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute<void>(
-                                            builder: (context) =>
-                                                Home()));
+                                            builder: (context) => Home()));
                                     break;
                                   case "INVALID": // Username Taken
                                     Fluttertoast.showToast(

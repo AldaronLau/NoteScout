@@ -11,10 +11,10 @@ import 'package:note_scout/searchnotes.dart';
 import 'package:note_scout/view.dart';
 import 'package:note_scout/edit.dart';
 import 'package:note_scout/upload.dart';
+import 'package:note_scout/faq.dart';
 import 'package:note_scout/mynotes.dart';
 import 'package:note_scout/signup.dart';
 import 'package:note_scout/welcome.dart';
-
 
 void main() => runApp(MaterialApp(home: Home()));
 
@@ -112,7 +112,7 @@ class Home extends StatelessWidget {
                         Navigator.push(
                             context,
                             new MaterialPageRoute(
-                                builder: (context) => new stopitGetHelp()));
+                                builder: (context) => new Faq()));
                         break;
                       default:
                         break;

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:note_scout/upload.dart';
 import 'package:note_scout/trash.dart';
+import 'package:note_scout/faq.dart';
+import 'package:note_scout/settings.dart';
 
 final Color backgroundColor = Color(0xFFFFFF);
 
@@ -11,7 +13,6 @@ class SideMenu extends StatefulWidget {
 }
 
 class sideMenu extends State<SideMenu> {
-
   bool isCollapsed = true; //collapsing menu
 
   @override
@@ -32,71 +33,75 @@ class sideMenu extends State<SideMenu> {
    */
   Widget menu(context) {
     return Column(
-        children: <Widget>[
-            ListTile(
-                title: const Text("My Account", style: TextStyle(color: Colors.black, fontSize: 22.0)),
-                onTap: () {
-                    print("TODO");
-                }
-            ),
-            ListTile(
-                title: const Text("Upload", style: TextStyle(color: Colors.black, fontSize: 22.0)),
-                onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                            return upload();
-                        }),
-                    );
-                }
-            ),
-            ListTile(
-                title: const Text("Get Help", style: TextStyle(color: Colors.black, fontSize: 22.0)),
-                onTap: () {
-                    Navigator.push(context,
-                        new MaterialPageRoute(builder: (context) => new stopitGetHelp()
-                        ));
-                }
-            ),
-            ListTile(
-                title: const Text("Upgrade Account", style: TextStyle(color: Colors.black, fontSize: 22.0)),
-                onTap: () {
-                    print("TODO");
-                }
-            ),
-            ListTile(
-                title: const Text("Trash", style: TextStyle(color: Colors.black, fontSize: 22.0)),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) {
-                      return TrashPage();
-                    }),
-                  );
-                }
-            ),
-            ListTile(
-                title: const Text("Settings", style: TextStyle(color: Colors.black, fontSize: 22.0)),
-                onTap: () {
-                    print("TODO");
-                }
-            ),
-          ],
-        );
+      children: <Widget>[
+        ListTile(
+            title: const Text("My Account",
+                style: TextStyle(color: Colors.black, fontSize: 22.0)),
+            onTap: () {
+              print("TODO");
+            }),
+        ListTile(
+            title: const Text("Upload",
+                style: TextStyle(color: Colors.black, fontSize: 22.0)),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return upload();
+                }),
+              );
+            }),
+        ListTile(
+            title: const Text("Get Help",
+                style: TextStyle(color: Colors.black, fontSize: 22.0)),
+            onTap: () {
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => new Faq()));
+            }),
+        ListTile(
+            title: const Text("Upgrade Account",
+                style: TextStyle(color: Colors.black, fontSize: 22.0)),
+            onTap: () {
+              print("TODO");
+            }),
+        ListTile(
+            title: const Text("Trash",
+                style: TextStyle(color: Colors.black, fontSize: 22.0)),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return TrashPage();
+                }),
+              );
+            }),
+        ListTile(
+            title: const Text("Settings",
+                style: TextStyle(color: Colors.black, fontSize: 22.0)),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return Settings();
+                }),
+              );
+            }),
+      ],
+    );
   }
 
   /**
    * notescout slideout menu here
    */
-  Widget dashboard(context){
+  Widget dashboard(context) {
     return Material(
       color: backgroundColor,
-      child: DrawerHeader(child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-              Text("NoteScout", style: TextStyle(fontSize: 36.0)),
-              Icon(Icons.settings, color: Colors.black),
-          ],
+      child: DrawerHeader(
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("NoteScout", style: TextStyle(fontSize: 36.0)),
+        ],
       )),
     );
   }

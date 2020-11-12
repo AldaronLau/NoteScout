@@ -3,16 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/icon_data.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 class TrashPage extends StatefulWidget {
-
   @override
   TrashPageState createState() => new TrashPageState();
-
 }
 
 class TrashPageState extends State<TrashPage> {
-
   bool foldersInsteadOfTags = true;
   int rating = 0;
   double community_rating = 3.5;
@@ -49,17 +45,19 @@ class TrashPageState extends State<TrashPage> {
           }),
         );
       },
-      child: Column(children: [Container(
-        height: 50,
-        color: Colors.transparent,
-        child: Row(children: [
-          Icon(icon),
-          Text('${name}${index + 1}'),
-        ]),
-      ), Divider()]),
+      child: Column(children: [
+        Container(
+          height: 50,
+          color: Colors.transparent,
+          child: Row(children: [
+            Icon(icon),
+            Text('${name}${index + 1}'),
+          ]),
+        ),
+        Divider()
+      ]),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,34 +67,34 @@ class TrashPageState extends State<TrashPage> {
 
     title = "Trash";
 
-
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
         actions: <Widget>[
-          PopupMenuButton<String>(
-              onSelected: (String choice) {
-                switch (choice) {
-                  case "Sort By Tag":
-                    setState(() { foldersInsteadOfTags = false; });
-                    break;
-                  case "Sort By Folder":
-                    setState(() { foldersInsteadOfTags = true; });
-                    break;
+          PopupMenuButton<String>(onSelected: (String choice) {
+            switch (choice) {
+              case "Sort By Tag":
+                setState(() {
+                  foldersInsteadOfTags = false;
+                });
+                break;
+              case "Sort By Folder":
+                setState(() {
+                  foldersInsteadOfTags = true;
+                });
+                break;
 
-                  default:
-                    assert(false);
-                }
-              },
-              itemBuilder: (BuildContext context) {
-                return menu_options.map((String choice) {
-                  return PopupMenuItem<String>(
-                    value: choice,
-                    child: Text(choice),
-                  );
-                }).toList();
-              }
-          ),
+              default:
+                assert(false);
+            }
+          }, itemBuilder: (BuildContext context) {
+            return menu_options.map((String choice) {
+              return PopupMenuItem<String>(
+                value: choice,
+                child: Text(choice),
+              );
+            }).toList();
+          }),
         ],
       ),
       body: ListView.builder(
@@ -107,8 +105,6 @@ class TrashPageState extends State<TrashPage> {
   }
 }
 
-
-
 class trash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -117,25 +113,11 @@ class trash extends StatelessWidget {
         title: Text("Trash"),
         centerTitle: true,
       ),
-      body: Stack(
-          children: <Widget>[
-
-            Align(
-                alignment: Alignment.center,
-                child: Text("This is the trash for your unwanted notes"
-                )
-            ),
-
-
-          ]
-      ),
+      body: Stack(children: <Widget>[
+        Align(
+            alignment: Alignment.center,
+            child: Text("This is the trash for your unwanted notes")),
+      ]),
     );
   }
-
-
 }
-
-
-
-
-

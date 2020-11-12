@@ -9,20 +9,20 @@ class permission extends StatefulWidget {
 class _permissionstate extends State<permission> {
   Map<PermissionGroup, PermissionStatus> permissions;
   @override
-  void initState(){
+  void initState() {
     super.initState();
     getPermission();
   }
-///Groups together what should be acessed
+
+  // Groups together what should be acessed
   void getPermission() async {
     permissions = await PermissionHandler().requestPermissions([
       PermissionGroup.photos,
       PermissionGroup.camera,
       PermissionGroup.phone,
     ]);
-
-
   }
+
   ///Builds a widget
   @override
   Widget build(BuildContext context) {
@@ -33,12 +33,23 @@ class _permissionstate extends State<permission> {
       ),
       body: Center(
           child: Column(
-            children: <Widget>[
-              Text("All Permission Granted"),
-            ],
-          )
-      ),
-
+        children: <Widget>[
+          Text("All Permission Granted"),
+        ],
+      )),
     );
   }
 }
+
+/*// Pops up an access button. Supposedly it should bring a popup asking for permission
+class RequestAccess extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Permission needed',
+      theme: new ThemeData(primaryColor: Colors.blueAccent),
+      home: new permission(),
+    );
+  }
+}*/
