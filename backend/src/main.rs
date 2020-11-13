@@ -17,19 +17,110 @@ pub struct State {
     pool: Pool<PostgresConnectionManager<NoTls>>,
 }
 
-/// Called when the user posts to /signup
+/// Insert a new user account into the database.
+fn user_insert(client: &mut Client, username: &str, pswdsalt: u64, password: &str, emailadr: &str) -> Result<()> {
+    println!("Adding a user");
+    // Build SQL Transaction
+    let mut trans = client.transaction()?;
+    let stmt = format!(
+        "INSERT INTO users (username, pswdsalt, password, emailadr) \
+         VALUES ('{}', x'{}'::bigint, '{}', '{}');",
+         username,
+         pswdsalt,
+         password,
+         emailadr
+    );
+    // Execute SQL Transaction
+    trans.execute(stmt.as_str(), &[])?;
+    Ok(())
+}
+
+/// Called when the user posts to /log_in
+///
+/// # Recv
+/// ```
+/// "USERNAME\nPASSWORD"
+/// ```
+///
+/// # Send
+/// - `"MALFORM"`: Post Request Is Malformed
+/// - `"SUCCESS"`: Log In Succeeded
+/// - `"INVALID"`: Username Taken
+/// - `"FAILURE"`: Failed to connect to database
+/// - `"MISSING"`: @ Is missing from email address.
 async fn signup(mut request: tide::Request<State>) -> Result<String> {
-    let _post = request
+    // Get the POST request data
+    let post = request
         .body_string()
         .await
         .unwrap_or_else(|_| "".to_string());
-    let mut _out = String::new();
+    // Split the POST request data at newline characters.
+    let mut lines = post.lines();
+    // Connect to the database
+    let mut connection = request.state().pool.get()?;
 
-    /*match _post {
-        _ => {}
-    }*/
+    // Test if username is in the database, return INVALID if it is.
+    let username = if let Some(username) = lines.next() {
+        if let Ok(exists) = user_exists(&mut connection, username) {
+            if exists {
+                return Ok("INVALID".to_string());
+            }
+        } else {
+            return Ok("FAILURE".to_string());
+        }
+        username
+    } else {
+        return Ok("MALFORM".to_string());
+    };
 
-    Ok(_out)
+    // Grab Email.
+    let email = if let Some(email) = lines.next() {
+        if email.contains('@') {
+            email
+        } else {
+            return Ok("MISSING".to_string());
+        }
+    } else {
+        return Ok("MALFORM".to_string());
+    };
+
+    // Grab Password and Salt It.
+    let (salt, password) = if let Some(password) = lines.next() {
+        // Generate the salt
+        let salt: u64 = rand::random();
+        let tobe_hashed = format!("{}{:X}", password, salt);
+        let hashed = sha256::sha(tobe_hashed);
+        let hashed = {
+            let mut out = String::new();
+            for byte in hashed.iter() {
+                write!(&mut out, "{:X}", byte).unwrap();
+            }
+            out
+        };
+        (salt, hashed)
+    } else {
+        return Ok("MALFORM".to_string());
+    };
+
+    // Make sure there's no extra lines
+    if lines.next().is_some() {
+        return Ok("MALFORM".to_string());
+    }
+
+    // Now that parsing has completed, add to database.
+    let value = user_insert(
+        &mut connection,
+        username,
+        salt,
+        &password,
+        email,
+    );
+    if let Ok(()) = value {
+        // Succeeded to log in.
+        Ok("SUCCESS".to_string())
+    } else {
+        Ok("FAILURE".to_string())
+    }
 }
 
 /// Check if a user exists in the database.

@@ -154,6 +154,15 @@ class _SignupPageState extends State<SignupPage> {
                                         textColor: Colors.black,
                                         fontSize: 16.0);
                                     break;
+                                  case "MISSING": // Email is invalid.
+                                    Fluttertoast.showToast(
+                                        msg: "Enter a valid email!",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: APPCOLOR,
+                                        textColor: Colors.black,
+                                        fontSize: 16.0);
+                                    break;
                                   default:
                                     Fluttertoast.showToast(
                                         msg: "Whoops!",
