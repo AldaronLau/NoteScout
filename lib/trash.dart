@@ -42,6 +42,7 @@ class TrashPageState extends State<TrashPage> {
           context,
           MaterialPageRoute(builder: (context) {
             return trash();
+
           }),
         );
       },
@@ -61,7 +62,7 @@ class TrashPageState extends State<TrashPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> menu_options = ["Sort By Tag", "Sort By Folder"];
+    List<String> menu_options = ["Sort By Tag", "Sort By Folder", "Trash Policy"];
 
     String title;
 
@@ -83,7 +84,11 @@ class TrashPageState extends State<TrashPage> {
                   foldersInsteadOfTags = true;
                 });
                 break;
-
+              case "Trash Policy":
+                showDialog(context: context,
+                builder: (BuildContext context) => _buildAboutDialog(context),
+                );
+                break;
               default:
                 assert(false);
             }
@@ -105,9 +110,74 @@ class TrashPageState extends State<TrashPage> {
   }
 }
 
+
+Widget _buildAboutDialog(BuildContext context){
+  return new AlertDialog(
+    title: const Text('Trash Policy'),
+    content: new Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        _buildAboutText(),
+        //_buildLogoAttribution(),
+      ],
+    ),
+    actions: <Widget>[
+      new FlatButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        textColor: Theme.of(context).primaryColor,
+        child: const Text('Okay, got it!'),
+      ),
+    ],
+  );
+}
+
+Widget _buildAboutText() {
+  return new RichText(
+    text: new TextSpan(
+      text: 'This is the Trash Policy, Whatever notes you delete from your NoteScout account will be put in this trash location. You are able to recover it within 10 days. '
+          'Else after 10 days it will be deleted permanently.\n\n',
+      style: const TextStyle(color: Colors.black87),
+    ),
+  );
+}
+
+//This is in case we want to add logo attribution to the Policy pop-up
+/*
+Widget _buildLogoAttribution() {
+  return new Padding(
+    padding: const EdgeInsets.only(top: 16.0),
+    child: new Row(
+      children: <Widget>[
+      /*  new Padding(
+         padding: const EdgeInsets.only(top: 0.0),
+          child: new Image.asset(
+            "assets/flutter.png",
+            width: 32.0,
+          ),
+        ),
+        */
+        const Expanded(
+          child: const Padding(
+            padding: const EdgeInsets.only(left: 12.0),
+            child: const Text(
+              'Make sure to recover the notes you need before 10 days!!',
+              style: const TextStyle(fontSize: 12.0),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+*/
+
 class trash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Trash"),
