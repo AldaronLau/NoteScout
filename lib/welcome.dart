@@ -98,6 +98,8 @@ class WelcomeState extends State<Welcome> {
                       onTap: () async {
                         var user = username_controller.text;
                         var pswd = password_controller.text;
+                        USERNAME = user;
+                        PASSWORD = pswd;
                         print(
                             "LOGIN Username: " + user + ", Password: " + pswd);
 

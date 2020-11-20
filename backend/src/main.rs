@@ -185,6 +185,95 @@ fn user_password(
     }
 }
 
+/// Called when the user posts to /modify
+///
+/// # Recv
+/// ```
+/// "USERNAME\nPASSWORD\nFILENAME\nPICTURE_CONTENT"
+/// "USERNAME\nPASSWORD\nFILENAME\tTEXTUAL_CONTENT"
+/// ```
+///
+/// # Send
+/// - `"MALFORM"`: Post Request Is Malformed
+/// - `"SUCCESS"`: Log In Succeeded
+/// - `"INVALID"`: Invalid Username Password Combination
+/// - `"MISSING"`: User is Missing From Database
+/// - `"FAILURE"`: Failed to connect to database
+async fn modify(mut request: tide::Request<State>) -> Result<String> {
+    // Get the POST request data
+    let post = request
+        .body_string()
+        .await
+        .unwrap_or_else(|_| "".to_string());
+
+    // Parse the request.
+    let (username, post) = if let Some(index) = post.find("\n") {
+        (&post[..index], &post[index+1..])
+    } else {
+        return Ok("MALFORM".to_string());
+    };
+    let (password, post) = if let Some(index) = post.find("\n") {
+        (&post[..index], &post[index+1..])
+    } else {
+        return Ok("MALFORM".to_string());
+    };
+    let (filename, post) = if let Some(index) = post.find(|c: char| c == '\n' || c == '\t') {
+        (&post[..index], &post[index..])
+    } else {
+        return Ok("MALFORM".to_string());
+    };
+    let (is_text, post) = match post.chars().nth(0) {
+        Some('\t') => (true, &post[1..]),
+        Some('\n') => (false, &post[1..]),
+        _ => unreachable!(),
+    };
+
+    // Connect to the database
+    let mut connection = request.state().pool.get()?;
+
+    // Test if username is in the database
+    if let Ok(exists) = user_exists(&mut connection, username) {
+        if !exists {
+            return Ok("MISSING".to_string());
+        }
+    } else {
+        return Ok("FAILURE".to_string());
+    }
+
+    // Test if password matches
+    let matches = if let Ok(Some(salt)) = user_salt(&mut connection, username) {
+        let tobe_hashed = format!("{}{:X}", password, salt);
+        let hashed = sha256::sha(tobe_hashed);
+        let hashed = {
+            let mut out = String::new();
+            for byte in hashed.iter() {
+                write!(&mut out, "{:X}", byte).unwrap();
+            }
+            out
+        };
+        if let Ok(Some(pswd)) = user_password(&mut connection, username) {
+            hashed == pswd
+        } else {
+            return Ok("FAILURE".to_string());
+        }
+    } else {
+        return Ok("FAILURE".to_string());
+    };
+    // Fail to log in if passwords don't match
+    if !matches {
+        return Ok("INVALID".to_string());
+    }
+
+    if is_text {
+        println!("Tried to save \"{}\": {}", filename, post);
+    } else {
+        println!("Images not supported yet!");
+    }
+
+    // Succeeded to log in and save.
+    Ok("SUCCESS".to_string())
+}
+
 /// Called when the user posts to /log_in
 ///
 /// # Recv
@@ -283,6 +372,7 @@ async fn start(state: State) -> Result<()> {
     app.at("/").get(test_page);
     app.at("/signup").post(signup);
     app.at("/log_in").post(log_in);
+    app.at("/modify").post(modify);
 
     async_std::println!("TIDE LISTEN").await;
 

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:note_scout/view.dart';
+import 'package:note_scout/main.dart';
 
 class EditNotePage extends StatefulWidget {
   EditNotePage({Key key}) : super(key: key);
@@ -12,6 +16,90 @@ class EditNotePage extends StatefulWidget {
 class EditNotePageState extends State<EditNotePage> {
   TextEditingController text_controller;
   bool selected;
+  
+  // Change note contents on server.
+  Future saveNote(String filename, String content) async {
+    String fileString = USERNAME
+        + "\n"
+        + PASSWORD
+        + "\n"
+        + filename
+        + "\t"
+        + content;
+    try {
+      await http
+          .post(SERVER + "/modify", body: fileString)
+          .timeout(const Duration(milliseconds: 2500))
+          .then((resp) {
+            print("Body: \"" + resp.body + "\"");
+            switch (resp.body) {
+              case "MALFORM": // Post Request Is Malformed
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: REQUEST MALFORMED!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "SUCCESS": // Log In Succeeded
+                Fluttertoast.showToast(
+                    msg: "Saved!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "INVALID": // Invalid Username Password Combination
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: WRONG PASSWORD!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "MISSING": // User is Missing From Database
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: USER " + USERNAME + " DOESN'T EXIST!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "FAILURE": // Failed to connect to database":
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: THE SERVER HAS A BUG!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              default:
+                Fluttertoast.showToast(
+                    msg: "WHOOPS!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+            }
+          });
+        } catch (e) {
+          print(e);
+          Fluttertoast.showToast(
+              msg: "CAN'T REACH SERVER!",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              backgroundColor: APPCOLOR,
+              textColor: Colors.black,
+              fontSize: 16.0);
+        }
+  }
 
   @override
   void initState() {
@@ -118,10 +206,12 @@ class EditNotePageState extends State<EditNotePage> {
       ),
       floatingActionButton: FloatingActionButton(
           child: Text("Done"),
-          onPressed: () {
+          onPressed: () async {
+            String content = text_controller.text;
+            await saveNote("test", content);
             var route = new MaterialPageRoute(
               builder: (BuildContext context) => new ViewNotePage(
-                  mode: ViewNoteMode.Owned, value: text_controller.text),
+                  mode: ViewNoteMode.Owned, value: content),
             );
             Navigator.of(context).push(route);
           }),

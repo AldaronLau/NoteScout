@@ -58,15 +58,6 @@ class Home extends StatelessWidget {
                     child: getCardByTitle(title),
                   ),
                   onTap: () {
-                    //show toast
-                    Fluttertoast.showToast(
-                        msg: title + " click",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        backgroundColor: APPCOLOR,
-                        textColor: Colors.black,
-                        fontSize: 16.0);
-
                     // Change page
                     switch (title) {
                       case "Search Notes":

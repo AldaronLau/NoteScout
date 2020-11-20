@@ -8,6 +8,9 @@ const SERVER = "http://10.0.0.90:8000";
 
 const APPCOLOR = Color.fromARGB(0xFF, 0x00, 0xc8, 0xff);
 
+String USERNAME = null;
+String PASSWORD = null;
+
 void main() => runApp(MyApp());
 
 // The widget that contains the whole app.
