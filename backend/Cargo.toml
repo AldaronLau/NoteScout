@@ -9,7 +9,7 @@ edition = "2018"
 [dependencies]
 rand = "0.7"
 hmac-sha256 = "0.1"
-tide = "0.14"
+tide = "0.15"
 postgres = "0.17"
 r2d2 = "0.8"
 r2d2_postgres = "0.16"

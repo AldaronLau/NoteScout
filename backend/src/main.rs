@@ -18,20 +18,23 @@ pub struct State {
 }
 
 /// Insert a new user account into the database.
-fn user_insert(client: &mut Client, username: &str, pswdsalt: u64, password: &str, emailadr: &str) -> Result<()> {
-    println!("Adding a user");
+fn user_insert(
+    client: &mut Client,
+    username: &str,
+    pswdsalt: u64,
+    password: &str,
+    emailadr: &str,
+) -> Result<()> {
     // Build SQL Transaction
-    let mut trans = client.transaction()?;
     let stmt = format!(
         "INSERT INTO users (username, pswdsalt, password, emailadr) \
-         VALUES ('{}', x'{}'::bigint, '{}', '{}');",
-         username,
-         pswdsalt,
-         password,
-         emailadr
+         VALUES ('{}', x'{:X}'::bigint, '{}', '{}');",
+        username, pswdsalt, password, emailadr
     );
-    // Execute SQL Transaction
-    trans.execute(stmt.as_str(), &[])?;
+    println!("Adding user: \"{}\"", stmt);
+    client.execute(stmt.as_str(), &[])?;
+    println!("Added user {}!", username);
+
     Ok(())
 }
 
@@ -108,13 +111,7 @@ async fn signup(mut request: tide::Request<State>) -> Result<String> {
     }
 
     // Now that parsing has completed, add to database.
-    let value = user_insert(
-        &mut connection,
-        username,
-        salt,
-        &password,
-        email,
-    );
+    let value = user_insert(&mut connection, username, salt, &password, email);
     if let Ok(()) = value {
         // Succeeded to log in.
         Ok("SUCCESS".to_string())
@@ -264,38 +261,61 @@ async fn log_in(mut request: tide::Request<State>) -> Result<String> {
     Ok("SUCCESS".to_string())
 }
 
+// Test page to verify that server is running and firewall is not blocked.
+async fn test_page(_request: tide::Request<State>) -> Result<tide::Body> {
+    let mut body = tide::Body::from_bytes(include_bytes!("testpage.html").to_vec());
+    body.set_mime(tide::http::mime::HTML);
+
+    Ok(body)
+}
+
 // Called after intialization, runs the HTTP server.
 async fn start(state: State) -> Result<()> {
+    async_std::println!("TIDE START").await;
+
     // Start server log
     tide::log::start();
 
+    async_std::println!("TIDE START'D").await;
+
     // Configure HTTP server endpoints (POST only)
     let mut app = tide::with_state(state);
+    app.at("/").get(test_page);
     app.at("/signup").post(signup);
     app.at("/log_in").post(log_in);
 
+    async_std::println!("TIDE LISTEN").await;
+
     // Start serving HTTP server
-    app.listen(/*"192.168.0.112:8088"*/ "10.0.0.90:8000")
-        .await?;
-    Ok(())
+    let r = app.listen("0.0.0.0:8000").await.map_err(|e| e.into()); 
+    async_std::println!("TIDE DIE").await;
+    r
 }
 
 // Entry point for the program
 #[async_std::main]
 async fn main() -> Result<()> {
+    async_std::println!("GET USERNAME").await;
     // Grab username from the environment.
     let username = whoami::username();
+    async_std::println!("GET USERNAME {}", username).await;
     // Build Unix Domain Socket URL
     let url = format!("postgres://{:}@%2Frun%2Fpostgresql/notescout", username);
+    async_std::println!("GET URL {}", url).await;
     // Make PostgreSQL configuration from URL
     let config: Config = url.parse()?;
+    async_std::println!("GET CONFIG").await;
     // Connect to the PostgreSQL database.
     let manager = PostgresConnectionManager::new(config, NoTls);
+    async_std::println!("GET MGNER").await;
     // Build a connection pool ontop of the database.
     let pool = r2d2::Pool::new(manager).unwrap();
+    async_std::println!("GET POUL").await;
 
     // Initialize server state.
     let state = State { pool };
+
+    async_std::println!("TIDE STARTING…").await;
 
     // Start the server
     start(state).await

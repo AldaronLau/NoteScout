@@ -13,8 +13,13 @@ sudo dnf install postgresql
 # Press 'y' than enter to install postgresql postgresql-server
 
 sudo systemctl start postgresql.service
+# Starts the service
+
+sudo systemctl enable postgresql.service
+# Configures the service to start on reboot
 
 sudo su postgres
+# Logs you in as postgres user
 ```
 
 Now that you're logged in as postgres user:
