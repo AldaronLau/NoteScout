@@ -1,11 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/icon_data.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:note_scout/view.dart';
 import 'package:note_scout/edit.dart';
 import 'package:note_scout/folder.dart';
 import 'package:note_scout/upload.dart';
+import 'package:note_scout/main.dart';
 
 enum MyNotesMode {
   // For notes not owned by the user
@@ -29,10 +32,93 @@ class MyNotesPageState extends State<MyNotesPage> {
   int rating = 0;
   double community_rating = 3.5;
   String notification = null;
+  List<String> files = [];
+  List<String> folders = [];
+
+  // Load list of notes an folders.
+  Future myNotes() async {
+    String fileString = USERNAME + "\n" + PASSWORD;
+    try {
+      await http
+          .post(SERVER + "/listmy", body: fileString)
+          .timeout(const Duration(milliseconds: 2500))
+          .then((resp) {
+            print("Body: \"" + resp.body + "\"");
+            switch (resp.body) {
+              case "MALFORM": // Post Request Is Malformed
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: REQUEST MALFORMED!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "INVALID": // Invalid Username Password Combination
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: WRONG PASSWORD!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "MISSING": // User is Missing From Database
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: USER " + USERNAME + " DOESN'T EXIST!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "FAILURE": // Failed to connect to database":
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: THE SERVER HAS A BUG!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              default:
+                if (resp.body.startsWith("SUCCESS")) {
+                   setState(() { 
+                   files = resp.body.split('\n');
+                   folders = [];
+                   for(int i = 1; i < files.length; i++) {
+                     var folder = files[i].split('/')[1];
+                     if (!folders.contains(folder)) {
+                       folders.add(folder);
+                     }
+                   } });
+                } else {
+                  Fluttertoast.showToast(
+                    msg: "WHOOPS!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                }
+                break;
+            }
+          });
+        } catch (e) {
+          print(e);
+          Fluttertoast.showToast(
+              msg: "CAN'T REACH SERVER!",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              backgroundColor: APPCOLOR,
+              textColor: Colors.black,
+              fontSize: 16.0);
+        }
+  }
 
   // Loading folder list callback.  After last post, returns null.
   Widget loadFolder(BuildContext context, int index) {
-    if (index >= 24) {
+    if (index >= folders.length) {
       return null;
     }
 
@@ -67,7 +153,7 @@ class MyNotesPageState extends State<MyNotesPage> {
           color: Colors.transparent,
           child: Row(children: [
             Icon(icon),
-            Text('${name}${index + 1}'),
+            Text('${folders[index]}'),
           ]),
         ),
         Divider()
@@ -80,6 +166,7 @@ class MyNotesPageState extends State<MyNotesPage> {
     super.initState();
     assert(widget.mode != null);
     notification = null;
+    myNotes();
   }
 
   @override

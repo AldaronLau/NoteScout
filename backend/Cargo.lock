@@ -262,6 +262,7 @@ name = "backend"
 version = "0.1.0"
 dependencies = [
  "async-std",
+ "base64 0.13.0",
  "hmac-sha256",
  "postgres",
  "r2d2",

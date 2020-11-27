@@ -17,6 +17,55 @@ pub struct State {
     pool: Pool<PostgresConnectionManager<NoTls>>,
 }
 
+/// Insert/Update a new textual note into the database.
+fn txtnote_modify(
+    client: &mut Client,
+    username: &str,
+    filename: &str,
+    content: &str,
+) -> Result<()> {
+    // Build SQL Transaction
+    let mut transaction = client.transaction()?;
+    transaction.execute(format!("DELETE FROM notes WHERE username = '{}'", username).as_str(), &[])?;
+    transaction.execute(format!(
+        "INSERT INTO notes (username, filename, contents) \
+         VALUES ('{}', '{}/{}', '{}');",
+        username, username, filename, content
+    ).as_str(), &[])?;
+    transaction.commit()?;
+
+    println!("Added text note {}!", username);
+
+    Ok(())
+}
+
+/// Insert/Update a new picture note into the database.
+fn imgnote_modify(
+    client: &mut Client,
+    username: &str,
+    filename: &str,
+    graphic: &str,
+) -> Result<()> {
+    // Build SQL Transaction
+    let mut transaction = client.transaction()?;
+    transaction.execute(format!("DELETE FROM notes WHERE username = '{}'", username).as_str(), &[])?;
+    let mut stmt = format!(
+        "INSERT INTO notes (username, filename, contents) \
+         VALUES ('{}', '{}/{}', x'",
+        username, username, filename
+    );
+    for byte in base64::decode(graphic)?.iter() {
+        write!(stmt, "{:X}", byte).unwrap();
+    }
+    stmt.push_str("'::bytea) ON CONFLICT DO UPDATE;");
+    transaction.execute(stmt.as_str(), &[])?;
+    transaction.commit()?;
+
+    println!("Added text note {}!", username);
+
+    Ok(())
+}
+
 /// Insert a new user account into the database.
 fn user_insert(
     client: &mut Client,
@@ -159,6 +208,31 @@ fn user_salt(client: &mut Client, username: &str) -> Result<Option<i64>> {
     }
 }
 
+/// Retreive a list of the user's notes from the database.
+fn user_notes(
+    client: &mut Client,
+    username: &str,
+) -> Result<String> {
+    // Build SQL Prepared Statement
+    let mut trans = client.transaction()?;
+    let stmt =
+        format!("SELECT filename FROM notes WHERE username='{}';", username);
+    let prep = trans.prepare(&stmt)?;
+
+    // Execute SQL Prepared Statement
+    let portal = trans.bind(&prep, &[])?;
+    let mut rows = trans.query_portal_raw(&portal, 50)?;
+
+    // Interpret results
+    let mut output = String::new();
+    while let Some(row) = rows.next()? {
+        output.push_str(row.get(0));
+        output.push('\n');
+    }
+    output.pop();
+    Ok(output)
+}
+
 /// Retreive the user's salted password from the database.
 fn user_password(
     client: &mut Client,
@@ -185,6 +259,73 @@ fn user_password(
     }
 }
 
+/// Called when the user posts to /listmy
+///
+/// # Recv
+/// ```
+/// "USERNAME\nPASSWORD"
+/// ```
+///
+/// # Send
+/// - `"MALFORM"`: Post Request Is Malformed
+/// - `"SUCCESS"`: Log In Succeeded
+/// - `"INVALID"`: Invalid Username Password Combination
+/// - `"MISSING"`: User is Missing From Database
+/// - `"FAILURE"`: Failed to connect to database
+async fn listmy(mut request: tide::Request<State>) -> Result<String> {
+    // Get the POST request data
+    let post = request
+        .body_string()
+        .await
+        .unwrap_or_else(|_| "".to_string());
+
+    // Parse the request.
+    let (username, password) = if let Some(index) = post.find('\n') {
+        (&post[..index], &post[index + 1..])
+    } else {
+        return Ok("MALFORM".to_string());
+    };
+
+    // Connect to the database
+    let mut connection = request.state().pool.get()?;
+
+    // Test if username is in the database
+    if let Ok(exists) = user_exists(&mut connection, username) {
+        if !exists {
+            return Ok("MISSING".to_string());
+        }
+    } else {
+        return Ok("FAILURE".to_string());
+    }
+
+    // Test if password matches
+    let matches = if let Ok(Some(salt)) = user_salt(&mut connection, username) {
+        let tobe_hashed = format!("{}{:X}", password, salt);
+        let hashed = sha256::sha(tobe_hashed);
+        let hashed = {
+            let mut out = String::new();
+            for byte in hashed.iter() {
+                write!(&mut out, "{:X}", byte).unwrap();
+            }
+            out
+        };
+        if let Ok(Some(pswd)) = user_password(&mut connection, username) {
+            hashed == pswd
+        } else {
+            return Ok("FAILURE".to_string());
+        }
+    } else {
+        return Ok("FAILURE".to_string());
+    };
+    // Fail to log in if passwords don't match
+    if !matches {
+        return Ok("INVALID".to_string());
+    }
+
+    // Build return value.
+    Ok(format!("SUCCESS\n{}", user_notes(&mut connection, username).unwrap()))
+}
+
 /// Called when the user posts to /modify
 ///
 /// # Recv
@@ -207,22 +348,23 @@ async fn modify(mut request: tide::Request<State>) -> Result<String> {
         .unwrap_or_else(|_| "".to_string());
 
     // Parse the request.
-    let (username, post) = if let Some(index) = post.find("\n") {
-        (&post[..index], &post[index+1..])
+    let (username, post) = if let Some(index) = post.find('\n') {
+        (&post[..index], &post[index + 1..])
     } else {
         return Ok("MALFORM".to_string());
     };
-    let (password, post) = if let Some(index) = post.find("\n") {
-        (&post[..index], &post[index+1..])
+    let (password, post) = if let Some(index) = post.find('\n') {
+        (&post[..index], &post[index + 1..])
     } else {
         return Ok("MALFORM".to_string());
     };
-    let (filename, post) = if let Some(index) = post.find(|c: char| c == '\n' || c == '\t') {
-        (&post[..index], &post[index..])
-    } else {
-        return Ok("MALFORM".to_string());
-    };
-    let (is_text, post) = match post.chars().nth(0) {
+    let (filename, post) =
+        if let Some(index) = post.find(|c: char| c == '\n' || c == '\t') {
+            (&post[..index], &post[index..])
+        } else {
+            return Ok("MALFORM".to_string());
+        };
+    let (is_text, post) = match post.chars().next() {
         Some('\t') => (true, &post[1..]),
         Some('\n') => (false, &post[1..]),
         _ => unreachable!(),
@@ -265,9 +407,11 @@ async fn modify(mut request: tide::Request<State>) -> Result<String> {
     }
 
     if is_text {
-        println!("Tried to save \"{}\": {}", filename, post);
+        println!("Saving Text \"{}\": {}", filename, post);
+        txtnote_modify(&mut connection, username, filename, post).unwrap();
     } else {
-        println!("Images not supported yet!");
+        println!("Saving Image \"{}\": {}", filename, post);
+        imgnote_modify(&mut connection, username, filename, post).unwrap();
     }
 
     // Succeeded to log in and save.
@@ -352,7 +496,8 @@ async fn log_in(mut request: tide::Request<State>) -> Result<String> {
 
 // Test page to verify that server is running and firewall is not blocked.
 async fn test_page(_request: tide::Request<State>) -> Result<tide::Body> {
-    let mut body = tide::Body::from_bytes(include_bytes!("testpage.html").to_vec());
+    let mut body =
+        tide::Body::from_bytes(include_bytes!("testpage.html").to_vec());
     body.set_mime(tide::http::mime::HTML);
 
     Ok(body)
@@ -373,11 +518,12 @@ async fn start(state: State) -> Result<()> {
     app.at("/signup").post(signup);
     app.at("/log_in").post(log_in);
     app.at("/modify").post(modify);
+    app.at("/listmy").post(listmy);
 
     async_std::println!("TIDE LISTEN").await;
 
     // Start serving HTTP server
-    let r = app.listen("0.0.0.0:8000").await.map_err(|e| e.into()); 
+    let r = app.listen("0.0.0.0:8000").await.map_err(|e| e.into());
     async_std::println!("TIDE DIE").await;
     r
 }

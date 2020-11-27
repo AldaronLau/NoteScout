@@ -208,7 +208,7 @@ class EditNotePageState extends State<EditNotePage> {
           child: Text("Done"),
           onPressed: () async {
             String content = text_controller.text;
-            await saveNote("test", content);
+            await saveNote("New Notes/New Note", content);
             var route = new MaterialPageRoute(
               builder: (BuildContext context) => new ViewNotePage(
                   mode: ViewNoteMode.Owned, value: content),
