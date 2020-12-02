@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_scout/camera.dart';
 import 'package:note_scout/converter.dart';
@@ -32,8 +33,6 @@ class upload extends StatelessWidget {
 
 
         ),
-
-
 
 
 
@@ -86,6 +85,24 @@ class  UplUD extends StatelessWidget {
               )
           ),
 ///Opens Converter
+          ///
+
+          Align(
+            alignment: Alignment.topLeft,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_sharp),
+              color: Colors.grey,
+              iconSize: 55,
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return upload();
+                  })
+                );
+              },
+            )
+          ),
           Align(
               alignment: Alignment.centerRight,
               child: IconButton(
@@ -195,7 +212,22 @@ class stopitGetHelp extends StatelessWidget {
                     "Olderrm@augsburg.edu, Mengl@augsburg.edu, Leek7@augsburg.edu or at Lauj@augsburg.edu\n\n "
                 )
             ),
-
+            Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back_sharp),
+                  color: Colors.grey,
+                  iconSize: 55,
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return UplUD();
+                        })
+                    );
+                  },
+                )
+            ),
 
           ]
       ),
@@ -222,7 +254,22 @@ class Settinf extends StatelessWidget {// Creates an page
                 )
             ),
 
-
+            Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back_sharp),
+                  color: Colors.grey,
+                  iconSize: 55,
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return UplUD();
+                        })
+                    );
+                  },
+                )
+            )
           ]
       ),
     );

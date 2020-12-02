@@ -58,6 +58,24 @@ class Ccamera extends State<Page>{
         tooltip: 'get an image already',
         child: Icon(Icons.add_a_photo),
       ),
+
     );
+    Align(
+        alignment: Alignment.topLeft,
+        child: IconButton(
+          icon: Icon(Icons.arrow_back_sharp),
+          color: Colors.grey,
+          iconSize: 55,
+          onPressed: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return UplUD();
+                })
+            );
+          },
+        )
+    )
   }
+
 }
