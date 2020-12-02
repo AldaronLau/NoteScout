@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-
-
-
-
+import 'package:note_scout/main.dart';
 
 class forgotPassword extends StatefulWidget {
   @override
@@ -14,98 +11,85 @@ class _forgotPassword extends State<forgotPassword> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
-                      child: Text(
-                        'Forgot Password',
-                        style: TextStyle(
-                            fontSize: 45.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                        /*   padding: EdgeInsets.fromLTRB(260.0, 125.0, 0.0, 0.0),
-                      child: Text(
-                        '',
-                        style: TextStyle(
-                            fontSize: 80.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green),*/
-                        //),
-                        )
-                  ],
+        resizeToAvoidBottomPadding: true,
+        body: ListView(children: <Widget>[
+          Container(
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 0.0),
+                  child: Text(
+                    'Forgot Password',
+                    style:
+                        TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Container(
-                  padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
-                  child: Column(
-                    children: <Widget>[
-                      TextField(
-                        decoration: InputDecoration(
-                            labelText: 'EMAIL',
-                            labelStyle: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.lightBlue))),
-                      ),
-                      SizedBox(height: 120.0),
-                      Container(
-                          height: 40.0,
-                          child: Material(
-                            borderRadius: BorderRadius.circular(20.0),
-                            shadowColor: Colors.blueAccent,
-                            color: Color.fromARGB(0xFF, 0x00, 0xc8, 0xff),
-                            elevation: 1.0,
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Center(
-                                child: Text(
-                                  'Send Email',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Montserrat'),
-                                ),
-                              ),
-                            ),
-                          )),
-                      SizedBox(height: 20.0),
-                      Container(
-                        height: 40.0,
-                        color: Colors.transparent,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
+              ],
+            ),
+          ),
+          Container(
+              padding: EdgeInsets.only(
+                  top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: 'EMAIL',
+                        labelStyle: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.lightBlue))),
+                  ),
+                  SizedBox(height: 40.0),
+                  Container(
+                      height: 40.0,
+                      child: Material(
+                        borderRadius: BorderRadius.circular(20.0),
+                        shadowColor: APPCOLOR,
+                        color: APPCOLOR,
+                        elevation: 1.0,
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Center(
+                            child: Text(
+                              'Send Email',
+                              style: TextStyle(
                                   color: Colors.black,
-                                  style: BorderStyle.solid,
-                                  width: 1.0),
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(20.0)),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Center(
-                              child: Text('Go Back',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Montserrat')),
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Montserrat'),
                             ),
                           ),
                         ),
+                      )),
+                  SizedBox(height: 20.0),
+                  Container(
+                    height: 40.0,
+                    color: Colors.transparent,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.black,
+                              style: BorderStyle.solid,
+                              width: 1.0),
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(20.0)),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Center(
+                          child: Text('Go Back',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Montserrat')),
+                        ),
                       ),
-                    ],
-                  )),
-            ]));
+                    ),
+                  ),
+                ],
+              )),
+        ]));
   }
 }
