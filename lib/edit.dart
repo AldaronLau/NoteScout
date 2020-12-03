@@ -7,7 +7,9 @@ import 'package:note_scout/view.dart';
 import 'package:note_scout/main.dart';
 
 class EditNotePage extends StatefulWidget {
-  EditNotePage({Key key}) : super(key: key);
+  String text = "";
+
+  EditNotePage({Key key, this.text}) : super(key: key);
 
   @override
   EditNotePageState createState() => EditNotePageState();
@@ -105,6 +107,7 @@ class EditNotePageState extends State<EditNotePage> {
   void initState() {
     super.initState();
     text_controller = TextEditingController();
+    text_controller.text = widget.text;
     selected = false;
   }
 

@@ -57,10 +57,10 @@ class ViewNotePageState extends State<ViewNotePage> {
         onPressed: () {
           notification = null;
           // Switch to edit screen
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) {
-              return EditNotePage();
+              return EditNotePage(text: widget.content);
             }),
           );
         },
