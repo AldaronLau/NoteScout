@@ -99,6 +99,8 @@ class _SignupPageState extends State<SignupPage> {
                             var user = username_controller.text;
                             var mail = email_controller.text;
                             var pswd = password_controller.text;
+                            USERNAME = user;
+                            PASSWORD = pswd;
                             print("SIGNUP Username: " +
                                 user +
                                 ", Email: " +
