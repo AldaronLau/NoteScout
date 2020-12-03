@@ -523,7 +523,7 @@ async fn start(state: State) -> Result<()> {
     async_std::println!("TIDE LISTEN").await;
 
     // Start serving HTTP server
-    let r = app.listen("0.0.0.0:8000").await.map_err(|e| e.into());
+    let r = app.listen("0.0.0.0:9000").await.map_err(|e| e.into());
     async_std::println!("TIDE DIE").await;
     r
 }

@@ -3,7 +3,7 @@ The backend code for NoteScout.
 
 ## Getting Started
 The server runs on a machine with Fedora Server Edition installed (IP:
-73.94.232.74).
+73.94.232.74, port: 9000).
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh

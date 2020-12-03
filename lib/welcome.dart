@@ -107,7 +107,7 @@ class WelcomeState extends State<Welcome> {
                           await http
                               .post(SERVER + "/log_in",
                                   body: user + "\n" + pswd)
-                              .timeout(const Duration(milliseconds: 2500))
+                              .timeout(const Duration(milliseconds: 5000))
                               .then((resp) {
                             print("Body: \"" + resp.body + "\"");
                             switch (resp.body) {

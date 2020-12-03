@@ -110,7 +110,7 @@ class _SignupPageState extends State<SignupPage> {
                               await http
                                   .post(SERVER + "/signup",
                                       body: user + "\n" + mail + "\n" + pswd)
-                                  .timeout(const Duration(milliseconds: 2500))
+                                  .timeout(const Duration(milliseconds: 5000))
                                   .then((resp) {
                                 print("Body: \"" + resp.body + "\"");
                                 switch (resp.body) {

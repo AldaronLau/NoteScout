@@ -41,7 +41,7 @@ class MyNotesPageState extends State<MyNotesPage> {
     try {
       await http
           .post(SERVER + "/listmy", body: fileString)
-          .timeout(const Duration(milliseconds: 2500))
+          .timeout(const Duration(milliseconds: 5000))
           .then((resp) {
             print("Body: \"" + resp.body + "\"");
             switch (resp.body) {
