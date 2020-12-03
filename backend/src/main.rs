@@ -87,7 +87,7 @@ fn user_insert(
     Ok(())
 }
 
-/// Called when the user posts to /log_in
+/// Called when the user posts to /signup
 ///
 /// # Recv
 /// ```
@@ -208,6 +208,40 @@ fn user_salt(client: &mut Client, username: &str) -> Result<Option<i64>> {
     }
 }
 
+/// Retreive note text.
+fn load_note(
+    client: &mut Client,
+    username: &str,
+    filename: &str,
+) -> Result<String> {
+    println!("Loading '{}'s '{}'", username, filename);
+
+    // Build SQL Prepared Statement
+    let mut trans = client.transaction()?;
+    let stmt = format!(
+        "SELECT contents FROM notes WHERE username='{}' AND filename='{}';",
+        username,
+        filename,
+    );
+    let prep = trans.prepare(&stmt)?;
+
+    // Execute SQL Prepared Statement
+    let portal = trans.bind(&prep, &[])?;
+    let mut rows = trans.query_portal_raw(&portal, 50)?;
+
+    // Interpret results
+    let mut output = String::new();
+    while let Some(row) = rows.next()? {
+        output.push_str(row.get(0));
+        output.push('\n');
+    }
+    output.pop();
+    
+    println!("Loaded: {}", output);
+    
+    Ok(output)
+}
+
 /// Retreive a list of the user's notes from the database.
 fn user_notes(
     client: &mut Client,
@@ -324,6 +358,40 @@ async fn listmy(mut request: tide::Request<State>) -> Result<String> {
 
     // Build return value.
     Ok(format!("SUCCESS\n{}", user_notes(&mut connection, username).unwrap()))
+}
+
+/// Called when the user posts to /viewit
+///
+/// # Recv
+/// ```
+/// "USERNAME/FOLDER/NOTE"
+/// ```
+///
+/// # Send
+/// - `"MALFORM"`: Post Request Is Malformed
+/// - `"SUCCESS"`: Log In Succeeded
+/// - `"INVALID"`: Invalid Username Password Combination
+/// - `"MISSING"`: User is Missing From Database
+/// - `"FAILURE"`: Failed to connect to database
+async fn viewit(mut request: tide::Request<State>) -> Result<String> {
+    // Get the POST request data
+    let post = request
+        .body_string()
+        .await
+        .unwrap_or_else(|_| "".to_string());
+
+    // Parse the request.
+    let user = if let Some(index) = post.find('/') {
+        &post[..index]
+    } else {
+        return Ok("MALFORM".to_string());
+    };
+
+    // Connect to the database
+    let mut connection = request.state().pool.get()?;
+
+    // Build return value.
+    Ok(format!("SUCCESS\t{}", load_note(&mut connection, user, &post).unwrap()))
 }
 
 /// Called when the user posts to /modify
@@ -519,6 +587,7 @@ async fn start(state: State) -> Result<()> {
     app.at("/log_in").post(log_in);
     app.at("/modify").post(modify);
     app.at("/listmy").post(listmy);
+    app.at("/viewit").post(viewit);
 
     async_std::println!("TIDE LISTEN").await;
 

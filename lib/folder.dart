@@ -1,18 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/icon_data.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:note_scout/mynotes.dart';
 import 'package:note_scout/view.dart';
 import 'package:note_scout/upload.dart';
 import 'package:note_scout/merge.dart';
 import 'package:note_scout/edit.dart';
+import 'package:note_scout/main.dart';
 
 class FolderPage extends StatefulWidget {
   MyNotesMode mode;
   List<String> files = [];
+  String path;
 
-  FolderPage({Key key, this.mode, this.files}) : super(key: key);
+  FolderPage({Key key, this.mode, this.files, this.path}) : super(key: key);
 
   @override
   FolderPageState createState() => new FolderPageState();
@@ -23,6 +27,92 @@ class FolderPageState extends State<FolderPage> {
   int rating = 0;
   double community_rating = 3.5;
   String notification = null;
+
+  // Load a note's contents.
+  Future noteContents(int index, bool bookmarked, ViewNoteMode mode) async {
+    String fileString = USERNAME + "/" + widget.path + "/" + widget.files[index];
+    try {
+      await http
+          .post(SERVER + "/viewit", body: fileString)
+          .timeout(const Duration(milliseconds: 5000))
+          .then((resp) {
+            print("Body: \"" + resp.body + "\"");
+            switch (resp.body) {
+              case "MALFORM": // Post Request Is Malformed
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: REQUEST MALFORMED!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "INVALID": // Invalid Username Password Combination
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: WRONG PASSWORD!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "MISSING": // User is Missing From Database
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: USER " + USERNAME + " DOESN'T EXIST!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "FAILURE": // Failed to connect to database":
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: THE SERVER HAS A BUG!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              default:
+                if (resp.body.startsWith("SUCCESS")) {
+                   setState(() {
+                    print(resp.body);
+                    var content = resp.body.split("\t")[1];
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                            return ViewNotePage(
+                              mode: mode,
+                              bookmarked: bookmarked,
+                              content: content
+                            );
+                        }),
+                    );
+                   });
+                } else {
+                  Fluttertoast.showToast(
+                    msg: "WHOOPS!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                }
+                break;
+            }
+          });
+        } catch (e) {
+          print(e);
+          Fluttertoast.showToast(
+              msg: "CAN'T REACH SERVER!",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              backgroundColor: APPCOLOR,
+              textColor: Colors.black,
+              fontSize: 16.0);
+        }
+  }
 
   // Loading folder list callback.  After last post, returns null.
   Widget loadFolder(BuildContext context, int index) {
@@ -35,7 +125,7 @@ class FolderPageState extends State<FolderPage> {
     IconData icon = Icons.note;
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         ViewNoteMode mode;
         bool bookmarked;
         if (widget.mode == MyNotesMode.Owned) {
@@ -46,12 +136,7 @@ class FolderPageState extends State<FolderPage> {
           bookmarked = true;
         }
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) {
-            return ViewNotePage(mode: mode, bookmarked: bookmarked);
-          }),
-        );
+        await noteContents(index, bookmarked, mode);
       },
       child: Column(children: [
         Container(

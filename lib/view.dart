@@ -18,8 +18,8 @@ enum ViewNoteMode {
 class ViewNotePage extends StatefulWidget {
   ViewNoteMode mode;
   bool bookmarked;
-  final String value;
-  ViewNotePage({Key key, this.mode, this.bookmarked = false, this.value})
+  final String content;
+  ViewNotePage({Key key, this.mode, this.bookmarked = false, this.content})
       : super(key: key);
 
   @override
@@ -191,17 +191,8 @@ class ViewNotePageState extends State<ViewNotePage> {
           }),
         ],
       ),
-      body: //Container(
-          //new Text("${widget.value}"),
-          Text(
-        "${widget.value}",
-        style: Theme.of(context).textTheme.headline6,
-      ),
-      //TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
-
-      //child: Image.network("http://images.freeimages.com/images/previews/bf6/note-paper-1155539.jpg"),
-
-      //),
+      body: Text("${widget.content}",
+        style: Theme.of(context).textTheme.headline6),
       bottomNavigationBar: BottomAppBar(
         color: Color.fromARGB(0xFF, 0xDE, 0xE9, 0xA9),
         child: Column(mainAxisSize: MainAxisSize.min, children: bottom),

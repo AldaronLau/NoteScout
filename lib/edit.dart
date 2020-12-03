@@ -209,11 +209,20 @@ class EditNotePageState extends State<EditNotePage> {
           onPressed: () async {
             String content = text_controller.text;
             await saveNote("New Notes/New Note", content);
-            var route = new MaterialPageRoute(
-              builder: (BuildContext context) => new ViewNotePage(
-                  mode: ViewNoteMode.Owned, value: content),
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) {
+                    return ViewNotePage(
+                      mode: ViewNoteMode.Owned,
+                      content: content
+                    );
+                }),
             );
-            Navigator.of(context).push(route);
+            /*var route = new MaterialPageRoute(
+              builder: (BuildContext context) => new ViewNotePage(
+                  mode: ViewNoteMode.Owned, content: content),
+            );
+            Navigator.of(context).push(route);*/
           }),
     );
   }

@@ -142,7 +142,7 @@ class MyNotesPageState extends State<MyNotesPage> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) {
-            return FolderPage(mode: widget.mode, files: files[index]);
+            return FolderPage(mode: widget.mode, files: files[index], path: folders[index]);
           }),
         );
       },
