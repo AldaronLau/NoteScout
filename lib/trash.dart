@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/icon_data.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:note_scout/main.dart';
+import 'package:http/http.dart' as http;
 
 class TrashPage extends StatefulWidget {
   @override
@@ -13,28 +15,97 @@ class TrashPageState extends State<TrashPage> {
   int rating = 0;
   double community_rating = 3.5;
   String notification = null;
+  List<String> files = [];
+
+  // Load list of notes an folders.
+  Future myNotes() async {
+    String fileString = USERNAME + "\n" + PASSWORD;
+    try {
+      await http
+          .post(SERVER + "/listmy", body: fileString)
+          .timeout(const Duration(milliseconds: 5000))
+          .then((resp) {
+            print("Body: \"" + resp.body + "\"");
+            switch (resp.body) {
+              case "MALFORM": // Post Request Is Malformed
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: REQUEST MALFORMED!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "INVALID": // Invalid Username Password Combination
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: WRONG PASSWORD!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "MISSING": // User is Missing From Database
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: USER " + USERNAME + " DOESN'T EXIST!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "FAILURE": // Failed to connect to database":
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: THE SERVER HAS A BUG!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              default:
+                if (resp.body.startsWith("SUCCESS")) {
+                   setState(() { 
+                   var file_list = resp.body.split('\n');
+                   for(int i = 1; i < file_list.length; i++) {
+                     var splitted = file_list[i].split('/');
+                     var folder = splitted[1];
+                     var filename = splitted[2];
+                     if (folder == "Trash") {
+                       files.add(filename);
+                     }
+                   } });
+                } else {
+                  Fluttertoast.showToast(
+                    msg: "WHOOPS!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                }
+                break;
+            }
+          });
+        } catch (e) {
+          print(e);
+          Fluttertoast.showToast(
+              msg: "CAN'T REACH SERVER!",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              backgroundColor: APPCOLOR,
+              textColor: Colors.black,
+              fontSize: 16.0);
+        }
+  }
 
   // Loading folder list callback.  After last post, returns null.
   Widget loadFolder(BuildContext context, int index) {
-    if (index >= 6) {
+    if (index >= files.length) {
       return null;
     }
 
-    String name;
-
-    if (foldersInsteadOfTags) {
-      name = " Folder #";
-    } else {
-      name = " Tag #";
-    }
-
-    IconData icon;
-
-    if (foldersInsteadOfTags) {
-      icon = Icons.folder;
-    } else {
-      icon = Icons.label;
-    }
+    IconData icon = Icons.note;
 
     return GestureDetector(
       onTap: () {
@@ -52,7 +123,7 @@ class TrashPageState extends State<TrashPage> {
           color: Colors.transparent,
           child: Row(children: [
             Icon(icon),
-            Text('${name}${index + 1}'),
+            Text(files[index]),
           ]),
         ),
         Divider()

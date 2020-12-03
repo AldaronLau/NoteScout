@@ -32,7 +32,7 @@ class MyNotesPageState extends State<MyNotesPage> {
   int rating = 0;
   double community_rating = 3.5;
   String notification = null;
-  List<String> files = [];
+  List<List<String>> files = [];
   List<String> folders = [];
 
   // Load list of notes an folders.
@@ -84,12 +84,19 @@ class MyNotesPageState extends State<MyNotesPage> {
               default:
                 if (resp.body.startsWith("SUCCESS")) {
                    setState(() { 
-                   files = resp.body.split('\n');
+                   var file_list = resp.body.split('\n');
                    folders = [];
-                   for(int i = 1; i < files.length; i++) {
-                     var folder = files[i].split('/')[1];
-                     if (!folders.contains(folder)) {
-                       folders.add(folder);
+                   for(int i = 1; i < file_list.length; i++) {
+                     var splitted = file_list[i].split('/');
+                     var folder = splitted[1];
+                     var filename = splitted[2];
+                     if (folder != "Trash") {
+                         if (!folders.contains(folder)) {
+                           folders.add(folder);
+                           files.add([filename]);
+                         } else {
+                           files[folders.indexOf(folder)].add(filename);
+                         }
                      }
                    } });
                 } else {
@@ -122,14 +129,6 @@ class MyNotesPageState extends State<MyNotesPage> {
       return null;
     }
 
-    String name;
-
-    if (foldersInsteadOfTags) {
-      name = " Folder #";
-    } else {
-      name = " Tag #";
-    }
-
     IconData icon;
 
     if (foldersInsteadOfTags) {
@@ -143,7 +142,7 @@ class MyNotesPageState extends State<MyNotesPage> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) {
-            return FolderPage(mode: widget.mode);
+            return FolderPage(mode: widget.mode, files: files[index]);
           }),
         );
       },
@@ -153,7 +152,7 @@ class MyNotesPageState extends State<MyNotesPage> {
           color: Colors.transparent,
           child: Row(children: [
             Icon(icon),
-            Text('${folders[index]}'),
+            Text(folders[index]),
           ]),
         ),
         Divider()

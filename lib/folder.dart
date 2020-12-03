@@ -10,8 +10,9 @@ import 'package:note_scout/edit.dart';
 
 class FolderPage extends StatefulWidget {
   MyNotesMode mode;
+  List<String> files = [];
 
-  FolderPage({Key key, this.mode}) : super(key: key);
+  FolderPage({Key key, this.mode, this.files}) : super(key: key);
 
   @override
   FolderPageState createState() => new FolderPageState();
@@ -25,11 +26,11 @@ class FolderPageState extends State<FolderPage> {
 
   // Loading folder list callback.  After last post, returns null.
   Widget loadFolder(BuildContext context, int index) {
-    if (index >= 24) {
+    if (index >= widget.files.length) {
       return null;
     }
 
-    String name = " Note #";
+    String name = widget.files[index];
 
     IconData icon = Icons.note;
 
@@ -58,7 +59,7 @@ class FolderPageState extends State<FolderPage> {
           color: Colors.transparent,
           child: Row(children: [
             Icon(icon),
-            Text('${name} ${index + 1}'),
+            Text(name),
           ]),
         ),
         Divider()
