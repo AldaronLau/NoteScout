@@ -170,7 +170,7 @@ class  UplUD extends StatelessWidget {
                   onPressed: () {
                     print('going back');
                     Navigator.push(context,
-                        new MaterialPageRoute(builder: (context) => new permission() //Will change to the setting page
+                        new MaterialPageRoute(builder: (context) => new Perpart() //Will change to the setting page
                         ));
                   }
               )

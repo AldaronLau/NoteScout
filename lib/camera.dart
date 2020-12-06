@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 
 
-void main() => runApp(CameraPart());
+//void main() => runApp(CameraPart());
 
 class CameraPart extends StatelessWidget {
   @override
