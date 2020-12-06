@@ -115,7 +115,7 @@ class  UplUD extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
-                          return MyHomePage();
+                          return Gallery();
                         }
                         )
                     );
@@ -170,7 +170,7 @@ class  UplUD extends StatelessWidget {
                   onPressed: () {
                     print('going back');
                     Navigator.push(context,
-                        new MaterialPageRoute(builder: (context) => new Settinf() //Will change to the setting page
+                        new MaterialPageRoute(builder: (context) => new permission() //Will change to the setting page
                         ));
                   }
               )
@@ -240,7 +240,7 @@ class Settinf extends StatelessWidget {// Creates an page
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Setting"),// Button that its called
+        title: Text("Permission"),// Button that its called
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),

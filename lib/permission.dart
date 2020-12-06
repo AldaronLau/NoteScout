@@ -1,57 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'package:note_scout/main.dart';
 
-class permission extends StatefulWidget {
+class permission  {
+  final PermissionHandler phandler = PermissionHandler();
+
   @override
-  _permissionstate createState() => _permissionstate();
+  Widget build (BuildContext context) {
+    return MaterialApp(
+      title: 'Notescout',
+      home: Scaffold(
+      body: Center( 
+        child: MaterialButton(
+        color: Colors.blue,
+        child: Text('Request Permissione to use the camera'),
+        onPressed: (){
+    permission().requestCameraPermission(
+    onPressedDenied: (){
+      print('Permission hs been denied');
+    });
+    },
+    ),
+    )
+    ));
+  }
+  
+  
+Future<bool> requestPermission (PermissionGroup permission) async{
+
+  var result = await phandler.requestPermissions([permission]);
+  if (result[permission] == PermissionStatus.granted) {
+    return true;
+  }
+    return false;
+
 }
 
-class _permissionstate extends State<permission> {
-  Map<PermissionGroup, PermissionStatus> permissions;
-  @override
-  void initState() {
-    super.initState();
-    getPermission();
+
+  Future<bool> requestCameraPermission ({Function onPressedDenied}) async{
+
+    var ward = await requestPermission(PermissionGroup.camera);
+    if (!ward) {
+      onPressedDenied();
+    }
+    return ward;
+
   }
 
-  // Groups together what should be acessed
-  void getPermission() async {
-    permissions = await PermissionHandler().requestPermissions([
-      PermissionGroup.photos,
-      PermissionGroup.camera,
-      PermissionGroup.phone,
-    ]);
-  }
+  Future<bool> hasPermission (PermissionGroup permission) async{
+    var permissionStatus =
+        await phandler.checkPermissionStatus(permission);
+        return permissionStatus == PermissionStatus.granted;
 
-  ///Builds a widget
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Ask for permisions please'),
-        backgroundColor: APPCOLOR,
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          Text("All Permission Granted"),
-        ],
-      )),
-    );
-  }
+  
 }
 
-/*// Pops up an access button. Supposedly it should bring a popup asking for permission
-class RequestAccess extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Permission needed',
-      theme: new ThemeData(primaryColor: APPCOLOR),
-      home: new permission(),
-    );
-  }
-}*/
