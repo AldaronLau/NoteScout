@@ -87,6 +87,7 @@ class MyNotesPageState extends State<MyNotesPage> {
                    var file_list = resp.body.split('\n');
                    folders = [];
                    for(int i = 1; i < file_list.length; i++) {
+                     if (file_list[i].length == 0) { break; } 
                      var splitted = file_list[i].split('/');
                      var folder = splitted[1];
                      var filename = splitted[2];
