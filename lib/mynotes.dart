@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:note_scout/view.dart';
 import 'package:note_scout/edit.dart';
 import 'package:note_scout/folder.dart';
-import 'package:note_scout/upload.dart';
+import 'package:note_scout/uploader.dart';
 import 'package:note_scout/main.dart';
 
 enum MyNotesMode {

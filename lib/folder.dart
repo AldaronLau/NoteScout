@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:note_scout/mynotes.dart';
 import 'package:note_scout/view.dart';
-import 'package:note_scout/upload.dart';
+import 'package:note_scout/uploader.dart';
 import 'package:note_scout/merge.dart';
 import 'package:note_scout/edit.dart';
 import 'package:note_scout/main.dart';

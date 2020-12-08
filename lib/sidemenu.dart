@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:note_scout/upload.dart';
+import 'package:note_scout/uploader.dart';
 import 'package:note_scout/trash.dart';
 import 'package:note_scout/faq.dart';
 import 'package:note_scout/settings.dart';
