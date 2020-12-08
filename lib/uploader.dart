@@ -78,6 +78,7 @@ class  UplUD extends StatelessWidget {
                       context,
                       MaterialPageRoute(builder: (context) {
                         return CameraPart();
+                        return Perpart();
                       }),
                     );
                     //Navigator.of(context).push(MaterialPageRoute(builder: (context)=> CameraButton()));
@@ -165,10 +166,10 @@ class  UplUD extends StatelessWidget {
           Align( //Creates a new widget in the left part of the screen
               alignment: Alignment.topLeft,
               child: RaisedButton( //Its a button that says back
-                  child: Text("Settings"),
+                  child: Text("Permissions"),
                   color: Colors.blue,
                   onPressed: () {
-                    print('going back');
+                    print('Permissions');
                     Navigator.push(context,
                         new MaterialPageRoute(builder: (context) => new Perpart() //Will change to the setting page
                         ));
@@ -249,11 +250,16 @@ class Settinf extends StatelessWidget {// Creates an page
 
             Align(
                 alignment: Alignment.center, //Where the text is going to appear
-                child: Text(" Tunr on Auto download?\n\n "
-                    "Turn on scheduled trash?\n\n "
-                )
+               child: MaterialButton(
+    color: Colors.blue,
+    child: Text('Permission'),
+    onPressed: () {
+      print('Permissions');
+      Navigator.push(context,
+          new MaterialPageRoute(builder: (context) => new Perpart() //Will change to the setting page
+          ));
+    })
             ),
-
             Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
@@ -268,8 +274,8 @@ class Settinf extends StatelessWidget {// Creates an page
                         })
                     );
                   },
-                )
-            )
+                ),
+            ),
           ]
       ),
     );

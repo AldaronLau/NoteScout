@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:note_scout/uploader.dart';
 
 
 //void main() => runApp(CameraPart());
@@ -48,16 +48,39 @@ class Ccamera extends State<Page>{
       appBar: AppBar(
         title: Text("NoteScout Official Camera"),
       ),
-      body: Center(
+      body: Stack(children: <Widget>[
+      Align(
         child: Iimage == null
             ? Text("No image has been selected")
             : Image.file(Iimage),
       ),
-      floatingActionButton: FloatingActionButton(
+      Align(
+      alignment: Alignment.center,
+      child: RaisedButton(
+      child: Text("Take Picture"),
+    color: Colors.blue,
         onPressed: GetSome,
-        tooltip: 'get an image already',
-        child: Icon(Icons.add_a_photo),
+
       ),
+    ),
+    Align( alignment: Alignment.topLeft,
+        child: IconButton(
+          icon: Icon(Icons.arrow_back_sharp),
+          color: Colors.grey,
+          iconSize: 55,
+          onPressed: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return UplUD();
+                })
+            );
+          },
+        )
+    ),
+
+    ],
+      )
     );
   }
 }
