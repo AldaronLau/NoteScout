@@ -176,7 +176,7 @@ class MyNotesPageState extends State<MyNotesPage> {
     String title;
 
     if (widget.mode == MyNotesMode.Owned) {
-      title = "My Notes";
+      title = "My Notes Folder";
       menu_options.add("New Note");
       menu_options.add("Upload Note");
     } else {
