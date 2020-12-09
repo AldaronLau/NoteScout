@@ -19,7 +19,8 @@ class ViewNotePage extends StatefulWidget {
   ViewNoteMode mode;
   bool bookmarked;
   final String content;
-  ViewNotePage({Key key, this.mode, this.bookmarked = false, this.content})
+  var name;
+  ViewNotePage({Key key, this.mode, this.bookmarked = false, this.content, this.name})
       : super(key: key);
 
   @override
@@ -60,7 +61,10 @@ class ViewNotePageState extends State<ViewNotePage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) {
-              return EditNotePage(text: widget.content);
+              return EditNotePage(
+                  text: widget.content,
+                  name: widget.name
+              );
             }),
           );
         },
@@ -143,7 +147,7 @@ class ViewNotePageState extends State<ViewNotePage> {
               case "Rename Note":
                 showDialog(
                   context: context,
-                  builder: (_) => RenameNotePopUp(),
+                  builder: (_) => RenameNotePopUp(name: widget.name,),
                 );
                 break;
               case "Move Note...":
@@ -390,8 +394,8 @@ class DeleteNotePopUpState extends State<DeleteNotePopUp> {
 }
 
 class RenameNotePopUp extends StatefulWidget {
-  RenameNotePopUp({Key key}) : super(key: key);
-
+  RenameNotePopUp({Key key, this.name}) : super(key: key);
+  var name;
   @override
   RenameNotePopUpState createState() {
     return new RenameNotePopUpState();
@@ -405,7 +409,7 @@ class RenameNotePopUpState extends State<RenameNotePopUp> {
   void initState() {
     super.initState();
     text_controller = TextEditingController(
-      text: "Untitled Note",
+      text: widget.name,
     );
   }
 

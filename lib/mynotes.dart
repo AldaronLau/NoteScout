@@ -200,16 +200,13 @@ class MyNotesPageState extends State<MyNotesPage> {
                 });
                 break;
               case "New Note":
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
-                    return ViewNotePage(mode: ViewNoteMode.Owned);
-                  }),
-                );
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return EditNotePage();
+                    return EditNotePage(
+                      name: "New Note"
+                    );
                   }),
                 );
                 break;

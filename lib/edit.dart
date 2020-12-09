@@ -8,8 +8,8 @@ import 'package:note_scout/main.dart';
 
 class EditNotePage extends StatefulWidget {
   String text = "";
-
-  EditNotePage({Key key, this.text}) : super(key: key);
+  var name;
+  EditNotePage({Key key, this.text, this.name}) : super(key: key);
 
   @override
   EditNotePageState createState() => EditNotePageState();
@@ -217,7 +217,8 @@ class EditNotePageState extends State<EditNotePage> {
                 MaterialPageRoute(builder: (context) {
                     return ViewNotePage(
                       mode: ViewNoteMode.Owned,
-                      content: content
+                      content: content,
+                      name: widget.name
                     );
                 }),
             );

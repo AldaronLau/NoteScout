@@ -85,7 +85,8 @@ class FolderPageState extends State<FolderPage> {
                             return ViewNotePage(
                               mode: mode,
                               bookmarked: bookmarked,
-                              content: content
+                              content: content,
+                              name: widget.files[index]
                             );
                         }),
                     );
@@ -173,16 +174,13 @@ class FolderPageState extends State<FolderPage> {
 
       actions.add(IconButton(
         onPressed: () {
+
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) {
-              return ViewNotePage(mode: ViewNoteMode.Owned);
-            }),
-          );
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) {
-              return EditNotePage();
+              return EditNotePage(
+                name: "New Note"
+              );
             }),
           );
         },
