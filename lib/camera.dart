@@ -45,11 +45,14 @@ class Ccamera extends State<Page>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("NoteScout Official Camera"),
-      ),
+        appBar: AppBar(
+          title: Text("Notescout official camera"),
+          centerTitle: true,
+          backgroundColor: Colors.blue,
+        ),
       body: Stack(children: <Widget>[
       Align(
+      alignment: Alignment.bottomCenter,
         child: Iimage == null
             ? Text("No image has been selected")
             : Image.file(Iimage),

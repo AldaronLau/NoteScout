@@ -15,8 +15,6 @@ import 'package:note_scout/permission.dart';
 void main() => runApp(MaterialApp(
     home: upload()
 ));
-
-
 class upload extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,12 +28,7 @@ class upload extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
           margin: EdgeInsets.all(30.0),
           color: Colors.grey[400],
-
-
         ),
-
-
-
         floatingActionButton: RaisedButton(
             child: Text("Upload"),
             color: Colors.blue,
@@ -88,22 +81,7 @@ class  UplUD extends StatelessWidget {
 ///Opens Converter
           ///
 
-          Align(
-            alignment: Alignment.topLeft,
-            child: IconButton(
-              icon: Icon(Icons.arrow_back_sharp),
-              color: Colors.grey,
-              iconSize: 55,
-              onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return upload();
-                  })
-                );
-              },
-            )
-          ),
+
           Align(
               alignment: Alignment.centerRight,
               child: IconButton(
@@ -260,22 +238,7 @@ class Settinf extends StatelessWidget {// Creates an page
           ));
     })
             ),
-            Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back_sharp),
-                  color: Colors.grey,
-                  iconSize: 55,
-                  onPressed: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return UplUD();
-                        })
-                    );
-                  },
-                ),
-            ),
+
           ]
       ),
     );

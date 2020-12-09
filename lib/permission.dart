@@ -69,6 +69,11 @@ class permission extends State<Perpart> {
   @override
   Widget build(BuildContext context) {
         return Scaffold(
+            appBar: AppBar(
+            title: Text("Permissions"),
+    centerTitle: true,
+    backgroundColor: Colors.blue,
+            ),
             body:  Stack(children: <Widget>[(
             Align(
                 alignment: Alignment.centerLeft,

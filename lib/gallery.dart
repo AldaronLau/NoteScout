@@ -24,9 +24,11 @@ class _GalleryState extends State<Gallery> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Select a Note'),
-      ),
+        appBar: AppBar(
+          title: Text("Gallery"),
+          centerTitle: true,
+          backgroundColor: Colors.blue,
+        ),
       body: new Center(
         child: _image == null
             ? new Text('No image selected.')
