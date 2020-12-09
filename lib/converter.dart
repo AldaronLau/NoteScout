@@ -7,8 +7,7 @@ import 'package:file_picker/file_picker.dart';
 
 import 'package:note_scout/home.dart';
 import 'package:note_scout/main.dart';
-
-///import 'package:note_scout/pdf_text.dart';
+import 'package:note_scout/pdf_text.dart';
 
 void Main() => runApp(Turner());
 
@@ -18,7 +17,7 @@ class Turner extends StatefulWidget {
 }
 
 class TurnerSS extends State<Turner> {
-  String _pdfDoc;
+  PDFDoc _pdfDoc;
   String _words = "";
 
   bool _enable = true;
@@ -31,7 +30,7 @@ class TurnerSS extends State<Turner> {
   /// Picks a PDF file from the device
   Future _PickaText() async {
     File file = await FilePicker.getFile();
-    //_pdfDoc = await PDFDoc.fromFile(file);
+    _pdfDoc = await PDFDoc.fromFile(file);
     setState(() {});
   }
 
@@ -44,10 +43,10 @@ class TurnerSS extends State<Turner> {
       _enable = false;
     });
 
-    ///String text = await _pdfDoc.text;
+    String text = await _pdfDoc.text;
 
     setState(() {
-      ///    _words = text;
+          _words = text;
       _enable = true;
     });
   }
