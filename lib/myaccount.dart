@@ -7,7 +7,29 @@ import 'package:note_scout/main.dart';
 class myaccount extends StatelessWidget {
   // Creates an page
   @override
+
+  @override
   Widget build(BuildContext context) {
+/*
+    return MaterialApp(
+
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Insert Image Demo'),
+        ),
+
+        body: Center(
+          child: Column(
+            children: <Widget>[
+              Image.asset('assets/user.png'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}*/
+ // Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("My Account"), // Button that its called
@@ -15,12 +37,50 @@ class myaccount extends StatelessWidget {
         backgroundColor: APPCOLOR,
       ),
       body: Stack(children: <Widget>[
+      //body: Stack(children: <Widget>[
+      Align(
+      alignment: Alignment.topRight, //Where the text is going to appear
+          child: Text(
+              "\n\n"
+              "\n\n"
+              "Username: _________________\n\n" "\n\n"
+              "Email: _____________________\n\n" "\n\n"
+              "Password: _________________\n\n ")),
+
+
+
+
+/*
         Align(
+            alignment: Alignment.centerLeft, //Where the text is going to appear
+            child: Text(
+
+                "\n\n"
+                    "\n\n"
+                    "Username: ________________\n\n" "\n\n"
+                    "Email: ____________________\n\n" "\n\n"
+                    "Password: ________________\n\n ")),*/
+        Container(
+        height: 175.0,
+        width: 175.0,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+                'assets/user.png'
+            ),
+            fit: BoxFit.fill,
+
+          ),
+         // shape: BoxShape.circle,
+        ),
+      )
+
+        /*Align(
             alignment: Alignment.centerLeft, //Where the text is going to appear
             //child: Text(("Image from assets"),
 
-            child: Image.asset('assets/user.png'), //   <-- image
-      )],
+            child: Image.asset('assets/user.png')*/, //   <-- image
+      ],
       ));
   }
 }
