@@ -36,13 +36,18 @@ class sideMenu extends State<SideMenu> {
     return Column(
       children: <Widget>[
     ListTile(
-    title: const Text("My Account",
+      title: const Text("My Account",
         style: TextStyle(color: Colors.black, fontSize: 22.0)),
-    onTap: () {
-    Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) {
-    return myaccount();
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return myaccount();
+	    }
+            )
+          );
+        }
+    ),
         ListTile(
             title: const Text("Upload",
                 style: TextStyle(color: Colors.black, fontSize: 22.0)),
@@ -50,7 +55,7 @@ class sideMenu extends State<SideMenu> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return upload();
+                  return UplUD();
                 }),
               );
             }),
