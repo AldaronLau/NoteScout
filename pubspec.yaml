@@ -40,8 +40,7 @@ dev_dependencies:
   flutter_launcher_icons: "^0.7.2+1"
   flutter_test:
     sdk: flutter
-pdf_text:
-  path: ../lib 
+pdf_text: ^0.3.1
 
 flutter_icons:
   android: "launcher_icon"
