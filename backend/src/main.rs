@@ -75,13 +75,13 @@ fn imgnote_modify(
     transaction.execute(format!("DELETE FROM notes WHERE filename = '{}/{}'",
         username, filename).as_str(), &[])?;
     let mut stmt = format!("INSERT INTO notes (username, filename, graphics) \
-         VALUES ('{}', '{}/{}', x'", username, username, filename);
+         VALUES ('{}', '{}/{}', decode('", username, username, filename);
 
-    for byte in base64::decode(graphics)?.iter() {
+    /*for byte in base64::decode(graphics)?.iter() {
         write!(stmt, "{:X}", byte).unwrap();
-    }
+    }*/
 
-    write!(stmt, "'::bytea);").unwrap();
+    write!(stmt, "{}', 'base64'));", graphics).unwrap();
 
     transaction.execute(stmt.as_str(), &[])?;
     transaction.commit()?;
