@@ -75,7 +75,7 @@ class Ccamera extends State<Page>{
     ),
     Align( alignment: Alignment.topLeft,
         child: IconButton(
-          icon: Icon(Icons.arrow_back_sharp),
+         // icon: Icon(Icons.arrow_back_sharp),
           color: Colors.grey,
           iconSize: 55,
           onPressed: (){

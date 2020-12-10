@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:note_scout/myaccount.dart';
 
 import 'package:note_scout/uploader.dart';
 import 'package:note_scout/trash.dart';
 import 'package:note_scout/faq.dart';
 import 'package:note_scout/settings.dart';
-import 'package:note_scout/permission.dart';
 
 final Color backgroundColor = Color(0xFFFFFF);
 
@@ -35,12 +35,19 @@ class sideMenu extends State<SideMenu> {
   Widget menu(context) {
     return Column(
       children: <Widget>[
-        ListTile(
-            title: const Text("My Account",
-                style: TextStyle(color: Colors.black, fontSize: 22.0)),
-            onTap: () {
-              print("TODO");
-            }),
+    ListTile(
+      title: const Text("My Account",
+        style: TextStyle(color: Colors.black, fontSize: 22.0)),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return myaccount();
+	    }
+            )
+          );
+        }
+    ),
         ListTile(
             title: const Text("Upload",
                 style: TextStyle(color: Colors.black, fontSize: 22.0)),
@@ -59,12 +66,12 @@ class sideMenu extends State<SideMenu> {
               Navigator.push(context,
                   new MaterialPageRoute(builder: (context) => new Faq()));
             }),
-        ListTile(
+       /* ListTile(
             title: const Text("Upgrade Account",
                 style: TextStyle(color: Colors.black, fontSize: 22.0)),
             onTap: () {
               print("TODO");
-            }),
+            }),*/
         ListTile(
             title: const Text("Trash",
                 style: TextStyle(color: Colors.black, fontSize: 22.0)),
@@ -83,7 +90,7 @@ class sideMenu extends State<SideMenu> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return Perpart();
+                  return Settings();
                 }),
               );
             }),
