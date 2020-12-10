@@ -30,7 +30,7 @@ Future savePictureNote(String filename, String content) async {
           .post(SERVER + "/modify", body: fileString)
           .timeout(const Duration(milliseconds: 5000))
           .then((resp) {
-            print("Body: \"" + resp.body + "\"");
+            print("Body: \" " + resp.body + "\"");
             switch (resp.body) {
               case "MALFORM": // Post Request Is Malformed
                 Fluttertoast.showToast(

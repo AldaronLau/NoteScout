@@ -27,21 +27,25 @@ class Ccamera extends State<Page>{
 ///Defines an image and how its selected
   File Iimage;
   final selector = ImagePicker();
+  String b64;
 
   ///Chooses image from phone capture
-  ///
-  ///
-  /// 
   Future GetSome() async {
-    final PickedFile = await selector.getImage(source: ImageSource.camera);
+    //final PickedFile = await selector.getImage(source: ImageSource.camera);
+    var _path = await ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
+      final ebyte = _path.readAsBytesSync();
+      b64 = base64Encode(ebyte);
+
       if (PickedFile != null){
-        Iimage = File(PickedFile.path);
+        Iimage = File(_path.path);
       }else{
         print("Nothing is there");
       }
     });
+    print(b64);
+    {savePictureNote ( 'picturers/picturers', b64);}
   }
 
   ///Builds widget that opens the camera
