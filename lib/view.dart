@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/icon_data.dart';
 
+import 'package:note_scout/folder.dart';
+import 'package:note_scout/main.dart';
 import 'package:note_scout/edit.dart';
 import 'package:note_scout/info.dart';
 import 'package:note_scout/selectfolder.dart';
@@ -20,7 +22,8 @@ class ViewNotePage extends StatefulWidget {
   bool bookmarked;
   final String content;
   var name;
-  ViewNotePage({Key key, this.mode, this.bookmarked = false, this.content, this.name})
+  var folder;
+  ViewNotePage({Key key, this.mode, this.bookmarked = false, this.content, this.name, this.folder})
       : super(key: key);
 
   @override
@@ -147,7 +150,7 @@ class ViewNotePageState extends State<ViewNotePage> {
               case "Rename Note":
                 showDialog(
                   context: context,
-                  builder: (_) => RenameNotePopUp(name: widget.name,),
+                  builder: (_) => RenameNotePopUp(name: widget.name, folder: widget.folder),
                 );
                 break;
               case "Move Note...":
@@ -394,8 +397,9 @@ class DeleteNotePopUpState extends State<DeleteNotePopUp> {
 }
 
 class RenameNotePopUp extends StatefulWidget {
-  RenameNotePopUp({Key key, this.name}) : super(key: key);
+  RenameNotePopUp({Key key, this.name, this.folder}) : super(key: key);
   var name;
+  var folder;
   @override
   RenameNotePopUpState createState() {
     return new RenameNotePopUpState();
@@ -431,7 +435,10 @@ class RenameNotePopUpState extends State<RenameNotePopUp> {
             child: Text("Cancel"),
           ),
           FlatButton(
-            onPressed: () {
+            onPressed: () async {
+              var old_path = USERNAME + "/" + widget.folder + "/" + widget.name;
+              var new_path = USERNAME + "/" + widget.folder + "/" + text_controller.text;
+              await rename_note(old_path, new_path);
               Navigator.of(context).pop();
             },
             child: Text("Rename"),

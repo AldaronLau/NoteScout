@@ -17,6 +17,29 @@ pub struct State {
     pool: Pool<PostgresConnectionManager<NoTls>>,
 }
 
+/// Change the "filename" of a note in the database.
+fn note_rename(
+    client: &mut Client,
+    filename: &str,
+    new_filename: &str,
+) -> Result<()> {
+    // Build SQL Transaction
+    let mut transaction = client.transaction()?;
+    transaction.execute(
+        format!(
+            "UPDATE notes SET filename = '{}' WHERE filename = '{}';",
+            new_filename,
+            filename,
+        ).as_str(),
+        &[]
+    )?;
+    transaction.commit()?;
+
+    println!("Renamed note to {}!", new_filename);
+
+    Ok(())
+}
+
 /// Insert/Update a new textual note into the database.
 fn txtnote_modify(
     client: &mut Client,
@@ -394,6 +417,87 @@ async fn viewit(mut request: tide::Request<State>) -> Result<String> {
     Ok(format!("SUCCESS\t{}", load_note(&mut connection, user, &post).unwrap()))
 }
 
+/// Called when the user posts to /rename
+///
+/// # Recv
+/// ```
+/// "USERNAME\nPASSWORD\nFILENAME\nNEW_FILENAME"
+/// ```
+///
+/// # Send
+/// - `"MALFORM"`: Post Request Is Malformed
+/// - `"SUCCESS"`: Log In Succeeded
+/// - `"INVALID"`: Invalid Username Password Combination
+/// - `"MISSING"`: User is Missing From Database
+/// - `"FAILURE"`: Failed to connect to database
+async fn rename(mut request: tide::Request<State>) -> Result<String> {
+    // Get the POST request data
+    let post = request
+        .body_string()
+        .await
+        .unwrap_or_else(|_| "".to_string());
+
+    // Parse the request.
+    let (username, post) = if let Some(index) = post.find('\n') {
+        (&post[..index], &post[index + 1..])
+    } else {
+        return Ok("MALFORM".to_string());
+    };
+    let (password, post) = if let Some(index) = post.find('\n') {
+        (&post[..index], &post[index + 1..])
+    } else {
+        return Ok("MALFORM".to_string());
+    };
+    let (filename, new_filename) =
+        if let Some(index) = post.find('\n') {
+            (&post[..index], &post[index+1..])
+        } else {
+            return Ok("MALFORM".to_string());
+        };
+
+    // Connect to the database
+    let mut connection = request.state().pool.get()?;
+
+    // Test if username is in the database
+    if let Ok(exists) = user_exists(&mut connection, username) {
+        if !exists {
+            return Ok("MISSING".to_string());
+        }
+    } else {
+        return Ok("FAILURE".to_string());
+    }
+
+    // Test if password matches
+    let matches = if let Ok(Some(salt)) = user_salt(&mut connection, username) {
+        let tobe_hashed = format!("{}{:X}", password, salt);
+        let hashed = sha256::sha(tobe_hashed);
+        let hashed = {
+            let mut out = String::new();
+            for byte in hashed.iter() {
+                write!(&mut out, "{:X}", byte).unwrap();
+            }
+            out
+        };
+        if let Ok(Some(pswd)) = user_password(&mut connection, username) {
+            hashed == pswd
+        } else {
+            return Ok("FAILURE".to_string());
+        }
+    } else {
+        return Ok("FAILURE".to_string());
+    };
+    // Fail to log in if passwords don't match
+    if !matches {
+        return Ok("INVALID".to_string());
+    }
+
+    println!("Renaming \"{}\" to \"{}\"", filename, new_filename);
+    note_rename(&mut connection, filename, new_filename).unwrap();
+
+    // Succeeded to log in and save.
+    Ok("SUCCESS".to_string())
+}
+
 /// Called when the user posts to /modify
 ///
 /// # Recv
@@ -588,6 +692,7 @@ async fn start(state: State) -> Result<()> {
     app.at("/modify").post(modify);
     app.at("/listmy").post(listmy);
     app.at("/viewit").post(viewit);
+    app.at("/rename").post(rename);
 
     async_std::println!("TIDE LISTEN").await;
 

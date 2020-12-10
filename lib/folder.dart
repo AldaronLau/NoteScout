@@ -86,7 +86,8 @@ class FolderPageState extends State<FolderPage> {
                               mode: mode,
                               bookmarked: bookmarked,
                               content: content,
-                              name: widget.files[index]
+                              name: widget.files[index],
+                              folder: widget.path,
                             );
                         }),
                     );
@@ -203,7 +204,7 @@ class FolderPageState extends State<FolderPage> {
             case "Rename Folder...":
               showDialog(
                 context: context,
-                builder: (_) => RenameFolder(),
+                builder: (_) => RenameFolder(folder_page: widget),
               );
               break;
             case "Merge Notes In Folder":
@@ -243,7 +244,9 @@ class FolderPageState extends State<FolderPage> {
 }
 
 class RenameFolder extends StatefulWidget {
-  RenameFolder({Key key}) : super(key: key);
+  FolderPage folder_page;
+
+  RenameFolder({Key key, this.folder_page}) : super(key: key);
 
   @override
   RenameFolderState createState() {
@@ -280,7 +283,15 @@ class RenameFolderState extends State<RenameFolder> {
             child: Text("Cancel"),
           ),
           FlatButton(
-            onPressed: () {
+            onPressed: () async {
+              for(int i = 0; i < widget.folder_page.files.length; i++) {
+                  var old_filename = USERNAME + "/" + widget.folder_page.path + "/"
+                    + widget.folder_page.files[i];
+                  var new_folder_name = text_controller.text;
+                  var new_filename = USERNAME + "/" + new_folder_name + "/"
+                    + widget.folder_page.files[i];
+                  await rename_note(old_filename, new_filename);
+              }
               Navigator.of(context).pop();
             },
             child: Text("Rename"),
@@ -288,5 +299,89 @@ class RenameFolderState extends State<RenameFolder> {
         ]),
       ],
     );
+  }
+}
+
+// Change note contents on server.
+Future rename_note(String filename, String new_filename) async {
+  String postString = USERNAME
+      + "\n"
+      + PASSWORD
+      + "\n"
+      + filename
+      + "\n"
+      + new_filename;
+  try {
+    await http
+      .post(SERVER + "/rename", body: postString)
+      .timeout(const Duration(milliseconds: 5000))
+      .then((resp) {
+        print("Body: \"" + resp.body + "\"");
+        switch (resp.body) {
+          case "MALFORM": // Post Request Is Malformed
+            Fluttertoast.showToast(
+                msg: "INTERNAL ERROR: REQUEST MALFORMED!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                backgroundColor: APPCOLOR,
+                textColor: Colors.black,
+                fontSize: 16.0);
+            break;
+          case "SUCCESS": // Log In Succeeded
+            Fluttertoast.showToast(
+                msg: "Saved!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                backgroundColor: APPCOLOR,
+                textColor: Colors.black,
+                fontSize: 16.0);
+            break;
+          case "INVALID": // Invalid Username Password Combination
+            Fluttertoast.showToast(
+                msg: "INTERNAL ERROR: WRONG PASSWORD!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                backgroundColor: APPCOLOR,
+                textColor: Colors.black,
+                fontSize: 16.0);
+            break;
+          case "MISSING": // User is Missing From Database
+            Fluttertoast.showToast(
+                msg: "INTERNAL ERROR: USER " + USERNAME + " DOESN'T EXIST!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                backgroundColor: APPCOLOR,
+                textColor: Colors.black,
+                fontSize: 16.0);
+            break;
+          case "FAILURE": // Failed to connect to database":
+            Fluttertoast.showToast(
+                msg: "INTERNAL ERROR: THE SERVER HAS A BUG!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                backgroundColor: APPCOLOR,
+                textColor: Colors.black,
+                fontSize: 16.0);
+            break;
+          default:
+            Fluttertoast.showToast(
+                msg: "WHOOPS!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                backgroundColor: APPCOLOR,
+                textColor: Colors.black,
+                fontSize: 16.0);
+            break;
+        }
+      });
+  } catch (e) {
+    print(e);
+    Fluttertoast.showToast(
+        msg: "CAN'T REACH SERVER!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: APPCOLOR,
+        textColor: Colors.black,
+        fontSize: 16.0);
   }
 }

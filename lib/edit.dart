@@ -211,22 +211,20 @@ class EditNotePageState extends State<EditNotePage> {
           child: Text("Done"),
           onPressed: () async {
             String content = text_controller.text;
-            await saveNote("New Notes/New Note", content);
+            var folder = "New Notes";
+            var name = "New Note";
+            await saveNote(folder + "/" + name, content);
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) {
                     return ViewNotePage(
                       mode: ViewNoteMode.Owned,
                       content: content,
-                      name: widget.name
+                      folder: folder,
+                      name: name,
                     );
                 }),
             );
-            /*var route = new MaterialPageRoute(
-              builder: (BuildContext context) => new ViewNotePage(
-                  mode: ViewNoteMode.Owned, content: content),
-            );
-            Navigator.of(context).push(route);*/
           }),
     );
   }
