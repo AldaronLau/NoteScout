@@ -55,7 +55,7 @@ class Ccamera extends State<Page>{
         appBar: AppBar(
           title: Text("Notescout official camera"),
           centerTitle: true,
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.lightBlueAccent,
         ),
       body: Stack(children: <Widget>[
       Align(
@@ -68,7 +68,7 @@ class Ccamera extends State<Page>{
       alignment: Alignment.center,
       child: RaisedButton(
       child: Text("Take Picture"),
-    color: Colors.blue,
+    color: Colors.lightBlueAccent,
         onPressed: GetSome,
 
       ),

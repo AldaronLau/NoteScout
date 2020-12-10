@@ -4,6 +4,7 @@ import 'package:note_scout/uploader.dart';
 import 'package:note_scout/trash.dart';
 import 'package:note_scout/faq.dart';
 import 'package:note_scout/settings.dart';
+import 'package:note_scout/permission.dart';
 
 final Color backgroundColor = Color(0xFFFFFF);
 
@@ -47,7 +48,7 @@ class sideMenu extends State<SideMenu> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return upload();
+                  return UplUD();
                 }),
               );
             }),
@@ -82,7 +83,7 @@ class sideMenu extends State<SideMenu> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return Settings();
+                  return Perpart();
                 }),
               );
             }),

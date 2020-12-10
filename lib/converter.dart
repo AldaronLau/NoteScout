@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'dart:math';
 import 'dart:async';
 
@@ -21,7 +22,7 @@ class TurnerSS extends State<Turner> {
   String _words = "";
 
   bool _enable = true;
-
+  String b64;
   @override
   void initstate() {
     super.initState();
@@ -59,7 +60,7 @@ class TurnerSS extends State<Turner> {
           appBar: AppBar(
               title: const Text("Digital Note Converter",
                   style: TextStyle(color: Colors.black)),
-              backgroundColor: APPCOLOR),
+              backgroundColor: Colors.blue),
           body: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.all(12),
@@ -70,7 +71,7 @@ class TurnerSS extends State<Turner> {
                       "Pick a file",
                       style: TextStyle(color: Colors.black),
                     ),
-                    color: APPCOLOR,
+                    color: Colors.lightBlueAccent,
                     onPressed: _PickaText,
                     padding: EdgeInsets.all(6),
                   ),
@@ -79,10 +80,22 @@ class TurnerSS extends State<Turner> {
                       "Analyse the document",
                       style: TextStyle(color: Colors.black),
                     ),
-                    color: APPCOLOR,
+                    color: Colors.lightBlueAccent,
                     onPressed: _enable ? _readAlltheDocs : () {},
                     padding: EdgeInsets.all(6),
                   ),
+
+                  FlatButton(
+                    child: Text(
+                      "Save converted text"
+                    ),
+                      color: Colors.lightBlueAccent,
+                    ),
+
+
+
+
+
                   Padding(
                     child: Text(
                       _pdfDoc == null

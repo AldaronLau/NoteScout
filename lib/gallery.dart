@@ -39,7 +39,7 @@ class _GalleryState extends State<Gallery> {
         appBar: AppBar(
           title: Text("Gallery"),
           centerTitle: true,
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.lightBlueAccent,
         ),
       body: Stack(children: <Widget>[
       Align(
@@ -52,7 +52,7 @@ class _GalleryState extends State<Gallery> {
         onPressed: getImage,
         tooltip: 'Pick Image',
         child: new Icon(Icons.add_a_photo, color: Colors.black),
-        backgroundColor: APPCOLOR,
+        backgroundColor: Colors.lightBlueAccent,
     )
     ),
 //      Align(

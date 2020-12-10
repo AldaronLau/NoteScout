@@ -104,36 +104,38 @@ Future savePictureNote(String filename, String content) async {
 
 
 void main() => runApp(MaterialApp(
-    home: upload()
+    home: UplUD()
 ));
-class upload extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Notescout"),
-          centerTitle: true,
-          backgroundColor: Colors.lightBlueAccent, //blue color header
-        ),
-        body: Container(
-          padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
-          margin: EdgeInsets.all(30.0),
-          color: Colors.grey[400],
-        ),
-        floatingActionButton: RaisedButton(
-            child: Text("Upload"),
-            color: Colors.blue,
-            onPressed: () {
-              print('Uploading');
-
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => new UplUD()
-                  ));
-            }
-        )
-    );
-  }
-}
+//class upload extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) {
+//    return Scaffold(
+//        appBar: AppBar(
+//          title: Text("Notescout"),
+//          centerTitle: true,
+//          backgroundColor: Colors.lightBlueAccent, //blue color header
+//        ),
+//        body: Container(
+//          padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
+//          margin: EdgeInsets.all(30.0),
+//          color: Colors.grey[400],
+//        ),
+//        floatingActionButton: RaisedButton(
+//            padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
+//
+//            child: Text("Upload"),
+//            color: Colors.blue,
+//            onPressed: () {
+//              print('Uploading');
+//
+//              Navigator.push(context,
+//                  new MaterialPageRoute(builder: (context) => new UplUD()
+//                  ));
+//            }
+//        )
+//    );
+//  }
+//}
 
 
 
@@ -142,9 +144,9 @@ class  UplUD extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Choose and Upload option"),
+        title: Text("Upload"),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.lightBlueAccent,
       ),
       body: Stack(
         children: <Widget>[
@@ -155,7 +157,7 @@ class  UplUD extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 65, vertical: 100),
                   icon: Icon(Icons.camera),
                   iconSize: 85,
-                  color: Colors.blue,
+                  color: Colors.lightBlueAccent,
                   onPressed: () {
                     print('Camera');
                     Navigator.push(
@@ -179,7 +181,7 @@ class  UplUD extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 65, vertical: 100),
                   icon: Icon(Icons.insert_drive_file),
                   iconSize: 85,
-                  color: Colors.blue,
+                  color: APPCOLOR,
                   onPressed: () {
                     print('Camera');
                     Navigator.push(
@@ -199,9 +201,9 @@ class  UplUD extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: IconButton(
                 padding: EdgeInsets.symmetric(horizontal: 65, vertical: 100),
-                icon: Icon(Icons.insert_drive_file),
+                icon: Icon(Icons.folder),
                 iconSize: 85,
-                color: Colors.blue,
+                color: Colors.lightBlueAccent,
                 onPressed: () {
                   print('Camera');
                   Navigator.push(
@@ -221,7 +223,7 @@ class  UplUD extends StatelessWidget {
               alignment: Alignment.topRight,
               child: RaisedButton(
                   child: Text("help"),
-                  color: Colors.blue,
+                  color: Colors.lightBlueAccent,
                   onPressed: () {
                     print('going back');
                     Navigator.push(context,
@@ -236,7 +238,7 @@ class  UplUD extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: RaisedButton( //Its a button that says back
                   child: Text("Permissions"),
-                  color: Colors.blue,
+                  color: Colors.lightBlueAccent,
                   onPressed: () {
                     print('Permissions');
                     Navigator.push(context,
@@ -312,7 +314,7 @@ class Settinf extends StatelessWidget {// Creates an page
       appBar: AppBar(
         title: Text("Permission"),// Button that its called
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.lightBlueAccent,
       ),
       body: Stack(
           children: <Widget>[
@@ -320,7 +322,7 @@ class Settinf extends StatelessWidget {// Creates an page
             Align(
                 alignment: Alignment.center, //Where the text is going to appear
                child: MaterialButton(
-    color: Colors.blue,
+    color: Colors.lightBlueAccent,
     child: Text('Permission'),
     onPressed: () {
       print('Permissions');
