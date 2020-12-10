@@ -1,16 +1,17 @@
 # NoteScout
+Note streaming social media platform (or something like that).
 
-A new Flutter project.
+## User Manual
+To build NoteScout from source, you must install Dart and Flutter by following
+the OS-specific instructions at https://flutter.dev/docs/get-started/install.
 
-## Getting Started
+When you're all set, make sure everything works fine with Flutter Doctor; Once
+you're at that point, either install an Emulator in Android Studio or plug in
+your phone.  NoteScout works on both Android and iOS.
 
-This project is a starting point for a Flutter application.
+After that, launching the app is as simple as `flutter run`.  It might take a
+while, but it will eventually open on your phone (make sure that you have
+developer settings turned on first, though - or it won't work).
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+For the User Manual on setting up the backend server code, check out the
+[README in the backend directory](backend/README.md).

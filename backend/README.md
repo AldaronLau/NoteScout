@@ -1,7 +1,7 @@
 # NoteScout Backend
 The backend code for NoteScout.
 
-## Getting Started
+## User Manual For The Backend
 The server runs on a machine with Fedora Server Edition installed (IP:
 73.94.232.74, port: 9000).
 
