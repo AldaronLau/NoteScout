@@ -10,6 +10,97 @@ import 'package:flutter/foundation.dart';
 import 'package:note_scout/permission.dart';
 
 
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:note_scout/main.dart';
+import 'package:http/http.dart' as http;
+
+
+// update or create a note on server (format: "folder_name/picture_name").
+// content is base64 string of picture.
+Future savePictureNote(String filename, String content) async {
+    String fileString = USERNAME
+        + "\n"
+        + PASSWORD
+        + "\n"
+        + filename
+        + "\n"
+        + content;
+    try {
+      await http
+          .post(SERVER + "/modify", body: fileString)
+          .timeout(const Duration(milliseconds: 5000))
+          .then((resp) {
+            print("Body: \"" + resp.body + "\"");
+            switch (resp.body) {
+              case "MALFORM": // Post Request Is Malformed
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: REQUEST MALFORMED!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "SUCCESS": // Log In Succeeded
+                Fluttertoast.showToast(
+                    msg: "Saved!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "INVALID": // Invalid Username Password Combination
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: WRONG PASSWORD!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "MISSING": // User is Missing From Database
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: USER " + USERNAME + " DOESN'T EXIST!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              case "FAILURE": // Failed to connect to database":
+                Fluttertoast.showToast(
+                    msg: "INTERNAL ERROR: THE SERVER HAS A BUG!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+              default:
+                Fluttertoast.showToast(
+                    msg: "WHOOPS!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    backgroundColor: APPCOLOR,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+                break;
+            }
+          });
+        } catch (e) {
+          print(e);
+          Fluttertoast.showToast(
+              msg: "CAN'T REACH SERVER!",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              backgroundColor: APPCOLOR,
+              textColor: Colors.black,
+              fontSize: 16.0);
+        }
+}
+
+
 
 
 void main() => runApp(MaterialApp(
