@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:note_scout/uploader.dart';
@@ -29,6 +29,9 @@ class Ccamera extends State<Page>{
   final selector = ImagePicker();
 
   ///Chooses image from phone capture
+  ///
+  ///
+  /// 
   Future GetSome() async {
     final PickedFile = await selector.getImage(source: ImageSource.camera);
 

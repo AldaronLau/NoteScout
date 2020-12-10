@@ -52,6 +52,7 @@ class TurnerSS extends State<Turner> {
   }
 
   ///Construct the app window which the
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
@@ -85,8 +86,8 @@ class TurnerSS extends State<Turner> {
                   Padding(
                     child: Text(
                       _pdfDoc == null
-                          ? "Do something else while the text loads"
-                          : "PDF document is loading ${_pdfDoc.length} pages \n",
+                          ? "Pick a note and see if it loads..."
+                          : "PDF document is loading, ${_pdfDoc.length} pages \n",
                       style: TextStyle(fontSize: 17),
                       textAlign: TextAlign.center,
                     ),
