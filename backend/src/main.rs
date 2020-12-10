@@ -266,6 +266,32 @@ fn load_note(
     Ok(output)
 }
 
+/// Retreive a list of the notes matching a search string.
+fn notes_matching(
+    client: &mut Client,
+    search: &str,
+) -> Result<String> {
+    // Build SQL Prepared Statement
+    let mut trans = client.transaction()?;
+    let prep = trans.prepare("SELECT filename FROM notes;")?;
+
+    // Execute SQL Prepared Statement
+    let portal = trans.bind(&prep, &[])?;
+    let mut rows = trans.query_portal_raw(&portal, 100)?;
+
+    // Interpret results
+    let mut output = String::new();
+    while let Some(row) = rows.next()? {
+        let string: &str = row.get(0);
+        if string.contains(search) {
+            output.push_str(string);
+            output.push('\n');
+        }
+    }
+    output.pop();
+    Ok(output)
+}
+
 /// Retreive a list of the user's notes from the database.
 fn user_notes(
     client: &mut Client,
@@ -382,6 +408,33 @@ async fn listmy(mut request: tide::Request<State>) -> Result<String> {
 
     // Build return value.
     Ok(format!("SUCCESS\n{}", user_notes(&mut connection, username).unwrap()))
+}
+
+/// Called when the user posts to /search
+///
+/// # Recv
+/// ```
+/// "Search String"
+/// ```
+///
+/// # Send
+/// - `"MALFORM"`: Post Request Is Malformed
+/// - `"SUCCESS"`: Log In Succeeded
+/// - `"INVALID"`: Invalid Username Password Combination
+/// - `"MISSING"`: User is Missing From Database
+/// - `"FAILURE"`: Failed to connect to database
+async fn search(mut request: tide::Request<State>) -> Result<String> {
+    // Get the POST request data
+    let post = request
+        .body_string()
+        .await
+        .unwrap_or_else(|_| "".to_string());
+        
+    // Connect to the database
+    let mut connection = request.state().pool.get()?;
+
+    // Build return value.
+    Ok(format!("SUCCESS\t{}", notes_matching(&mut connection, &post).unwrap()))
 }
 
 /// Called when the user posts to /viewit
@@ -694,6 +747,7 @@ async fn start(state: State) -> Result<()> {
     app.at("/listmy").post(listmy);
     app.at("/viewit").post(viewit);
     app.at("/rename").post(rename);
+    app.at("/search").post(search);
 
     async_std::println!("TIDE LISTEN").await;
 
