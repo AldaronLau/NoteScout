@@ -49,7 +49,8 @@ fn txtnote_modify(
 ) -> Result<()> {
     // Build SQL Transaction
     let mut transaction = client.transaction()?;
-    transaction.execute(format!("DELETE FROM notes WHERE username = '{}'", username).as_str(), &[])?;
+    transaction.execute(format!("DELETE FROM notes WHERE filename = '{}/{}'",
+        username, filename).as_str(), &[])?;
     transaction.execute(format!(
         "INSERT INTO notes (username, filename, contents) \
          VALUES ('{}', '{}/{}', '{}');",
