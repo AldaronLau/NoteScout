@@ -4,6 +4,7 @@ import 'package:note_scout/uploader.dart';
 import 'package:note_scout/trash.dart';
 import 'package:note_scout/faq.dart';
 import 'package:note_scout/settings.dart';
+import 'package:note_scout/myaccount.dart';
 
 final Color backgroundColor = Color(0xFFFFFF);
 
@@ -38,7 +39,12 @@ class sideMenu extends State<SideMenu> {
             title: const Text("My Account",
                 style: TextStyle(color: Colors.black, fontSize: 22.0)),
             onTap: () {
-              print("TODO");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return myaccount();
+                }),
+              );
             }),
         ListTile(
             title: const Text("Upload",
@@ -58,12 +64,12 @@ class sideMenu extends State<SideMenu> {
               Navigator.push(context,
                   new MaterialPageRoute(builder: (context) => new Faq()));
             }),
-        ListTile(
+        /*ListTile(
             title: const Text("Upgrade Account",
                 style: TextStyle(color: Colors.black, fontSize: 22.0)),
             onTap: () {
               print("TODO");
-            }),
+            }),*/
         ListTile(
             title: const Text("Trash",
                 style: TextStyle(color: Colors.black, fontSize: 22.0)),
