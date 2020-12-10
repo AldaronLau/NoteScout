@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'dart:convert';
 import 'dart:math';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-
+import 'package:note_scout/uploader.dart';
 import 'package:note_scout/home.dart';
 import 'package:note_scout/main.dart';
 import 'package:note_scout/pdf_text.dart';
@@ -21,7 +22,7 @@ class TurnerSS extends State<Turner> {
   String _words = "";
 
   bool _enable = true;
-
+  String b64;
   @override
   void initstate() {
     super.initState();
@@ -48,6 +49,7 @@ class TurnerSS extends State<Turner> {
     setState(() {
           _words = text;
       _enable = true;
+          {savePictureNote ( 'picture/picture', _words);}
     });
   }
 
@@ -59,7 +61,7 @@ class TurnerSS extends State<Turner> {
           appBar: AppBar(
               title: const Text("Digital Note Converter",
                   style: TextStyle(color: Colors.black)),
-              backgroundColor: APPCOLOR),
+              backgroundColor: Colors.blue),
           body: Container(
               alignment: Alignment.center,
               padding: EdgeInsets.all(12),
@@ -70,7 +72,7 @@ class TurnerSS extends State<Turner> {
                       "Pick a file",
                       style: TextStyle(color: Colors.black),
                     ),
-                    color: APPCOLOR,
+                    color: Colors.lightBlueAccent,
                     onPressed: _PickaText,
                     padding: EdgeInsets.all(6),
                   ),
@@ -79,10 +81,11 @@ class TurnerSS extends State<Turner> {
                       "Analyse the document",
                       style: TextStyle(color: Colors.black),
                     ),
-                    color: APPCOLOR,
+                    color: Colors.lightBlueAccent,
                     onPressed: _enable ? _readAlltheDocs : () {},
                     padding: EdgeInsets.all(6),
                   ),
+
                   Padding(
                     child: Text(
                       _pdfDoc == null

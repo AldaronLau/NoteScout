@@ -82,7 +82,7 @@ class Home extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) {
-                            return upload();
+                            return UplUD();
                           }),
                         );
                         break;

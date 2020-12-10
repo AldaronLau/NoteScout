@@ -68,24 +68,25 @@ fn imgnote_modify(
     client: &mut Client,
     username: &str,
     filename: &str,
-    graphic: &str,
+    graphics: &str,
 ) -> Result<()> {
     // Build SQL Transaction
     let mut transaction = client.transaction()?;
-    transaction.execute(format!("DELETE FROM notes WHERE username = '{}'", username).as_str(), &[])?;
-    let mut stmt = format!(
-        "INSERT INTO notes (username, filename, contents) \
-         VALUES ('{}', '{}/{}', x'",
-        username, username, filename
-    );
-    for byte in base64::decode(graphic)?.iter() {
+    transaction.execute(format!("DELETE FROM notes WHERE filename = '{}/{}'",
+        username, filename).as_str(), &[])?;
+    let mut stmt = format!("INSERT INTO notes (username, filename, graphics) \
+         VALUES ('{}', '{}/{}', x'", username, username, filename);
+
+    for byte in base64::decode(graphics)?.iter() {
         write!(stmt, "{:X}", byte).unwrap();
     }
-    stmt.push_str("'::bytea) ON CONFLICT DO UPDATE;");
+
+    write!(stmt, "'::bytea);").unwrap();
+
     transaction.execute(stmt.as_str(), &[])?;
     transaction.commit()?;
 
-    println!("Added text note {}!", username);
+    println!("Added graphic note {}!", username);
 
     Ok(())
 }
